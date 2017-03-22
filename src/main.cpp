@@ -2,8 +2,11 @@
 
 #include <iostream>
 
+#include "geometry/vec.h"
+
 int main()
 {
+  
 }
 
 #endif
