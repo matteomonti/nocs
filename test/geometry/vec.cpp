@@ -8,6 +8,15 @@
 
 TEST_CASE("Vector operators respects standard algebra", "[operators]")
 {
+  SECTION("Opposite")
+  {
+    vec v1(2, 3);
+    vec v2 = -v1;
+
+    REQUIRE(v1.x == -v2.x);
+    REQUIRE(v1.y == -v2.y);
+  }
+
   SECTION("Addition")
   {
     vec v1(2, 3);

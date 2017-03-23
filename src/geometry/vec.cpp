@@ -12,6 +12,11 @@ vec :: vec(double x, double y): x(x), y(y)
 
 // Operators
 
+vec vec :: operator - () const
+{
+  return vec(-x, -y);
+}
+
 vec vec :: operator + (const vec & rho) const
 {
   return vec(x + rho.x, y + rho.y);

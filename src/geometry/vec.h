@@ -23,6 +23,8 @@ struct vec
 
   // Operators
 
+  vec operator - () const;
+
   vec   operator +  (const vec &) const;
   vec & operator += (const vec &);
 
