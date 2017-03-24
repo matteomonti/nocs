@@ -95,5 +95,5 @@ vec operator * (const double & lho, const vec & rho)
 
 std :: ostream & operator << (std :: ostream & out, const vec & v)
 {
-  return out << "(" << v.x << ", " << v.y << ")" << std :: endl;
+  return out << "(" << v.x << ", " << v.y << ")";
 }

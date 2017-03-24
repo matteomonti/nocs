@@ -23,6 +23,7 @@ class molecule
 	size_t _size;
 	atom * _atoms;
 
+	double _radius;
 	double _mass;
 	double _inertia_moment;
 
@@ -50,7 +51,7 @@ public:
 	// Getters
 
 	const size_t & size() const;
-	const atom & atom(const size_t &) const;
+	const double & radius() const;
 	const double & mass() const;
 	const double & inertia_moment() const;
 	const vec & position() const;
@@ -60,10 +61,33 @@ public:
 	const double & time() const;
 	const unsigned int & version() const;
 
+	// Public Operators
+
+	const atom & operator [] (const size_t &) const;
+
+	// Public Nested Classes
+
+	class printer
+	{
+		// Members
+
+		std :: ostream * out;
+
+		// Constructors
+	public:
+		printer();
+		printer(std :: ostream &);
+
+		// Operators
+
+		printer & operator << (const molecule &);
+		template <typename type> std :: ostream & operator << (const type &);
+	};
+
 };
 
 // Standard Output
 
-std :: ostream & operator << (std :: ostream &, const molecule &);
+molecule :: printer & operator << (std :: ostream &, const molecule &);
 
 #endif

@@ -8,6 +8,8 @@ molecule :: molecule()
 
 molecule :: molecule(const std :: vector<atom> & atoms, const vec & position, const vec & velocity, const double & orientation, const double & angular_velocity) :  _position(position), _velocity(velocity), _orientation(orientation), _angular_velocity(angular_velocity)
 {
+	this->_time = 0;
+	this->_version = 0;
 	this->_mass = 0;
 	this->_size = atoms.size();
 	this->_atoms = new atom[this->_size];
@@ -26,7 +28,11 @@ molecule :: molecule(const std :: vector<atom> & atoms, const vec & position, co
 	com /= this->_mass;
 
 	for (size_t i = 0; i < this->_size; i++)
-		this->_atoms[i].move(this->_atoms[i].position() - v);
+		this->_atoms[i].move(this->_atoms[i].position() - com);
+
+	this->_radius = 0;
+	for (size_t i = 0; i < this->_size; i++)
+		this->_radius = std :: max(this->_radius, !this->_atoms[i].position() + this->_atoms[i].radius());
 
 	this->_inertia_moment = 0;
 
@@ -37,7 +43,7 @@ molecule :: molecule(const std :: vector<atom> & atoms, const vec & position, co
 molecule :: molecule(const molecule & m) : _size(m.size()), _mass(m.mass()), _inertia_moment(m.inertia_moment()), _position(m.position()), _velocity(m.velocity()), _orientation(m.orientation()), _angular_velocity(m.angular_velocity())
 {
 	for (size_t i = 0; i < this->_size; i++)
-		this->_atoms[i] = m.atoms(i);
+		this->_atoms[i] = m[i];
 }
 
 molecule :: ~molecule()
@@ -52,9 +58,9 @@ const size_t & molecule :: size() const
 	return this->_size;
 }
 
-const atom & molecule :: atom(const size_t & n) const
+const double & molecule :: radius() const
 {
-	return this->_atoms[n];
+	return this->_radius;
 }
 
 const double & molecule :: mass() const
@@ -97,11 +103,42 @@ const unsigned int & molecule :: version() const
 	return this->_version;
 }
 
+// Public Operators
+
+const atom & molecule :: operator [] (const size_t & n) const
+{
+	return this->_atoms[n];
+}
+
+// Public Nested Classes
+
+// Constructors
+
+molecule :: printer :: printer()
+{
+}
+
+molecule :: printer :: printer(std :: ostream & out) : out(& out)
+{
+	(*(this->out)) << std :: endl << "m\tI\tq\tv\ttheta\tomega\tt\tversion" << std :: endl;
+}
+
+// Operators
+
+molecule :: printer & molecule :: printer :: operator << (const molecule & m)
+{
+	(*(this->out)) <<  m.mass() << "\t" << m.inertia_moment() << "\t" << m.position() << "\t" << m.velocity() << "\t" << m.orientation() << "\t" << m.angular_velocity() << "\t" << m.time() << "\t" << m.version() << std :: endl;
+	return *this;
+}
+
+template <typename type> std :: ostream & molecule :: printer :: operator << (const type & x)
+{
+	return (*(this->out)) << x;
+}
+
 // Standard Output
 
-std :: ostream & operator << (std :: ostream & out, const molecule & m)
+molecule :: printer & operator << (std :: ostream & out, const molecule & m)
 {
-	/*KEEP IT UPDATED, CHARLIE!*/
-	return out << "Position:\t(" << m.position().x << ", " << m.position().y << ")" << std :: endl
-			   << "Mass:\t" << m.mass() << std :: endl;
+	return molecule :: printer(out) << m;
 }
