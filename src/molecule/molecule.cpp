@@ -11,25 +11,27 @@ molecule :: molecule(const std :: vector<atom> & atoms, const vec & position, co
 	this->_mass = 0;
 	this->_size = atoms.size();
 	this->_atoms = new atom[this->_size];
+
 	for (size_t i = 0; i < this->_size; i++)
 	{
 		this->_atoms[i] = atoms[i];
 		this->_mass += this->_atoms[i].mass();
 	}
 
-	/*NOTA :: cdm -> (sum m_i*r_i / sum m_i)*/
-	vec v(0, 0);
+	/*NOTA :: com -> (sum m_i*r_i / sum m_i)*/
+	vec com(0, 0);
 	for (size_t i = 0; i < this->_size; i++)
-		v += this->_atoms[i].mass() * this->_atoms[i].position();
+		com += this->_atoms[i].mass() * this->_atoms[i].position();
+
+	com /= this->_mass;
 
 	for (size_t i = 0; i < this->_size; i++)
 		this->_atoms[i].move(this->_atoms[i].position() - v);
 
 	this->_inertia_moment = 0;
+
 	for (size_t i = 0; i < this->_size; i++)
-	{
 		this->_inertia_moment += this->_atoms[i].mass() * (std :: pow(this->_atoms[i].radius(), 2) + ~this->_atoms[i].position());
-	}
 }
 
 molecule :: molecule(const molecule & m) : _size(m.size()), _mass(m.mass()), _inertia_moment(m.inertia_moment()), _position(m.position()), _velocity(m.velocity()), _orientation(m.orientation()), _angular_velocity(m.angular_velocity())
@@ -50,7 +52,7 @@ const size_t & molecule :: size() const
 	return this->_size;
 }
 
-const atom & molecule :: atoms(const size_t & n) const
+const atom & molecule :: atom(const size_t & n) const
 {
 	return this->_atoms[n];
 }

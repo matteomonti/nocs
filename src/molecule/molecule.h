@@ -50,7 +50,7 @@ public:
 	// Getters
 
 	const size_t & size() const;
-	const atom & atoms(const size_t &) const;
+	const atom & atom(const size_t &) const;
 	const double & mass() const;
 	const double & inertia_moment() const;
 	const vec & position() const;
