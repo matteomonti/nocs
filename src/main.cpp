@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "geometry/vec.h"
-#include "molecule.h"
+#include "molecule/molecule.h"
 
 int main()
 {
