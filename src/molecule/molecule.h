@@ -2,7 +2,7 @@
 
 class molecule;
 
-#if !defined(__forward__) && !defined(__nobb__molecule__h)
+#if !defined(__forward__) && !defined(__nobb__molecule__molecule__h)
 #define __nobb__molecule__molecule__h
 
 // Libraries
