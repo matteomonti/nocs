@@ -120,7 +120,7 @@ molecule :: printer :: printer()
 
 molecule :: printer :: printer(std :: ostream & out) : out(& out)
 {
-	(*(this->out)) << std :: endl << "m\tI\tq\tv\ttheta\tomega\tt\tversion" << std :: endl;
+	(*(this->out)) << std :: endl << "-----CARATTERISTICHE MOLECOLE-----" << std :: endl << "m\tI\tq\tv\ttheta\tomega\tt\tversion" << std :: endl;
 }
 
 // Operators

@@ -73,8 +73,9 @@ public:
 
 		std :: ostream * out;
 
-		// Constructors
 	public:
+		// Constructors
+
 		printer();
 		printer(std :: ostream &);
 

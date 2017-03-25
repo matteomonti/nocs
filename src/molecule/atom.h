@@ -40,10 +40,31 @@ public:
   // Public Methods
 
 	void move(const vec &);
+
+	// Public Nested Classes
+
+	class printer
+	{
+		// Members
+
+		std :: ostream * out;
+
+	public:
+		// Constructors
+
+		printer();
+		printer(std :: ostream &);
+
+		// Operators
+
+		printer & operator << (const atom &);
+		template <typename type> std :: ostream & operator << (const type &);
+	};
+
 };
 
 // Standard Output
 
-std :: ostream & operator << (std :: ostream &, const atom &);
+atom :: printer & operator << (std :: ostream &, const atom &);
 
 #endif
