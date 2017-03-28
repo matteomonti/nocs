@@ -1,11 +1,5 @@
 #include "event.h"
 
-// Constructors
-
-event :: event()
-{
-}
-
 // Getters
 
 bool event :: happens()
@@ -21,5 +15,4 @@ double event :: time()
 // Public Methods
 
 virtual void event :: compute() = 0;
-
 virtual bool event :: current() = 0;

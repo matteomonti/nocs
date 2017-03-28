@@ -2,8 +2,8 @@
 
 class collision;
 
-#if !defined(__forward__) && !defined(__nobb__event__collision__h)
-#define __nobb__event__collision__h
+#if !defined(__forward__) && !defined(__nobb__event__event__collision__h)
+#define __nobb__event__event__collision__h
 
 // Libraries
 
@@ -14,23 +14,32 @@ class collision;
 
 #include "/molecule/molecule.h"
 
-
 class collision : private event
 {
   // Members
 
-  molecule * _m1;
-  unsigned int _e1;
-  molecule * _m2;
-  unsigned int _e2;
+  struct
+  {
+    molecule * molecule;
+    unsigned int version;
+  } _alpha;
+
+  struct
+  {
+    molecule * molecule;
+    unsigned int version;
+  } _beta;
 
 public:
 
   // Constructors
 
-  collision();
   collision(molecule *, molecule *);
 
+  // Methods
+
+  bool current();
+  void resolve();
 };
 
 #endif

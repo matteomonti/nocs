@@ -21,10 +21,6 @@ protected:
 
 public:
 
-  // Constructors
-
-  event();
-
   // Getters
 
   bool happens();
@@ -32,8 +28,8 @@ public:
 
   // Public Methods
 
-  virtual void compute();
   virtual bool current();
+  virtual void resolve();
 };
 
 #endif
