@@ -84,6 +84,11 @@ double vec :: operator ! () const
   return sqrt(~*this);
 }
 
+bool vec :: operator == (const vec & rho) const
+{
+  return this->x == rho.x && this->y == rho.y;
+}
+
 // External Operators
 
 vec operator * (const double & lho, const vec & rho)

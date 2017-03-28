@@ -42,6 +42,8 @@ struct vec
 
   double operator ~ () const; // Squared Module
   double operator ! () const; // Module
+
+  bool operator == (const vec &) const;
 };
 
 // External Operators

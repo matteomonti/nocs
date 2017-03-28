@@ -10,15 +10,53 @@ class atom;
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <iomanip>
+
+// Forward includes
+
+#define __forward__
+#include "atom.h"
+#undef __forward__
+
+// Includes
 
 #include "geometry/vec.h"
 
-/*nota: vogliamo che un atomo NON sia modificabile una volta istanziato*/
-/*se non nella posizione...*/
-
 class atom
 {
-	// Memebers
+public:
+
+    // Public Nested Classes
+
+	class printer
+	{
+    // Friends
+
+    friend atom :: printer operator << (std :: ostream &, const atom &);
+
+		// Members
+
+		std :: ostream * _out;
+
+		// Constructors
+
+		printer(std :: ostream &);
+
+    public:
+
+		// Operators
+
+		printer operator << (const atom &);
+		template <typename type> std :: ostream & operator << (const type &);
+	};
+
+private:
+
+  // Friends
+
+  friend class molecule;
+
+	// Members
 
 	vec _position;
 	double _radius;
@@ -28,8 +66,15 @@ public:
 
 	// Constructors
 
+  atom(const vec &, const double &, const double &);
+
+private:
+
+  // Private constructors
+
 	atom();
-	atom(const vec &, const double &, const double &);
+
+public:
 
 	// Getters
 
@@ -37,34 +82,15 @@ public:
 	const double & radius() const;
 	const double & mass() const;
 
-  // Public Methods
+private:
 
-	void move(const vec &);
+  // Private setters
 
-	// Public Nested Classes
-
-	class printer
-	{
-		// Members
-
-		std :: ostream * out;
-
-	public:
-		// Constructors
-
-		printer();
-		printer(std :: ostream &);
-
-		// Operators
-
-		printer & operator << (const atom &);
-		template <typename type> std :: ostream & operator << (const type &);
-	};
-
+	atom & position(const vec &);
 };
 
 // Standard Output
 
-atom :: printer & operator << (std :: ostream &, const atom &);
+atom :: printer operator << (std :: ostream &, const atom &);
 
 #endif

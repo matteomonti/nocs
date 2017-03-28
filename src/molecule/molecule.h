@@ -18,20 +18,46 @@ class molecule;
 
 class molecule
 {
+public:
+
+    // Nested Classes
+
+	class printer
+	{
+    // Friends
+
+    friend molecule :: printer operator << (std :: ostream &, const molecule &);
+
+		// Members
+
+		std :: ostream * _out;
+
+		// Constructors
+
+		printer(std :: ostream &);
+
+		// Operators
+
+		printer operator << (const molecule &);
+		template <typename type> std :: ostream & operator << (const type &);
+	};
+
+private:
+
 	// Members
 
 	size_t _size;
 	atom * _atoms;
 
-	double _radius;
+  vec _position;
+  vec _velocity;
+
+  double _orientation;
+  double _angular_velocity;
+
 	double _mass;
+  double _radius;
 	double _inertia_moment;
-
-	vec _position;
-	vec _velocity;
-
-	double _orientation;
-	double _angular_velocity;
 
 	double _time;
 	unsigned int _version;
@@ -51,44 +77,23 @@ public:
 	// Getters
 
 	const size_t & size() const;
-	const double & radius() const;
-	const double & mass() const;
-	const double & inertia_moment() const;
-	const vec & position() const;
+  const vec & position() const;
 	const vec & velocity() const;
 	const double & orientation() const;
 	const double & angular_velocity() const;
+	const double & radius() const;
+	const double & mass() const;
+	const double & inertia_moment() const;
 	const double & time() const;
 	const unsigned int & version() const;
 
-	// Public Operators
+	// Operators
 
 	const atom & operator [] (const size_t &) const;
-
-	// Public Nested Classes
-
-	class printer
-	{
-		// Members
-
-		std :: ostream * out;
-
-	public:
-		// Constructors
-
-		printer();
-		printer(std :: ostream &);
-
-		// Operators
-
-		printer & operator << (const molecule &);
-		template <typename type> std :: ostream & operator << (const type &);
-	};
-
 };
 
 // Standard Output
 
-molecule :: printer & operator << (std :: ostream &, const molecule &);
+molecule :: printer operator << (std :: ostream &, const molecule &);
 
 #endif

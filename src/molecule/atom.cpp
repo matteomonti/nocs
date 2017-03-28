@@ -1,12 +1,38 @@
 #include "atom.h"
 
+// printer
+
 // Constructors
 
-atom :: atom()
+atom :: printer :: printer(std :: ostream & out) : _out(& out)
+{
+	(*(this->_out)) << std :: endl << std :: setw(16) << "position" << std :: setw(8) << "mass" << std :: setw(8) << "radius" <<  std :: endl;
+}
+
+// Operators
+
+atom :: printer atom :: printer :: operator << (const atom & a)
+{
+	(*(this->_out)) << std :: setw(16) << a.position() << std :: setw(8) << a.mass() << std :: setw(8) << a.radius() << std :: endl;
+	return *this;
+}
+
+template <typename type> std :: ostream & atom :: printer :: operator << (const type & x)
+{
+	return (*(this->_out)) << x;
+}
+
+// atom
+
+// Constructors
+
+atom :: atom(const vec & position, const double & mass, const double & radius) : _position(position), _mass(mass), _radius(radius)
 {
 }
 
-atom :: atom(const vec & position, const double & radius, const double & mass) : _position(position), _radius(radius), _mass(mass)
+// Private constructors
+
+atom :: atom()
 {
 }
 
@@ -27,42 +53,17 @@ const double & atom :: mass() const
 	return this->_mass;
 }
 
-// Public Methods
+// Setters
 
-void atom :: move(const vec & v)
+atom & atom :: position(const vec & position)
 {
-	this->_position = v;
-}
-
-// Public Nested Classes
-
-// Constructors
-
-atom :: printer :: printer()
-{
-}
-
-atom :: printer :: printer(std :: ostream & out) : out(& out)
-{
-	(*(this->out)) << std :: endl << "-----CARATTERISTICHE ATOMI-----" << std :: endl << "m\tr\tq" << std :: endl;
-}
-
-// Operators
-
-atom :: printer & atom :: printer :: operator << (const atom & a)
-{
-	(*(this->out)) << a.mass() << "\t" << a.radius() << "\t" << a.position() << std :: endl;
-	return *this;
-}
-
-template <typename type> std :: ostream & atom :: printer :: operator << (const type & x)
-{
-	return (*(this->out)) << x;
+	this->_position = position;
+    return *this;
 }
 
 // Standard Output
 
-atom :: printer & operator << (std :: ostream & out, const atom & a)
+atom :: printer operator << (std :: ostream & out, const atom & a)
 {
 	return atom :: printer(out) << a;
 }
