@@ -8,7 +8,7 @@ class event;
 // Libraries
 
 #include <iostream>
-#include <cmath>
+#include <limits>
 
 class event
 {
@@ -28,8 +28,8 @@ public:
 
   // Public Methods
 
-  virtual bool current();
-  virtual void resolve();
+  virtual bool current() = 0;
+  virtual void resolve() = 0;
 };
 
 #endif

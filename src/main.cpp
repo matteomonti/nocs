@@ -2,18 +2,18 @@
 
 #include <iostream>
 
-#include "geometry/vec.h"
-#include "molecule/molecule.h"
+#include "math/newton.h"
 
 int main()
 {
-    std :: vector<atom> a;
-
-    a.push_back(atom(vec(3, 4), 1, 1));
-    a.push_back(atom(vec(-3, 4), 1, 1));
-    a.push_back(atom(vec(0, 2), 1, 2));
-
-    std :: cout << a[0] << a[1] << a[2];
+  double s = 0;
+  unsigned long int i = 0;
+  for(double c = -2.; c > -12.; c -= 1.e-9, i++)
+  {
+    if(i%1000000==0) std::cout<<i<<std::endl;
+    s += newton :: quadratic(1, 0, c, -1);
+  }
+  std :: cout << "Completed:" << s << std :: endl;
 }
 
 #endif
