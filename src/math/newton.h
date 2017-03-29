@@ -5,7 +5,6 @@
 
 #include <cmath>
 #include <limits>
-#include <iostream>
 
 // Macros
 
@@ -15,7 +14,7 @@ namespace newton
 {
   constexpr double epsilon = 5. * std :: numeric_limits <double> :: epsilon();
   constexpr unsigned int rounds = 50;
-  
+
   double quadratic(const double &, const double &, const double &, double = 0);
 };
 

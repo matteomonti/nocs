@@ -2,18 +2,17 @@
 
 #include <iostream>
 
-#include "math/newton.h"
+#include "event/events/molecule_molecule.h"
 
 int main()
 {
-  double s = 0;
-  unsigned long int i = 0;
-  for(double c = -2.; c > -12.; c -= 1.e-9, i++)
-  {
-    if(i%1000000==0) std::cout<<i<<std::endl;
-    s += newton :: quadratic(1, 0, c, -1);
-  }
-  std :: cout << "Completed:" << s << std :: endl;
+  molecule alpha({{{0, 0}, 1, 1}, {{2, 0}, 1, 1}, {{4, 0}, 1, 1}, {{6, 0}, 1, 1}}, {5, 10}, {0, -2});
+  molecule beta({{{0, 0}, 1, 1}, {{2, 0}, 1, 1}, {{4, 0}, 1, 1}, {{6, 0}, 1, 1}}, {7, 2}, {0, 1});
+
+  std :: cout << "Alpha radius: " << alpha.radius() << std :: endl;
+  std :: cout << "Beta radius: " << beta.radius() << std :: endl;
+
+  events :: molecule_molecule(alpha, beta);
 }
 
 #endif
