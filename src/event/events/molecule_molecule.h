@@ -5,8 +5,8 @@ namespace events
   class molecule_molecule;
 };
 
-#if !defined(__forward__) && !defined(__nobb__event__event__molecule_molecule__h)
-#define __nobb__event__event__molecule_molecule__h
+#if !defined(__forward__) && !defined(__nobb__event__events__molecule_molecule__h)
+#define __nobb__event__events__molecule_molecule__h
 
 // Libraries
 
@@ -48,6 +48,13 @@ namespace events
 
     bool current();
     void resolve();
+
+    // Private methods
+
+    inline vec atom_position(const molecule &, const size_t &, const double &);
+    inline double atoms_squared_distance(const molecule &, const size_t &, const molecule &, const size_t &, const double &);
+    
+    double atom_collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const double &);
   };
 };
 #endif

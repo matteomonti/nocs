@@ -62,6 +62,20 @@ vec & vec :: operator /= (const double & rho)
 {
   x /= rho;
   y /= rho;
+  return (*this);
+}
+
+vec vec :: operator % (const double & angle) const
+{
+  double sin_angle = sin(angle);
+  double cos_angle = cos(angle);
+  return vec(cos_angle * this->x - sin_angle * this->y, sin_angle * this->x + cos_angle * this->y);
+}
+
+vec & vec :: operator %= (const double & angle)
+{
+  (*this) = (*this) % angle;
+  return (*this);
 }
 
 double vec :: operator ^ (const vec & rho) const

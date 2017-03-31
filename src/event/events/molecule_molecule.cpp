@@ -1,4 +1,4 @@
-#include "molecule_molecule.h"
+#include "molecule_molecule.hpp"
 
 namespace events
 {
@@ -47,8 +47,16 @@ namespace events
     double mid = time + sqrt(~(xa - xb) / ~(va - vb)); // Maximum proximity of molecules centers of mass
     double end = 2. * mid - beg; // Parabolas are symmetric
 
-    std :: cout << "beg: " << beg << std :: endl;
-    std :: cout << "end: " << end << std :: endl;
+    for(double t = beg; t < end; t += (end - beg) / 2000.)
+    {
+      double distance = ~(atom_position(alpha, 0, t) - atom_position(beta, 0, t));
+      // std :: cout << t << "\t" << distance << std :: endl;
+    }
+
+    double step = 0.5 * std :: min({M_PI / fabs(alpha.angular_velocity() + beta.angular_velocity()), M_PI / fabs(alpha.angular_velocity() - beta.angular_velocity()), M_PI / fabs(2. * alpha.angular_velocity()), M_PI / fabs(2. * beta.angular_velocity())});
+    // TODO: Find out better euristics for maximum cropping of minima and maxima?
+
+
   }
 
   // Methods
@@ -60,5 +68,17 @@ namespace events
 
   void molecule_molecule :: resolve()
   {
+  }
+
+  // Private methods
+
+  double molecule_molecule :: atom_collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const double & step)
+  {
+    for(double binbeg = beg; binbeg < end; binbeg += step)
+    {
+      double binend = std :: min(end, binbeg + step);
+    }
+
+    return 0;
   }
 };
