@@ -9,6 +9,7 @@ class gss;
 
 #include <type_traits>
 #include <cmath>
+#include <limits>
 
 class gss
 {

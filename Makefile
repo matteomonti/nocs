@@ -13,6 +13,8 @@ TDEPDIR := dep/test
 TESTEXEC := test.out
 MAINEXEC := main.out
 
+CXX := clang++-3.8
+
 SRCS := $(shell find $(SRCDIR) -name "*.cpp")
 SOBJS := $(SRCS:$(SRCDIR)/%.cpp=$(SOBJDIR)/%.o)
 SDEPS := $(SRCS:$(SRCDIR)/%.cpp=$(SDEPDIR)/%.d)
@@ -26,7 +28,7 @@ TTREE := $(patsubst %/,%,$(dir $(TOBJS)))
 SCPPFLAGS  = -MMD -MP -MF $(@:$(SOBJDIR)/%.o=$(SDEPDIR)/%.d)
 TCPPFLAGS  = -MMD -MP -MF $(@:$(TOBJDIR)/%.o=$(TDEPDIR)/%.d)
 
-BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1y
+BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z
 
 all: CXXFLAGS = $(BCXXFLAGS) -D __main__
 test: CXXFLAGS = $(BCXXFLAGS) -D __test__

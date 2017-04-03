@@ -52,8 +52,7 @@ namespace events
       double distance = ~(atom_position(alpha, 0, t) - atom_position(beta, 0, t));
       // std :: cout << t << "\t" << distance << std :: endl;
     }
-
-    double step = 0.5 * std :: min({M_PI / fabs(alpha.angular_velocity() + beta.angular_velocity()), M_PI / fabs(alpha.angular_velocity() - beta.angular_velocity()), M_PI / fabs(2. * alpha.angular_velocity()), M_PI / fabs(2. * beta.angular_velocity())});
+    double step = 0.5 * std :: min(std :: min(M_PI / fabs(alpha.angular_velocity() + beta.angular_velocity()), M_PI / fabs(alpha.angular_velocity() - beta.angular_velocity())), std :: min(M_PI / fabs(2. * alpha.angular_velocity()), M_PI / fabs(2. * beta.angular_velocity())));
     // TODO: Find out better euristics for maximum cropping of minima and maxima?
 
 
