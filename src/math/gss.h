@@ -10,6 +10,7 @@ class gss;
 #include <type_traits>
 #include <cmath>
 #include <limits>
+#include <stdint.h>
 
 class gss
 {
@@ -50,7 +51,5 @@ public:
   template <typename type, typename std :: enable_if <valid <type> :: value> :: type * = nullptr> static double min(const type &, double, double);
   template <typename type, typename std :: enable_if <valid <type> :: value> :: type * = nullptr> static double max(const type &, double, double);
 };
-
-constexpr double gss :: epsilon;
 
 #endif

@@ -79,6 +79,11 @@ namespace events
     for(double binbeg = beg; binbeg < end; binbeg += step)
     {
       double binend = std :: min(end, binbeg + step);
+      
+      /*double binmin = gss :: min([&](const double & time)
+      {
+        return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time));
+      });*/ // Le riconosci le lambda? sì
     }
 
     return 0;
