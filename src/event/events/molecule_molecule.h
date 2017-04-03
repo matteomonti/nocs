@@ -18,6 +18,7 @@ namespace events
 
 #include "molecule/molecule.h"
 #include "math/newton.h"
+#include "math/gss.h"
 #include "event/event.h"
 
 namespace events
@@ -51,10 +52,8 @@ namespace events
 
     // Private methods
 
-    inline vec atom_position(const molecule &, const size_t &, const double &);
-    inline double atoms_squared_distance(const molecule &, const size_t &, const molecule &, const size_t &, const double &);
-    
-    double atom_collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const double &);
+    inline vec position(const molecule &, const size_t &, const double &);
+    double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const double &);
   };
 };
 #endif

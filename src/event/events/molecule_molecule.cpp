@@ -49,7 +49,7 @@ namespace events
 
     for(double t = beg; t < end; t += (end - beg) / 2000.)
     {
-      double distance = ~(atom_position(alpha, 0, t) - atom_position(beta, 0, t));
+      double distance = ~(position(alpha, 0, t) - position(beta, 0, t));
       // std :: cout << t << "\t" << distance << std :: endl;
     }
 
@@ -72,8 +72,11 @@ namespace events
 
   // Private methods
 
-  double molecule_molecule :: atom_collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const double & step)
+  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const double & step)
   {
+    double rbeg = NaN;
+    double rend = NaN;
+
     for(double binbeg = beg; binbeg < end; binbeg += step)
     {
       double binend = std :: min(end, binbeg + step);
