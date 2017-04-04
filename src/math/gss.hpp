@@ -3,6 +3,8 @@
 
 #include "gss.h"
 
+// Static methods
+
 template <typename type, typename std :: enable_if <gss :: valid <type> :: value> :: type *> double gss :: min(const type & f, double a, double b)
 {
   static const double ratio = (sqrt(5.) + 1.) / 2.;
@@ -10,7 +12,7 @@ template <typename type, typename std :: enable_if <gss :: valid <type> :: value
   double c = b - (b - a) / ratio;
   double d = a + (b - a) / ratio;
 
-  while(fabs(c - d) > epsilon)
+  while(fabs(c - d) > std :: numeric_limits <double> :: epsilon())
   {
     if(f(c) < f(d))
       b = d;
@@ -31,7 +33,7 @@ template <typename type, typename std :: enable_if <gss :: valid <type> :: value
   double c = b - (b - a) / ratio;
   double d = a + (b - a) / ratio;
 
-  while(fabs(c - d) > epsilon)
+  while(fabs(c - d) > std :: numeric_limits <double> :: epsilon())
   {
     if(f(c) > f(d))
       b = d;

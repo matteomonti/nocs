@@ -80,10 +80,17 @@ namespace events
     {
       double binend = std :: min(end, binbeg + step);
       
-      /*double binmin = gss :: min([&](const double & time)
+      auto distsquared = [&](const double & time)
       {
         return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time));
-      });*/ // Le riconosci le lambda? sì
+      };
+      
+      double binmin = gss :: min(distsquared, binbeg, binend);
+      
+      if(distsquared(binmin) > 0)
+        continue;
+      
+      double binmax = gss :: max(distsquared, binbeg, binend);
     }
 
     return 0;
