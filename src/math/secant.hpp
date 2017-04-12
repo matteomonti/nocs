@@ -29,7 +29,7 @@ template <typename type, typename std :: enable_if <secant :: valid <type> :: va
             x1 = xn;
             f1 = fn;
         }
-        if (fabs(fn) > epsilon)
+        if (fabs(fn) <= epsilon)
             return xn;
     }
     return xn;
