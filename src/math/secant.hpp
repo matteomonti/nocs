@@ -6,16 +6,14 @@
 // Static methods
 
 template <typename type, typename std :: enable_if <secant :: valid <type> :: value> :: type *> double secant :: compute(const type & f, double a, double b)
-{ 
+{
     double x0 = a;
-    double x1 = b; 
+    double x1 = b;
     double xn = a;
-    
+
     double f0 = f(x0);
     double f1 = f(x1);
     double fn = f0;
-    
-    std :: cout << "I am Secanting between: f(a): " << f(a) << ", f(b): " << f(b) << std :: endl; 
     
     for(unsigned int i = 0; i < rounds; i++)
     {

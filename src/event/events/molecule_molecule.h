@@ -24,19 +24,21 @@ namespace events
 
 namespace events
 {
-  class molecule_molecule : private event
+  class molecule_molecule : public event
   {
     // Members
 
     struct
     {
       molecule * molecule;
+      size_t atom;
       unsigned int version;
     } _alpha;
 
     struct
     {
       molecule * molecule;
+      size_t atom;
       unsigned int version;
     } _beta;
 
@@ -54,7 +56,7 @@ namespace events
     // Private methods
 
     static inline vec position(const molecule &, const size_t &, const double &);
-    double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const double &);
+    double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &);
   };
 };
 #endif

@@ -70,25 +70,36 @@ namespace events
     double step = 0.5 * std :: min(std :: min(M_PI / fabs(alpha.angular_velocity() + beta.angular_velocity()), M_PI / fabs(alpha.angular_velocity() - beta.angular_velocity())), std :: min(M_PI / fabs(2. * alpha.angular_velocity()), M_PI / fabs(2. * beta.angular_velocity())));
     // TODO: Find out better euristics for maximum cropping of minima and maxima?
 
-    std :: cout << "Collision range: " << beg << " to " << end << std :: endl;
+    // Look for collisions between atoms
 
-    this->_time = std :: numeric_limits <double> :: infinity();
+    for(double binbeg = beg; binbeg < end; binbeg += step)
+    {
+      double binend = std :: min(binbeg + step, end);
 
-    for(size_t i = 0; i < alpha.size(); i++)
-      for(size_t j = 0; j < beta.size(); j++)
-      {
-        std :: cout << "Testing " << i << " vs " << j << std :: endl;
-        double ctime = collision(alpha, i, beta, j, beg, end, step);
-        std :: cout << "Collision time: " << ctime << std :: endl << std :: endl;
+      for(size_t i = 0; i < alpha.size(); i++)
+        for(size_t j = 0; j < beta.size(); j++)
+        {
+          double ctime = collision(alpha, i, beta, j, binbeg, binend);
 
-        if(!std :: isnan(ctime) && ctime < this->_time)
-          this->_time = ctime;
-      }
+          if(!std :: isnan(ctime))
+          {
+            this->_happens = true;
+            this->_time = ctime;
 
-    this->_happens = !(this->_time == std :: numeric_limits <double> :: infinity());
+            this->_alpha.molecule = &alpha;
+            this->_alpha.atom = i;
+            this->_alpha.version = alpha.version();
 
-    if(this->_happens)
-      std :: cout << "Collision detected at time " << this->_time << std :: endl;
+            this->_beta.molecule = &beta;
+            this->_beta.atom = j;
+            this->_beta.version = beta.version();
+
+            return;
+          }
+        }
+    }
+
+    this->_happens = false;
   }
 
   // Methods
@@ -104,31 +115,21 @@ namespace events
 
   // Private methods
 
-  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const double & step)
+  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end)
   {
     double radiisquared = (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius());
-    double rbeg = NaN;
-    double rend = NaN;
 
-    for(double binbeg = beg; binbeg < end; binbeg += step)
+    auto distsquared = [&](const double & time)
     {
-      //std :: cout << binbeg << std :: endl;
-      double binend = std :: min(end, binbeg + step);
+      return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time)) - radiisquared;
+    };
 
-      auto distsquared = [&](const double & time)
-      {
-        return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time)) - radiisquared;
-      };
+    double binmin = gss :: min(distsquared, beg, end);
 
-      double binmin = gss :: min(distsquared, binbeg, binend);
+    if(distsquared(binmin) > 0)
+      return NaN;
 
-      if(distsquared(binmin) > 0)
-        continue;
-
-      double binmax = gss :: max(distsquared, binbeg, binend);
-      return secant :: compute(distsquared, binmax, binmin);
-    }
-
-    return NaN;
+    double binmax = gss :: max(distsquared, beg, end);
+    return secant :: compute(distsquared, binmax, binmin);
   }
 };
