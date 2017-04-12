@@ -13,8 +13,6 @@ TDEPDIR := dep/test
 TESTEXEC := test.out
 MAINEXEC := main.out
 
-CXX := clang++-3.8
-
 SRCS := $(shell find $(SRCDIR) -name "*.cpp")
 SOBJS := $(SRCS:$(SRCDIR)/%.cpp=$(SOBJDIR)/%.o)
 SDEPS := $(SRCS:$(SRCDIR)/%.cpp=$(SDEPDIR)/%.d)
