@@ -11,6 +11,7 @@ class secant;
 #include <limits>
 #include <type_traits>
 #include <stdint.h>
+#include <iostream>
 
 class secant
 {
@@ -45,6 +46,7 @@ public:
   // Static members
 
   static constexpr double epsilon = 5. * std :: numeric_limits <double> :: epsilon();
+  static constexpr unsigned int rounds = 50;
 
   // Static methods
 

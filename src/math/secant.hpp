@@ -15,7 +15,9 @@ template <typename type, typename std :: enable_if <secant :: valid <type> :: va
     double f1 = f(x1);
     double fn = f0;
     
-    while (fabs(fn) > epsilon)
+    std :: cout << "I am Secanting between: f(a): " << f(a) << ", f(b): " << f(b) << std :: endl; 
+    
+    for(unsigned int i = 0; i < rounds; i++)
     {
         xn = (x0 * f1 - x1 * f0) / (f1 - f0);
         fn = f(xn);
@@ -29,6 +31,8 @@ template <typename type, typename std :: enable_if <secant :: valid <type> :: va
             x1 = xn;
             f1 = fn;
         }
+        if (fabs(fn) > epsilon)
+            return xn;
     }
     return xn;
 }

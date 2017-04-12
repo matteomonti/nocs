@@ -53,7 +53,7 @@ namespace events
 
       double beg = newton :: quadratic(a, b, c, time);
 
-      if(isnan(beg))
+      if(std :: isnan(beg))
       {
         this->_happens = false;
         return;
@@ -81,7 +81,7 @@ namespace events
         double ctime = collision(alpha, i, beta, j, beg, end, step);
         std :: cout << "Collision time: " << ctime << std :: endl << std :: endl;
 
-        if(!isnan(ctime) && ctime < this->_time)
+        if(!std :: isnan(ctime) && ctime < this->_time)
           this->_time = ctime;
       }
 
@@ -106,22 +106,23 @@ namespace events
 
   double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const double & step)
   {
+    double radiisquared = (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius());
     double rbeg = NaN;
     double rend = NaN;
 
     for(double binbeg = beg; binbeg < end; binbeg += step)
     {
-      std :: cout << binbeg << std :: endl;
+      //std :: cout << binbeg << std :: endl;
       double binend = std :: min(end, binbeg + step);
 
       auto distsquared = [&](const double & time)
       {
-        return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time));
+        return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time)) - radiisquared;
       };
 
       double binmin = gss :: min(distsquared, binbeg, binend);
 
-      if(distsquared(binmin) > (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius()))
+      if(distsquared(binmin) > 0)
         continue;
 
       double binmax = gss :: max(distsquared, binbeg, binend);
