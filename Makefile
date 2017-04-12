@@ -30,10 +30,14 @@ BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z
 
 all: CXXFLAGS = $(BCXXFLAGS) -D __main__
 test: CXXFLAGS = $(BCXXFLAGS) -D __test__
+graphics: CXXFLAGS = $(BCXXFLAGS) -D __main__ -D __graphics__ -I/usr/X11/include -I$(PASSPARTOUT_PATH)/include
+graphics: LINKERFLAGS = -L/usr/X11/lib -L$(PASSPARTOUT_PATH)/lib -lXt -lX11 -lXext -lGG
 
-.PHONY: all test clean
+.PHONY: all test clean graphics
 
 all: $(BINDIR)/$(MAINEXEC)
+
+graphics: $(BINDIR)/$(MAINEXEC)
 
 test: $(BINDIR)/$(TESTEXEC)
 	$(BINDIR)/$(TESTEXEC)
@@ -63,7 +67,7 @@ $(BINDIR)/$(TESTEXEC): $(SOBJS) $(TOBJS) $(BINDIR)
 	$(CXX) -o $(BINDIR)/$(TESTEXEC) $(SOBJS) $(TOBJS)
 
 $(BINDIR)/$(MAINEXEC): $(SOBJS) $(BINDIR)
-	$(CXX) -o $(BINDIR)/$(MAINEXEC) $(SOBJS)
+	$(CXX) $(LINKERFLAGS) -o $(BINDIR)/$(MAINEXEC) $(SOBJS)
 ifeq "$(MAKECMDGOALS)" ""
 -include $(SDEPS)
 -include $(TDEPS)
