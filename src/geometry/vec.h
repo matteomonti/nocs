@@ -37,11 +37,16 @@ struct vec
   vec operator /  (const double &) const;
   vec & operator /=  (const double &);
 
+  vec operator % (const double &) const;  // Rotation operator (radiants)
+  vec & operator %= (const double &);
+
   double operator ^ (const vec &) const;  // Cross Product
   double operator * (const vec &) const;  // Scalar Product
 
   double operator ~ () const; // Squared Module
   double operator ! () const; // Module
+
+  bool operator == (const vec &) const;
 };
 
 // External Operators
