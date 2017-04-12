@@ -19,6 +19,7 @@ namespace events
 #include "molecule/molecule.h"
 #include "math/newton.h"
 #include "math/gss.h"
+#include "math/secant.h"
 #include "event/event.h"
 
 namespace events

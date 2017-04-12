@@ -3,6 +3,7 @@
 
 #include "molecule_molecule.h"
 #include "math/gss.hpp"
+#include "math/secant.hpp"
 
 namespace events
 {
