@@ -48,6 +48,14 @@ namespace events
 
     molecule_molecule(molecule &, molecule &);
 
+    // Getters
+
+    molecule & alpha();
+    size_t alpha_atom();
+
+    molecule & beta();
+    size_t beta_atom();
+
     // Methods
 
     bool current();

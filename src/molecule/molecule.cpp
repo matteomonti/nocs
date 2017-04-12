@@ -119,6 +119,16 @@ const unsigned int & molecule :: version() const
 	return this->_version;
 }
 
+// Methods
+
+void molecule :: integrate(const double & time)
+{
+  this->_position += this->_velocity * (time - this->_time);
+  this->_orientation += fmod(this->_angular_velocity * (time - this->_time), 2. * M_PI);
+
+  this->_time = time;
+}
+
 // Public Operators
 
 const atom & molecule :: operator [] (const size_t & n) const

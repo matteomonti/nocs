@@ -87,6 +87,10 @@ public:
 	const double & time() const;
 	const unsigned int & version() const;
 
+  // Methods
+
+  void integrate(const double &);
+
 	// Operators
 
 	const atom & operator [] (const size_t &) const;

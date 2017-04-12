@@ -42,6 +42,8 @@ namespace lockpick
 
     int _id;
 
+  protected:
+
     // Static members
 
     static bool __started;

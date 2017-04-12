@@ -72,6 +72,8 @@ namespace events
 
     // Look for collisions between atoms
 
+    this->_time = std :: numeric_limits <double> :: infinity();
+
     for(double binbeg = beg; binbeg < end; binbeg += step)
     {
       double binend = std :: min(binbeg + step, end);
@@ -81,25 +83,49 @@ namespace events
         {
           double ctime = collision(alpha, i, beta, j, binbeg, binend);
 
-          if(!std :: isnan(ctime))
+          if(!std :: isnan(ctime) && ctime < this->_time)
           {
-            this->_happens = true;
             this->_time = ctime;
-
-            this->_alpha.molecule = &alpha;
             this->_alpha.atom = i;
-            this->_alpha.version = alpha.version();
-
-            this->_beta.molecule = &beta;
             this->_beta.atom = j;
-            this->_beta.version = beta.version();
-
-            return;
           }
         }
+
+      if(this->_time < std :: numeric_limits <double> :: infinity())
+      {
+        this->_happens = true;
+        this->_alpha.molecule = &alpha;
+        this->_alpha.version = alpha.version();
+        this->_beta.molecule = &beta;
+        this->_beta.version = beta.version();
+
+        return;
+      }
     }
 
     this->_happens = false;
+  }
+
+  // Getters
+
+  molecule & molecule_molecule :: alpha()
+  {
+    return *(this->_alpha.molecule);
+  }
+
+  size_t molecule_molecule :: alpha_atom()
+  {
+    return this->_alpha.atom;
+  }
+
+  molecule & molecule_molecule :: beta()
+  {
+    return *(this->_beta.molecule);
+  }
+
+  size_t molecule_molecule :: beta_atom()
+  {
+    return this->_beta.atom;
   }
 
   // Methods

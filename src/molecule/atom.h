@@ -2,7 +2,7 @@
 
 class atom;
 
-#if !defined(__forward__) && !defined(__nobb__molecule__h)
+#if !defined(__forward__) && !defined(__nobb__molecule__atom__h)
 #define __nobb__molecule__atom__h
 
 // Libraries
@@ -59,8 +59,8 @@ private:
 	// Members
 
 	vec _position;
-	double _radius;
-	double _mass;
+  double _mass;
+  double _radius;
 
 public:
 
