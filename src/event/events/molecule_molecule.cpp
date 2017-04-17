@@ -137,6 +137,47 @@ namespace events
 
   void molecule_molecule :: resolve()
   {
+    // Integrate to collision
+
+    this->_alpha.molecule->integrate(_time);
+    this->_beta.molecule->integrate(_time);
+
+    // Update version
+
+    (*(this->_alpha.molecule))++;
+    (*(this->_beta.molecule))++;
+
+    // Collision resolution
+
+    vec a = position(*(this->_alpha.molecule), this->_alpha.atom, this->_time);
+    vec b = position(*(this->_beta.molecule), this->_beta.atom, this->_time);
+
+    vec n = (b - a) / (!(b - a)); // Versor of the impulse from alpha to beta
+
+    double m1 = this->_alpha.molecule->mass();
+    double m2 = this->_beta.molecule->mass();
+
+    double i1 = this->_alpha.molecule->inertia_moment();
+    double i2 = this->_beta.molecule->inertia_moment();
+
+    double l1 = this->_alpha.molecule->angular_velocity() * i1;
+    double l2 = this->_beta.molecule->angular_velocity() * i2;
+
+    vec p1 = m1 * this->_alpha.molecule->velocity();
+    vec p2 = m2 * this->_beta.molecule->velocity();
+
+    vec r1 = (*(this->_alpha.molecule))[this->_alpha.atom].position() % this->_alpha.molecule->orientation() + (*(this->_alpha.molecule))[this->_alpha.atom].radius() * n;
+    vec r2 = (*(this->_beta.molecule))[this->_beta.atom].position() % this->_beta.molecule->orientation() - (*(this->_beta.molecule))[this->_beta.atom].radius() * n;
+
+    double module = (-(2 * p1 * n) / (m1) + (2 * p2 * n) / (m2) - (2 * l1 * (r1 ^ n)) / (i1) + (2 * l2 * (r2 ^ n)) / (i2)) / ((1 / m1) + (1 / m2) + (r1 ^ n) * (r1 ^ n) / (i1) + (r2 ^ n) * (r2 ^ n) / (i2)); // Module of the impulse
+
+    // Update molecules' velocity and angular_velocity
+
+    this->_alpha.molecule->set_velocity((p1 + module * n) / m1);
+    this->_beta.molecule->set_velocity ((p2 - module * n) / m2);
+    this->_alpha.molecule->set_angular_velocity((l1 + (r1 ^ (module * n))) / i1);
+    this->_beta.molecule->set_angular_velocity ((l2 + ((module * n) ^ r2)) / i2);
+
   }
 
   // Private methods
@@ -155,7 +196,7 @@ namespace events
     if(distsquared(binmin) > 0)
       return NaN;
 
-    double binmax = gss :: max(distsquared, beg, end);
+    double binmax = gss :: max(distsquared, beg, binmin);
     return secant :: compute(distsquared, binmax, binmin);
   }
 };

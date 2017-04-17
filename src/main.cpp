@@ -12,10 +12,10 @@ int main()
   molecule alpha
   (
     {{{0, 0}, 1, 0.05}, {{0.1, 0}, 1, 0.05}, {{0.2, 0}, 1, 0.05}, {{0.3, 0}, 1, 0.05}},
-    {0.1, 0.1},
-    {0.2, 0.2},
+    {0.56, 0.1},
+    {0.0, 0.2},
     0,
-    -M_PI / 2
+    M_PI
   );
   molecule beta
   (
@@ -23,7 +23,7 @@ int main()
     {0.6, 0.8},
     {0.0, 0.0000001},
     M_PI / 2.,
-    0
+    -(M_PI * 10)
   );
 
   window my_window("My pretty window!");
@@ -33,7 +33,7 @@ int main()
   my_window.draw(alpha);
   my_window.draw(beta);
   my_window.flush();
-  window :: wait_click();
+  //window :: wait_click();
 
   for(double t = 0; t < my_event.time(); t += my_event.time() / 1000)
   {
@@ -49,7 +49,33 @@ int main()
 
     usleep(1e4);
   }
-  
+
+  my_event.resolve();
+
+  my_window.clear();
+
+  my_window.draw(beta);
+  my_window.draw(alpha);
+
+  my_window.flush();
+
+  window :: wait_click();
+
+  for(double t = my_event.time(); t < my_event.time() * 4; t += my_event.time() / 1000)
+  {
+    alpha.integrate(t);
+    beta.integrate(t);
+
+    my_window.clear();
+
+    my_window.draw(beta);
+    my_window.draw(alpha);
+
+    my_window.flush();
+
+    usleep(1e4);
+  }
+
   window :: wait_click();
 }
 

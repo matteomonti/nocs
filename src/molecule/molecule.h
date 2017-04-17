@@ -36,6 +36,7 @@ public:
 
 		printer(std :: ostream &);
 
+	public:
 		// Operators
 
 		printer operator << (const molecule &);
@@ -87,6 +88,11 @@ public:
 	const double & time() const;
 	const unsigned int & version() const;
 
+	// Setters
+
+	void set_velocity(const vec &);
+	void set_angular_velocity(const double &);
+
   // Methods
 
   void integrate(const double &);
@@ -94,6 +100,8 @@ public:
 	// Operators
 
 	const atom & operator [] (const size_t &) const;
+	molecule & operator ++ ();
+	molecule operator ++ (int);
 };
 
 // Standard Output

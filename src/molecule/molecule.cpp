@@ -119,6 +119,18 @@ const unsigned int & molecule :: version() const
 	return this->_version;
 }
 
+// setters
+
+void molecule :: set_velocity(const vec & velocity)
+{
+  this->_velocity = velocity;
+}
+
+void molecule :: set_angular_velocity(const double & angular_velocity)
+{
+  this->_angular_velocity = angular_velocity;
+}
+
 // Methods
 
 void molecule :: integrate(const double & time)
@@ -134,6 +146,19 @@ void molecule :: integrate(const double & time)
 const atom & molecule :: operator [] (const size_t & n) const
 {
 	return this->_atoms[n];
+}
+
+molecule & molecule :: operator ++ ()
+{
+  this->_version++;
+  return *this;
+}
+
+molecule molecule :: operator ++ (int)
+{
+  molecule temp = *this;
+  ++*this;
+  return temp;
 }
 
 // Standard Output
