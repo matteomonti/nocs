@@ -137,6 +137,11 @@ namespace events
 
   void molecule_molecule :: resolve()
   {
+    // Check version
+
+    if(this->_alpha.version != this->_alpha.molecule->version() || this->_beta.version != this->_beta.molecule->version())
+      return;
+
     // Integrate to collision
 
     this->_alpha.molecule->integrate(_time);
