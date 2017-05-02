@@ -129,10 +129,10 @@ void molecule :: integrate(const double & time)
   this->_time = time;
 }
 
-void molecule :: impulse(const vec & n, const double & module, const vec & r)
+void molecule :: impulse(const vec & position, const vec & impulse)
 {
-  this->_velocity = (this->_mass * this->_velocity + module * n) / this->_mass;
-  this->_angular_velocity = (this->_inertia_moment * this->_angular_velocity + (r ^ (module * n))) / this->_inertia_moment;
+  this->_velocity = (this->_mass * this->_velocity + impulse) / this->_mass;
+  this->_angular_velocity = (this->_inertia_moment * this->_angular_velocity + (position ^ (impulse))) / this->_inertia_moment;
 }
 
 // Public Operators

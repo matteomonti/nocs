@@ -178,8 +178,8 @@ namespace events
 
     // Update molecules' velocity and angular_velocity
 
-    this->_alpha.molecule->impulse(n, module, r1);
-    this->_beta.molecule->impulse(-n, module, r2);
+    this->_alpha.molecule->impulse(r1, module * n);
+    this->_beta.molecule->impulse(r2, -module * n);
 
   }
 

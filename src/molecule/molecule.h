@@ -91,7 +91,7 @@ public:
 	// Methods
 
   void integrate(const double &);
-	void impulse(const vec &, const double &, const vec &);
+	void impulse(const vec &, const vec &);
 
 	// Operators
 
