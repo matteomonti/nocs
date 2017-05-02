@@ -23,7 +23,7 @@ int main()
     {0.6, 0.8},
     {0.0, 0.0000001},
     M_PI / 2.,
-    0
+    10. * M_PI
   );
 
   window my_window("My pretty window!");
@@ -49,7 +49,7 @@ int main()
 
     usleep(1e4);
   }
-  
+
   window :: wait_click();
 }
 
