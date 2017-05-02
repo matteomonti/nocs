@@ -88,14 +88,10 @@ public:
 	const double & time() const;
 	const unsigned int & version() const;
 
-	// Setters
-
-	void set_velocity(const vec &);
-	void set_angular_velocity(const double &);
-
-  // Methods
+	// Methods
 
   void integrate(const double &);
+	void impulse(const vec &, const double &, const vec &);
 
 	// Operators
 

@@ -119,18 +119,6 @@ const unsigned int & molecule :: version() const
 	return this->_version;
 }
 
-// setters
-
-void molecule :: set_velocity(const vec & velocity)
-{
-  this->_velocity = velocity;
-}
-
-void molecule :: set_angular_velocity(const double & angular_velocity)
-{
-  this->_angular_velocity = angular_velocity;
-}
-
 // Methods
 
 void molecule :: integrate(const double & time)
@@ -139,6 +127,12 @@ void molecule :: integrate(const double & time)
   this->_orientation += fmod(this->_angular_velocity * (time - this->_time), 2. * M_PI);
 
   this->_time = time;
+}
+
+void molecule :: impulse(const vec & n, const double & module, const vec & r)
+{
+  this->_velocity = (this->_mass * this->_velocity + module * n) / this->_mass;
+  this->_angular_velocity = (this->_inertia_moment * this->_angular_velocity + (r ^ (module * n))) / this->_inertia_moment;
 }
 
 // Public Operators
