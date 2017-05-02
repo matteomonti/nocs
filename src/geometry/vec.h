@@ -21,6 +21,10 @@ struct vec
   vec();
   vec(double, double);
 
+  // Methods
+
+  vec normalize() const;
+
   // Operators
 
   vec operator - () const;

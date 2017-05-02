@@ -59,9 +59,9 @@ int main()
 
   my_window.flush();
 
-  window :: wait_click();
+  // window :: wait_click();
 
-  for(double t = my_event.time(); t < my_event.time() * 4; t += my_event.time() / 1000)
+  for(double t = my_event.time(); t < my_event.time() * 2; t += my_event.time() / 1000)
   {
     alpha.integrate(t);
     beta.integrate(t);

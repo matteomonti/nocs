@@ -144,8 +144,8 @@ namespace events
 
     // Integrate to collision
 
-    this->_alpha.molecule->integrate(_time);
-    this->_beta.molecule->integrate(_time);
+    this->_alpha.molecule->integrate(this->_time);
+    this->_beta.molecule->integrate(this->_time);
 
     // Update version
 
@@ -154,10 +154,10 @@ namespace events
 
     // Collision resolution
 
-    vec a = position(*(this->_alpha.molecule), this->_alpha.atom, this->_time);
-    vec b = position(*(this->_beta.molecule), this->_beta.atom, this->_time);
+    vec a = position(*(this->_alpha.molecule), this->_alpha.atom);
+    vec b = position(*(this->_beta.molecule), this->_beta.atom);
 
-    vec n = (b - a) / (!(b - a)); // Versor of the impulse from alpha to beta
+    vec n = (b - a).normalize(); // Versor of the impulse from alpha to beta
 
     double m1 = this->_alpha.molecule->mass();
     double m2 = this->_beta.molecule->mass();

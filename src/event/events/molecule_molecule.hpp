@@ -7,7 +7,12 @@
 
 namespace events
 {
-  // Private methods
+  // Static private methods
+
+  inline vec molecule_molecule :: position(const molecule & molecule, const size_t & index)
+  {
+    return molecule.position() + molecule[index].position() % molecule.orientation();
+  }
 
   inline vec molecule_molecule :: position(const molecule & molecule, const size_t & index, const double & time)
   {

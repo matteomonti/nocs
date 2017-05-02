@@ -10,6 +10,13 @@ vec :: vec(double x, double y): x(x), y(y)
 {
 }
 
+// Methods
+
+vec vec :: normalize() const
+{
+  return (*this) / !(*this);
+}
+
 // Operators
 
 vec vec :: operator - () const

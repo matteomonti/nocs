@@ -63,8 +63,12 @@ namespace events
 
     // Private methods
 
-    static inline vec position(const molecule &, const size_t &, const double &);
     double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &);
+
+    // Static private methods
+
+    static inline vec position(const molecule &, const size_t &);
+    static inline vec position(const molecule &, const size_t &, const double &);
   };
 };
 #endif
