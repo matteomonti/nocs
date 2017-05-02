@@ -33,6 +33,7 @@ namespace events
       molecule * molecule;
       size_t atom;
       unsigned int version;
+      int fold;
     } _alpha;
 
     struct
@@ -46,7 +47,7 @@ namespace events
 
     // Constructors
 
-    molecule_molecule(molecule &, molecule &);
+    molecule_molecule(molecule &, const int &, molecule &);
 
     // Getters
 
@@ -63,12 +64,12 @@ namespace events
 
     // Private methods
 
-    double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &);
+    double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const int & = vec :: direct);
 
     // Static private methods
 
-    static inline vec position(const molecule &, const size_t &);
-    static inline vec position(const molecule &, const size_t &, const double &);
+    static inline vec position(const molecule &, const size_t &, const int & = vec :: direct);
+    static inline vec position(const molecule &, const size_t &, const double &, const int & = vec :: direct);
   };
 };
 #endif

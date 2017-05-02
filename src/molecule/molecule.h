@@ -20,7 +20,7 @@ class molecule
 {
 public:
 
-    // Nested Classes
+  // Nested Classes
 
 	class printer
 	{
@@ -50,6 +50,7 @@ private:
 	size_t _size;
 	atom * _atoms;
 
+public: // REMOVE ME
   vec _position;
   vec _velocity;
 

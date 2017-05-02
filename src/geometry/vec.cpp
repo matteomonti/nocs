@@ -10,6 +10,12 @@ vec :: vec(double x, double y): x(x), y(y)
 {
 }
 
+vec :: vec(int fold)
+{
+  this->x = (fold & horizontal) == direct ? 0. : ((fold & horizontal) == right ? 1. : -1);
+  this->y = (fold & vertical) == direct ? 0. : ((fold & vertical) == up ? 1. : -1);
+}
+
 // Methods
 
 vec vec :: normalize() const

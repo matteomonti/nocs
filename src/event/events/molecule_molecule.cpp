@@ -4,9 +4,9 @@ namespace events
 {
   // Constructors
 
-  molecule_molecule :: molecule_molecule(molecule & alpha, molecule & beta)
+  molecule_molecule :: molecule_molecule(molecule & alpha, const int & fold, molecule & beta)
   {
-    vec xa = alpha.position();
+    vec xa = alpha.position() + vec(fold);
     vec xb = beta.position();
 
     vec va = alpha.velocity();
@@ -81,7 +81,7 @@ namespace events
       for(size_t i = 0; i < alpha.size(); i++)
         for(size_t j = 0; j < beta.size(); j++)
         {
-          double ctime = collision(alpha, i, beta, j, binbeg, binend);
+          double ctime = collision(alpha, i, beta, j, binbeg, binend, fold);
 
           if(!std :: isnan(ctime) && ctime < this->_time)
           {
@@ -96,6 +96,7 @@ namespace events
         this->_happens = true;
         this->_alpha.molecule = &alpha;
         this->_alpha.version = alpha.version();
+        this->_alpha.fold = fold;
         this->_beta.molecule = &beta;
         this->_beta.version = beta.version();
 
@@ -154,7 +155,7 @@ namespace events
 
     // Collision resolution
 
-    vec a = position(*(this->_alpha.molecule), this->_alpha.atom);
+    vec a = position(*(this->_alpha.molecule), this->_alpha.atom, this->_alpha.fold);
     vec b = position(*(this->_beta.molecule), this->_beta.atom);
 
     vec n = (b - a).normalize(); // Versor of the impulse from alpha to beta
@@ -185,13 +186,13 @@ namespace events
 
   // Private methods
 
-  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end)
+  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)
   {
     double radiisquared = (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius());
 
     auto distsquared = [&](const double & time)
     {
-      return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time)) - radiisquared;
+      return ~(position(alpha, index_alpha, time, fold) - position(beta, index_beta, time)) - radiisquared;
     };
 
     double binmin = gss :: min(distsquared, beg, end);
