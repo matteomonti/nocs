@@ -28,10 +28,10 @@ int main()
 
   window my_window("My pretty window!");
 
-  while(true)
+  for(double time = 0.;; time += 0.01)
   {
-    alpha.integrate(0.001);
-    beta.integrate(0.001);
+    alpha.integrate(time);
+    beta.integrate(time);
 
     if(alpha._position.x > 1.)
       alpha._position.x -= 1.;
@@ -70,16 +70,12 @@ int main()
         events :: molecule_molecule my_event(alpha, dx | dy, beta);
         if(my_event.happens())
         {
-          std :: cout << "EVENT HAPPENS AT " << my_event.time() << std :: endl;
-
-          if(my_event.time() < 0.001)
+          if(my_event.time() < time + 0.01)
             my_event.resolve();
         }
       }
 
-    alpha._time = 0.;
-    beta._time = 0.;
-    usleep(1e4);
+    // usleep(1e4);
   }
 }
 

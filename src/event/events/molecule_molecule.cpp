@@ -65,7 +65,7 @@ namespace events
     double mid = time + sqrt(~(xa - xb) / ~(va - vb)); // Maximum proximity of molecules centers of mass
     double beyond = 2. * mid - beg; // Parabolas are symmetric
 
-    end = close ? newton :: quadratic(a, b, c, beyond) : beyond;
+    end = close ? (time + newton :: quadratic(a, b, c, beyond - time)) : beyond;
 
     double step = 0.5 * std :: min(std :: min(M_PI / fabs(alpha.angular_velocity() + beta.angular_velocity()), M_PI / fabs(alpha.angular_velocity() - beta.angular_velocity())), std :: min(M_PI / fabs(2. * alpha.angular_velocity()), M_PI / fabs(2. * beta.angular_velocity())));
     // TODO: Find out better euristics for maximum cropping of minima and maxima?
