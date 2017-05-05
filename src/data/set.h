@@ -5,6 +5,11 @@ template <typename> class set;
 #if !defined(__forward__) && !defined(__nobb__data__set__h)
 #define __nobb__data__set__h
 
+// Libraries
+
+#include <stdint.h>
+#include <type_traits>
+
 template <typename type> class set
 {
   // Settings

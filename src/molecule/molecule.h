@@ -15,6 +15,7 @@ class molecule;
 
 #include "geometry/vec.h"
 #include "molecule/atom.h"
+#include "engine/grid.h"
 
 class molecule
 {
@@ -50,7 +51,6 @@ private:
 	size_t _size;
 	atom * _atoms;
 
-public: // REMOVE ME
   vec _position;
   vec _velocity;
 
@@ -65,6 +65,10 @@ public: // REMOVE ME
 	unsigned int _version;
 
 public:
+
+  // Public members
+
+  grid :: mark mark;
 
 	// Constructors
 
