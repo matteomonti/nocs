@@ -13,6 +13,9 @@ void window :: draw(const molecule & molecule)
   for(size_t i = 0; i < molecule.size(); i++)
   {
     vec position = molecule.position() + molecule[i].position() % molecule.orientation();
-    this->circle({position.x, position.y}, molecule[i].radius());
+
+    for(double dx : {1., 0., -1.})
+      for(double dy : {1., 0., -1.})
+        this->circle({dx + position.x, dy + position.y}, molecule[i].radius());
   }
 }

@@ -4,9 +4,9 @@ namespace events
 {
   // Constructors
 
-  molecule_molecule :: molecule_molecule(molecule & alpha, molecule & beta)
+  molecule_molecule :: molecule_molecule(molecule & alpha, const int & fold, molecule & beta)
   {
-    vec xa = alpha.position();
+    vec xa = alpha.position() + vec(fold);
     vec xb = beta.position();
 
     vec va = alpha.velocity();
@@ -65,7 +65,7 @@ namespace events
     double mid = time + sqrt(~(xa - xb) / ~(va - vb)); // Maximum proximity of molecules centers of mass
     double beyond = 2. * mid - beg; // Parabolas are symmetric
 
-    end = close ? newton :: quadratic(a, b, c, beyond) : beyond;
+    end = close ? (time + newton :: quadratic(a, b, c, beyond - time)) : beyond;
 
     double step = 0.5 * std :: min(std :: min(M_PI / fabs(alpha.angular_velocity() + beta.angular_velocity()), M_PI / fabs(alpha.angular_velocity() - beta.angular_velocity())), std :: min(M_PI / fabs(2. * alpha.angular_velocity()), M_PI / fabs(2. * beta.angular_velocity())));
     // TODO: Find out better euristics for maximum cropping of minima and maxima?
@@ -81,7 +81,7 @@ namespace events
       for(size_t i = 0; i < alpha.size(); i++)
         for(size_t j = 0; j < beta.size(); j++)
         {
-          double ctime = collision(alpha, i, beta, j, binbeg, binend);
+          double ctime = collision(alpha, i, beta, j, binbeg, binend, fold);
 
           if(!std :: isnan(ctime) && ctime < this->_time)
           {
@@ -96,6 +96,7 @@ namespace events
         this->_happens = true;
         this->_alpha.molecule = &alpha;
         this->_alpha.version = alpha.version();
+        this->_alpha.fold = fold;
         this->_beta.molecule = &beta;
         this->_beta.version = beta.version();
 
@@ -137,17 +138,61 @@ namespace events
 
   void molecule_molecule :: resolve()
   {
+    // Check version
+
+    if(this->_alpha.version != this->_alpha.molecule->version() || this->_beta.version != this->_beta.molecule->version())
+      return;
+
+    // Integrate to collision
+
+    this->_alpha.molecule->integrate(this->_time);
+    this->_beta.molecule->integrate(this->_time);
+
+    // Update version
+
+    (*(this->_alpha.molecule))++;
+    (*(this->_beta.molecule))++;
+
+    // Collision resolution
+
+    vec a = position(*(this->_alpha.molecule), this->_alpha.atom, this->_alpha.fold);
+    vec b = position(*(this->_beta.molecule), this->_beta.atom);
+
+    vec n = (b - a).normalize(); // Versor of the impulse from alpha to beta
+
+    double m1 = this->_alpha.molecule->mass();
+    double m2 = this->_beta.molecule->mass();
+
+    double i1 = this->_alpha.molecule->inertia_moment();
+    double i2 = this->_beta.molecule->inertia_moment();
+
+    double l1 = this->_alpha.molecule->angular_velocity() * i1;
+    double l2 = this->_beta.molecule->angular_velocity() * i2;
+
+    vec p1 = m1 * this->_alpha.molecule->velocity();
+    vec p2 = m2 * this->_beta.molecule->velocity();
+
+    vec r1 = (*(this->_alpha.molecule))[this->_alpha.atom].position() % this->_alpha.molecule->orientation() + (*(this->_alpha.molecule))[this->_alpha.atom].radius() * n;
+    vec r2 = (*(this->_beta.molecule))[this->_beta.atom].position() % this->_beta.molecule->orientation() - (*(this->_beta.molecule))[this->_beta.atom].radius() * n;
+
+    double module = (-(2 * p1 * n) / (m1) + (2 * p2 * n) / (m2) - (2 * l1 * (r1 ^ n)) / (i1) + (2 * l2 * (r2 ^ n)) / (i2)) / ((1 / m1) + (1 / m2) + (r1 ^ n) * (r1 ^ n) / (i1) + (r2 ^ n) * (r2 ^ n) / (i2)); // Module of the impulse
+
+    // Update molecules' velocity and angular_velocity
+
+    this->_alpha.molecule->impulse(r1, module * n);
+    this->_beta.molecule->impulse(r2, -module * n);
+
   }
 
   // Private methods
 
-  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end)
+  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)
   {
     double radiisquared = (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius());
 
     auto distsquared = [&](const double & time)
     {
-      return ~(position(alpha, index_alpha, time) - position(beta, index_beta, time)) - radiisquared;
+      return ~(position(alpha, index_alpha, time, fold) - position(beta, index_beta, time)) - radiisquared;
     };
 
     double binmin = gss :: min(distsquared, beg, end);
@@ -155,7 +200,7 @@ namespace events
     if(distsquared(binmin) > 0)
       return NaN;
 
-    double binmax = gss :: max(distsquared, beg, end);
+    double binmax = gss :: max(distsquared, beg, binmin);
     return secant :: compute(distsquared, binmax, binmin);
   }
 };

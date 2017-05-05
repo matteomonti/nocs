@@ -20,7 +20,7 @@ class molecule
 {
 public:
 
-    // Nested Classes
+  // Nested Classes
 
 	class printer
 	{
@@ -36,6 +36,7 @@ public:
 
 		printer(std :: ostream &);
 
+	public:
 		// Operators
 
 		printer operator << (const molecule &);
@@ -49,6 +50,7 @@ private:
 	size_t _size;
 	atom * _atoms;
 
+public: // REMOVE ME
   vec _position;
   vec _velocity;
 
@@ -87,13 +89,16 @@ public:
 	const double & time() const;
 	const unsigned int & version() const;
 
-  // Methods
+	// Methods
 
   void integrate(const double &);
+	void impulse(const vec &, const vec &);
 
 	// Operators
 
 	const atom & operator [] (const size_t &) const;
+	molecule & operator ++ ();
+	molecule operator ++ (int);
 };
 
 // Standard Output

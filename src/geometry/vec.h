@@ -12,6 +12,10 @@ struct vec;
 
 struct vec
 {
+  // Nested enums
+
+  enum fold {direct = 0x0, left = 0x1, right = 0x2, up = 0x4, down = 0x8, horizontal = 0x3, vertical = 0xc};
+
   // Members
 
   double x, y;
@@ -20,6 +24,11 @@ struct vec
 
   vec();
   vec(double, double);
+  vec(int);
+
+  // Methods
+
+  vec normalize() const;
 
   // Operators
 
