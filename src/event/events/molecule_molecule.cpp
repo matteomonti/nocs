@@ -140,7 +140,7 @@ namespace events
   {
     // Check version
 
-    if(this->_alpha.version != this->_alpha.molecule->version() || this->_beta.version != this->_beta.molecule->version())
+    if(!current())
       return;
 
     // Integrate to collision
