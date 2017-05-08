@@ -18,6 +18,7 @@ class grid;
 // Includes
 
 #include "data/set.hpp"
+#include "elements/bumper.h"
 
 class grid
 {
@@ -33,8 +34,15 @@ public:
 
     // Members
 
-    size_t x;
-    size_t y;
+    size_t _x;
+    size_t _y;
+
+  public:
+
+    // Getters
+
+    size_t x() const;
+    size_t y() const;
   };
 
 private:
@@ -44,6 +52,9 @@ private:
   size_t _fineness;
 
   set <molecule *> ** _molecules;
+  set <bumper *> ** _bumpers;
+
+public:
 
   // Constructors
 
@@ -60,8 +71,16 @@ private:
   // Methods
 
   void add(molecule &);
+  void add(bumper &);
   void remove(molecule &);
   void update(molecule &);
+  void update(molecule &, const size_t &, const size_t &);
+
+private:
+
+  // Private methods
+
+  void add(molecule &, const size_t &, const size_t &);
 };
 
 #endif
