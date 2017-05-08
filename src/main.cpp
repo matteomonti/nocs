@@ -75,7 +75,7 @@ int main()
       }
 
     usleep(1e4);
-std :: cout << "Energy of Molecule Alpha: " alpha.energy() << std :: endl << std :: endl;
+std :: cout << "Energy of Molecule Alpha: " << alpha.energy() << std :: endl << std :: endl;
   }
 
 }
