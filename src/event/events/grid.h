@@ -53,6 +53,12 @@ namespace events
 
     bool current();
     void resolve();
+
+  private:
+
+    // Private Methods
+
+    void print() const;
   };
 };
 

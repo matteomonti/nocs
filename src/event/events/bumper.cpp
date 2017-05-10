@@ -148,6 +148,11 @@ namespace events
 
   // Private Methods
 
+  void bumper :: print() const
+  {
+    std :: cout << "Event bumper at time: " << this->_time;
+  }
+
   double bumper :: collision(const molecule & molecule, const size_t & index, const :: bumper & bumper, const double & beg, const double & end, const int & fold)
   {
     double radiisquared = (molecule[index].radius() + bumper.radius()) * (molecule[index].radius() + bumper.radius());

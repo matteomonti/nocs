@@ -186,6 +186,11 @@ namespace events
 
   // Private methods
 
+  void molecule_molecule :: print() const
+  {
+    std :: cout << "Event molecule_molecule at time: " << this->_time;
+  }
+
   double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)
   {
     double radiisquared = (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius());

@@ -30,6 +30,15 @@ public:
 
   virtual bool current() = 0;
   virtual void resolve() = 0;
+
+  // Standard Output
+
+  friend std :: ostream & operator << (std :: ostream &, const event &);
+
+  // Private Methods
+
+  virtual void print() const = 0;
+
 };
 
 #endif

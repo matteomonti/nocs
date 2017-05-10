@@ -119,4 +119,11 @@ namespace events
     this->_molecule.molecule->teleport(this->_fold);
     this->_grid->update(*(this->_molecule.molecule), this->_molecule.new_x, this->_molecule.new_y);
   }
+
+  // Private Methods
+
+  void grid :: print() const
+  {
+    std :: cout << "Event bumper at time: " << this->_time;
+  }
 };

@@ -54,6 +54,8 @@ namespace events
 
     // Private Methods
 
+    void print() const;
+
     double collision(const molecule &, const size_t &, const :: bumper &, const double &, const double &, const int & = vec :: direct);
 
     // Static private methods

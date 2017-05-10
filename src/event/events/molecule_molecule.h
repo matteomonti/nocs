@@ -62,7 +62,11 @@ namespace events
     bool current();
     void resolve();
 
+  private:
+
     // Private methods
+
+    void print() const;
 
     double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const int & = vec :: direct);
 
