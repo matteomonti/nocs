@@ -124,6 +124,6 @@ namespace events
 
   void grid :: print() const
   {
-    std :: cout << "Event bumper at time: " << this->_time;
+    std :: cout << "Event grid at time: " << this->_time;
   }
 };
