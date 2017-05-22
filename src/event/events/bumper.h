@@ -41,11 +41,11 @@ namespace events
 
     // Constructors
 
-    bumper(molecule &, :: bumper &, const int &);
+    bumper(molecule &, const int &, :: bumper &);
 
     // Getters
 
-    molecule & mol();
+    molecule & molecule();
 
     // Methods
 
@@ -60,8 +60,8 @@ namespace events
 
     // Static private methods
 
-    static inline vec position(const molecule &, const size_t &);
-    static inline vec position(const molecule &, const size_t &, const double &);
+    static inline vec position(const molecule &, const size_t &, const int &);
+    static inline vec position(const molecule &, const size_t &, const double &, const int &);
   };
 };
 

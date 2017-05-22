@@ -4,10 +4,10 @@ namespace events
 {
   // Constructors
 
-  bumper :: bumper (molecule & molecule, :: bumper & bumper, const int & fold)
+  bumper :: bumper (molecule & molecule, const int & fold, :: bumper & bumper)
   {
-    vec xa = molecule.position();
-    vec xb = bumper.position() + vec(fold);
+    vec xa = molecule.position() + vec(fold);
+    vec xb = bumper.position();
 
     vec v = molecule.velocity();
 
@@ -25,7 +25,7 @@ namespace events
 
     if(c < 0)
     {
-      // Bumper and Molecule are already close
+      // Bumper and molecule are already close
 
       close = true;
       beg = time;
@@ -98,7 +98,7 @@ namespace events
 
   // Getters
 
-  molecule & bumper :: mol()
+  molecule & bumper :: molecule()
   {
     return *(this->_molecule.molecule);
   }
@@ -127,8 +127,8 @@ namespace events
 
     // Collision resolution
 
-    vec a = position(*(this->_molecule.molecule), this->_molecule.atom);
-    vec b = this->_bumper->position() + vec(this->_fold);
+    vec a = position(*(this->_molecule.molecule), this->_molecule.atom, this->_fold);
+    vec b = this->_bumper->position();
 
     vec n = (a - b).normalize(); // Versor of the impulse from bumper to molecule
 
@@ -139,7 +139,7 @@ namespace events
 
     vec r = (*(this->_molecule.molecule))[this->_molecule.atom].position() % this->_molecule.molecule->orientation() + (*(this->_molecule.molecule))[this->_molecule.atom].radius() * (-n);
 
-    double module = (2 * v * n + 2 * w * (r ^ n)) / -(1 / m + ((r ^ n) * (r ^ n)) / i); // Module of the impulse (I Hope...)
+    double module = (2 * v * n + 2 * w * (r ^ n)) / -(1 / m + ((r ^ n) * (r ^ n)) / i); // TODO: n-ple check this equation when developing tests, but it should be right.
 
     // Update molecule velocity and angular_velocity
 
@@ -159,7 +159,7 @@ namespace events
 
     auto distsquared = [&](const double & time)
     {
-      return ~(position(molecule, index, time) - (bumper.position() + vec(fold))) - radiisquared;
+      return ~(position(molecule, index, time, fold) - bumper.position()) - radiisquared;
     };
 
     double binmin = gss :: min(distsquared, beg, end);
@@ -168,7 +168,6 @@ namespace events
       return NaN;
 
     double binmax = gss :: max(distsquared, beg, binmin);
-
     return secant :: compute(distsquared, binmax, binmin);
   }
 };
