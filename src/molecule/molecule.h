@@ -38,6 +38,7 @@ public:
 		printer(std :: ostream &);
 
 	public:
+  
 		// Operators
 
 		printer operator << (const molecule &);

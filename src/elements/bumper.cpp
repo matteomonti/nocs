@@ -2,13 +2,13 @@
 
 // Constructors
 
-bumper :: bumper(const vec & position, const double & radius) : _position(position), _radius(radius)
-{}
-
-// Private Constructors
-
 bumper :: bumper()
-{}
+{
+}
+
+bumper :: bumper(const vec & position, const double & radius) : _position(position), _radius(radius)
+{
+}
 
 // Getters
 

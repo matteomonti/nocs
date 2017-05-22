@@ -24,13 +24,8 @@ public:
 
   // Constructors
 
-  bumper(const vec &, const double &);
-
-private:
-
-  // Private constructors
-
   bumper();
+  bumper(const vec &, const double &);
 
 public:
 
