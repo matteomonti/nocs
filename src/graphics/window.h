@@ -13,6 +13,7 @@ class window;
 
 #include "molecule/atom.h"
 #include "molecule/molecule.h"
+#include "elements/bumper.h"
 
 class window : public lockpick :: window
 {
@@ -25,6 +26,7 @@ public:
   // Methods
 
   void draw(const molecule &);
+  void draw(const bumper &);
 };
 
 #endif

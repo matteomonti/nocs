@@ -119,6 +119,11 @@ const unsigned int & molecule :: version() const
 	return this->_version;
 }
 
+const double molecule :: energy() const
+{
+  return 0.5 * ( (this->_mass * (this->_velocity * this->_velocity)) + (this->_inertia_moment * this->_angular_velocity * this->_angular_velocity) );
+}
+
 // Methods
 
 void molecule :: integrate(const double & time)
@@ -133,6 +138,11 @@ void molecule :: impulse(const vec & position, const vec & impulse)
 {
   this->_velocity = (this->_mass * this->_velocity + impulse) / this->_mass;
   this->_angular_velocity = (this->_inertia_moment * this->_angular_velocity + (position ^ (impulse))) / this->_inertia_moment;
+}
+
+void molecule :: teleport(const vec :: fold & fold)
+{
+  this->_position += vec(fold);
 }
 
 // Public Operators

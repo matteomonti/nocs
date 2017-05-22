@@ -38,6 +38,7 @@ public:
 		printer(std :: ostream &);
 
 	public:
+  
 		// Operators
 
 		printer operator << (const molecule &);
@@ -93,10 +94,13 @@ public:
 	const double & time() const;
 	const unsigned int & version() const;
 
+	const double energy() const;
+
 	// Methods
 
   void integrate(const double &);
 	void impulse(const vec &, const vec &);
+	void teleport(const vec :: fold &);
 
 	// Operators
 

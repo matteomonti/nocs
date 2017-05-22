@@ -19,3 +19,10 @@ void window :: draw(const molecule & molecule)
         this->circle({dx + position.x, dy + position.y}, molecule[i].radius());
   }
 }
+
+void window :: draw(const bumper & bumper)
+{
+  for(double dx : {1., 0., -1.})
+    for(double dy : {1., 0., -1.})
+      this->circle({dx + bumper.position().x, dy + bumper.position().y}, bumper.radius());
+}

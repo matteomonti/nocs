@@ -12,6 +12,36 @@ class event;
 
 class event
 {
+public:
+
+  // Nested classes
+
+  class wrapper
+  {
+    // Members
+
+    event * _event;
+
+public:
+
+    // Constructors
+
+    wrapper();
+    wrapper(event *);
+
+    // Operators
+
+    bool operator > (const wrapper &) const;
+    bool operator >= (const wrapper &) const;
+    bool operator < (const wrapper &) const;
+    bool operator <= (const wrapper &) const;
+
+    // Casting
+
+    operator event * ();
+    operator const event * () const;
+  };
+
 protected:
 
   // Protected Members
@@ -30,6 +60,15 @@ public:
 
   virtual bool current() = 0;
   virtual void resolve() = 0;
+
+  // Standard Output
+
+  friend std :: ostream & operator << (std :: ostream &, const event &);
+
+  // Private Methods
+
+  virtual void print() const = 0;
+
 };
 
 #endif
