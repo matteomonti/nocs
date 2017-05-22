@@ -1,26 +1,28 @@
 // Forward declarations
 
-class heap;
+template <typename> class heap;
 
 #if !defined(__forward__) && !defined(__nobb__data__heap__h)
 #define __nobb__data__heap__h
 
 // Libraries
 
-#include <iostream>
+#include <stdint.h>
 
-// Includes
-
-#include "event/event.h"
-
-class heap
+template <typename type> class heap
 {
+  // Settings
+
+  static constexpr size_t first_alloc = 16;
+
   // Members
 
+  type * _items;
   size_t _size;
-  event ** _events;
+  size_t _alloc;
 
 public:
+
   // Constructors
 
   heap();
@@ -31,26 +33,22 @@ public:
 
   // Getters
 
-  const size_t & size();
+  const size_t & size() const;
 
   // Methods
 
-  void push(event *);
+  void push(const type &);
 
-  event * peek();
-  event * pop();
+  const type & peek() const;
+  type pop();
 
 private:
+
   // Private methods
 
   void swap(const size_t &, const size_t &);
   void bubble_up(const size_t &);
   void bubble_down(const size_t &);
-
-  // Static members
-  struct settings{
-    static constexpr size_t capacity = 100000; // TODO: change it!
-  };
 };
 
 #endif

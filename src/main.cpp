@@ -7,7 +7,7 @@
 #include "event/events/bumper.h"
 #include "event/events/grid.h"
 #include "molecule/molecule.h"
-#include "data/heap.h"
+#include "data/heap.hpp"
 
 int main()
 {
@@ -44,11 +44,11 @@ int main()
   events :: bumper * event2 = new events :: bumper (alpha, beta,0);
   events :: molecule_molecule * event3 = new events :: molecule_molecule(alpha,0, gamma);
 
-  heap heap;
+  heap <event :: wrapper> heap;
 
-  heap.push(event1);
-  heap.push(event2);
-  heap.push(event3);
+  heap.push(event :: wrapper(event1));
+  heap.push(event :: wrapper(event2));
+  heap.push(event :: wrapper(event3));
 
   std :: cout << * (heap.peek()) << std :: endl;
   std :: cout << * (heap.pop()) << std :: endl;
@@ -57,4 +57,5 @@ int main()
   std :: cout << * (heap.peek()) << std :: endl;
   std :: cout << * (heap.pop()) << std :: endl;
 }
+
 #endif

@@ -12,6 +12,36 @@ class event;
 
 class event
 {
+public:
+
+  // Nested classes
+
+  class wrapper
+  {
+    // Members
+
+    event * _event;
+
+public:
+
+    // Constructors
+
+    wrapper();
+    wrapper(event *);
+
+    // Operators
+
+    bool operator > (const wrapper &) const;
+    bool operator >= (const wrapper &) const;
+    bool operator < (const wrapper &) const;
+    bool operator <= (const wrapper &) const;
+
+    // Casting
+
+    operator event * ();
+    operator const event * () const;
+  };
+
 protected:
 
   // Protected Members
