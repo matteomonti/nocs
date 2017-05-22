@@ -4,7 +4,7 @@ namespace events
 {
   // Constructors
 
-  bumper :: bumper (molecule & molecule, const int & fold, :: bumper & bumper)
+  bumper :: bumper (:: molecule & molecule, const int & fold, :: bumper & bumper)
   {
     vec xa = molecule.position() + vec(fold);
     vec xb = bumper.position();
@@ -98,7 +98,7 @@ namespace events
 
   // Getters
 
-  molecule & bumper :: molecule()
+  :: molecule & bumper :: molecule()
   {
     return *(this->_molecule.molecule);
   }
@@ -153,7 +153,7 @@ namespace events
     std :: cout << "Event bumper at time: " << this->_time;
   }
 
-  double bumper :: collision(const molecule & molecule, const size_t & index, const :: bumper & bumper, const double & beg, const double & end, const int & fold)
+  double bumper :: collision(const :: molecule & molecule, const size_t & index, const :: bumper & bumper, const double & beg, const double & end, const int & fold)
   {
     double radiisquared = (molecule[index].radius() + bumper.radius()) * (molecule[index].radius() + bumper.radius());
 

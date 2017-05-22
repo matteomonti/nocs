@@ -41,7 +41,7 @@ int main()
   grid.add(beta);
 
   events :: grid * event1 = new events :: grid(alpha, grid);
-  events :: bumper * event2 = new events :: bumper(alpha, beta,0);
+  events :: bumper * event2 = new events :: bumper(alpha, 0, beta);
   events :: molecule_molecule * event3 = new events :: molecule_molecule(alpha,0, gamma);
 
   heap <event :: wrapper> heap;
