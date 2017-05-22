@@ -60,7 +60,7 @@ void grid :: add(molecule & molecule)
 
 void grid :: add(bumper & bumper)
 {
-  this->_bumpers[(size_t) bumper.position().x * this->_fineness][(size_t) bumper.position().y * this->_fineness].add(&bumper);
+  this->_bumpers[(size_t) (bumper.position().x * this->_fineness)][(size_t) (bumper.position().y * this->_fineness)].add(&bumper);
 }
 
 void grid :: remove(molecule & molecule)
