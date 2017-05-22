@@ -40,7 +40,7 @@ namespace events
 
     // Constructors
 
-    grid(molecule &, :: grid &);
+    grid(:: molecule &, :: grid &);
 
     // Getters
 

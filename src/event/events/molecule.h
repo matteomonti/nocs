@@ -2,11 +2,11 @@
 
 namespace events
 {
-  class molecule_molecule;
+  class molecule;
 };
 
-#if !defined(__forward__) && !defined(__nobb__event__events__molecule_molecule__h)
-#define __nobb__event__events__molecule_molecule__h
+#if !defined(__forward__) && !defined(__nobb__event__events__molecule__h)
+#define __nobb__event__events__molecule__h
 
 // Libraries
 
@@ -24,13 +24,13 @@ namespace events
 
 namespace events
 {
-  class molecule_molecule : public event
+  class molecule : public event
   {
     // Members
 
     struct
     {
-      molecule * molecule;
+      :: molecule * molecule;
       size_t atom;
       unsigned int version;
       int fold;
@@ -38,7 +38,7 @@ namespace events
 
     struct
     {
-      molecule * molecule;
+      :: molecule * molecule;
       size_t atom;
       unsigned int version;
     } _beta;
@@ -47,14 +47,14 @@ namespace events
 
     // Constructors
 
-    molecule_molecule(molecule &, const int &, molecule &);
+    molecule(:: molecule &, const int &, :: molecule &);
 
     // Getters
 
-    molecule & alpha();
+    :: molecule & alpha();
     size_t alpha_atom();
 
-    molecule & beta();
+    :: molecule & beta();
     size_t beta_atom();
 
     // Methods
@@ -68,12 +68,12 @@ namespace events
 
     void print() const;
 
-    double collision(const molecule &, const size_t &, const molecule &, const size_t &, const double &, const double &, const int & = vec :: direct);
+    double collision(const :: molecule &, const size_t &, const :: molecule &, const size_t &, const double &, const double &, const int & = vec :: direct);
 
     // Static private methods
 
-    static inline vec position(const molecule &, const size_t &, const int & = vec :: direct);
-    static inline vec position(const molecule &, const size_t &, const double &, const int & = vec :: direct);
+    static inline vec position(const :: molecule &, const size_t &, const int & = vec :: direct);
+    static inline vec position(const :: molecule &, const size_t &, const double &, const int & = vec :: direct);
   };
 };
 #endif

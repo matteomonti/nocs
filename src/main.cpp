@@ -3,7 +3,7 @@
 #include <iostream>
 #include <unistd.h>
 
-#include "event/events/molecule_molecule.h"
+#include "event/events/molecule.h"
 #include "event/events/bumper.h"
 #include "event/events/grid.h"
 #include "molecule/molecule.h"
@@ -41,8 +41,8 @@ int main()
   grid.add(beta);
 
   events :: grid * event1 = new events :: grid(alpha, grid);
-  events :: bumper * event2 = new events :: bumper(alpha, 0, beta);
-  events :: molecule_molecule * event3 = new events :: molecule_molecule(alpha,0, gamma);
+  events :: bumper * event2 = new events :: bumper(alpha,0, beta);
+  events :: molecule * event3 = new events :: molecule(alpha,0, gamma);
 
   heap <event :: wrapper> heap;
 

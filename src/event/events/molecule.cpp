@@ -1,10 +1,10 @@
-#include "molecule_molecule.hpp"
+#include "molecule.hpp"
 
 namespace events
 {
   // Constructors
 
-  molecule_molecule :: molecule_molecule(molecule & alpha, const int & fold, molecule & beta)
+  molecule :: molecule(:: molecule & alpha, const int & fold, :: molecule & beta)
   {
     vec xa = alpha.position() + vec(fold);
     vec xb = beta.position();
@@ -109,34 +109,34 @@ namespace events
 
   // Getters
 
-  molecule & molecule_molecule :: alpha()
+  :: molecule & molecule :: alpha()
   {
     return *(this->_alpha.molecule);
   }
 
-  size_t molecule_molecule :: alpha_atom()
+  size_t molecule :: alpha_atom()
   {
     return this->_alpha.atom;
   }
 
-  molecule & molecule_molecule :: beta()
+  :: molecule & molecule :: beta()
   {
     return *(this->_beta.molecule);
   }
 
-  size_t molecule_molecule :: beta_atom()
+  size_t molecule :: beta_atom()
   {
     return this->_beta.atom;
   }
 
   // Methods
 
-  bool molecule_molecule :: current()
+  bool molecule :: current()
   {
     return this->_alpha.version == this->_alpha.molecule->version() && this->_beta.version == this->_beta.molecule->version();
   }
 
-  void molecule_molecule :: resolve()
+  void molecule :: resolve()
   {
     // Check version
 
@@ -186,12 +186,12 @@ namespace events
 
   // Private methods
 
-  void molecule_molecule :: print() const
+  void molecule :: print() const
   {
     std :: cout << "Event molecule_molecule at time: " << this->_time;
   }
 
-  double molecule_molecule :: collision(const molecule & alpha, const size_t & index_alpha, const molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)
+  double molecule :: collision(const :: molecule & alpha, const size_t & index_alpha, const :: molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)
   {
     double radiisquared = (alpha[index_alpha].radius() + beta[index_beta].radius()) * (alpha[index_alpha].radius() + beta[index_beta].radius());
 
