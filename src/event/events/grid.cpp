@@ -4,85 +4,30 @@ namespace events
 {
   // Constructors
 
-  grid :: grid (molecule & molecule, :: grid & grid)
+  grid :: grid (:: molecule & molecule, :: grid & grid)
   {
-    this->_happens = true;
-
     double time = molecule.time();
-
-    this->_fold = vec :: direct;
-
-    double time_x = std :: numeric_limits <double> :: infinity();
-    double time_y = std :: numeric_limits <double> :: infinity();
-
     double step = 1. / grid.fineness();
 
-    if(molecule.velocity().x > 0)
-      time_x = (step * (molecule.mark.x() + 1) - molecule.position().x) / molecule.velocity().x;
-    else if(molecule.velocity().x != 0)
-      time_x = (step * molecule.mark.x() - molecule.position().x) / molecule.velocity().x;
+    double time_x = (step * (molecule.mark.x() + (size_t)(molecule.velocity().x >= 0)) - molecule.position().x) / molecule.velocity().x;
+    double time_y = (step * (molecule.mark.y() + (size_t)(molecule.velocity().y >= 0)) - molecule.position().y) / molecule.velocity().y;
 
-    if(molecule.velocity().y > 0)
-      time_y = (step * (molecule.mark.y() + 1) - molecule.position().y) / molecule.velocity().y;
-    else if(molecule.velocity().y != 0)
-      time_y = (step * molecule.mark.y() - molecule.position().y) / molecule.velocity().y;
+    if(!std :: isfinite(time_x)) time_x = std :: numeric_limits <double> :: infinity();
+    if(!std :: isfinite(time_y)) time_y = std :: numeric_limits <double> :: infinity();
 
-    // Is teleporting necessary?
-
-    if(time_x == std :: numeric_limits <double> :: infinity() && time_y == std :: numeric_limits <double> :: infinity())
+    if(!std :: isfinite(time_x) && !std :: isfinite(time_y))
+    {
       this->_happens = false;
-
-    else if(time_x < time_y)
-    {
-      this->_time = time_x + time;
-
-      if(molecule.velocity().x > 0)
-      {
-        this->_molecule.new_x = molecule.mark.x() + 1;
-        if(molecule.mark.x() == grid.fineness() - 1)
-        {
-          this->_molecule.new_x = 0;
-          this->_fold = vec :: left;
-        }
-      }
-      else if(molecule.velocity().x < 0)
-      {
-        this->_molecule.new_x = molecule.mark.x() - 1;
-        if(molecule.mark.x() == 0)
-        {
-          this->_molecule.new_x = grid.fineness() - 1;
-          this->_fold = vec :: right;
-        }
-      }
-      this->_molecule.new_y = molecule.mark.y();
+      return;
     }
+
+    if(time_x < time_y)
+      this->_fold = (molecule.velocity().x > 0) ? vec :: right : vec :: left;
     else
-    {
-      this->_time = time_y + time;
+      this->_fold = (molecule.velocity().y > 0) ? vec :: up : vec :: down;
 
-      if(molecule.velocity().y > 0)
-      {
-        this->_molecule.new_y = molecule.mark.y() + 1;
-        if(molecule.mark.y() == grid.fineness() - 1)
-        {
-          this->_molecule.new_y = 0;
-          this->_fold = vec :: down;
-        }
-      }
-      else if(molecule.velocity().y < 0)
-      {
-        this->_molecule.new_y = molecule.mark.y() - 1;
-        if(molecule.mark.y() == 0)
-        {
-          this->_molecule.new_y = grid.fineness() - 1;
-          this->_fold = vec :: up;
-        }
-      }
-      this->_molecule.new_x = molecule.mark.x();
-    }
-
-    // Shall we leave the recollocation to the update method or should we note the new collocation in this point and remove the _fold?
-
+    this->_happens = true;
+    this->_time = molecule.time() + std :: min(time_x, time_y);
     this->_molecule.molecule = &molecule;
     this->_molecule.version = molecule.version();
     this->_grid = &grid;
@@ -90,7 +35,7 @@ namespace events
 
   // Getters
 
-  molecule & grid :: mol()
+  molecule & grid :: molecule()
   {
     return *(this->_molecule.molecule);
   }
@@ -116,8 +61,7 @@ namespace events
     // Integrate, teleport, resolve
 
     this->_molecule.molecule->integrate(this->_time);
-    this->_molecule.molecule->teleport(this->_fold);
-    this->_grid->update(*(this->_molecule.molecule), this->_molecule.new_x, this->_molecule.new_y);
+    this->_grid->update(*(this->_molecule.molecule), this->_fold);
   }
 
   // Private Methods

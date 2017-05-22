@@ -73,8 +73,7 @@ public:
   void add(molecule &);
   void add(bumper &);
   void remove(molecule &);
-  void update(molecule &);
-  void update(molecule &, const size_t &, const size_t &);
+  void update(molecule &, const vec :: fold &);
 
 private:
 

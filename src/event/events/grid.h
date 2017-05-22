@@ -31,12 +31,9 @@ namespace events
     {
       molecule * molecule;
       unsigned int version;
-      size_t new_x;
-      size_t new_y;
     } _molecule;
 
     :: grid * _grid;
-
     vec :: fold _fold;
 
   public:
@@ -47,7 +44,7 @@ namespace events
 
     // Getters
 
-    molecule & mol();
+    molecule & molecule();
 
     // Methods
 
