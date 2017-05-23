@@ -54,7 +54,7 @@ namespace events
 
     // Private Methods
 
-    void print() const;
+    std :: ostream & print(std :: ostream &) const;
 
     double collision(const :: molecule &, const size_t &, const :: bumper &, const double &, const double &, const int & = vec :: direct);
 

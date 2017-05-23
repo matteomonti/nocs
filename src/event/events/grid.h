@@ -55,7 +55,7 @@ namespace events
 
     // Private Methods
 
-    void print() const;
+    std :: ostream & print(std :: ostream &) const;
   };
 };
 

@@ -67,7 +67,7 @@ public:
 
   // Private Methods
 
-  virtual void print() const = 0;
+  virtual std :: ostream & print(std :: ostream &) const;
 
 };
 

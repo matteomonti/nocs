@@ -66,8 +66,9 @@ namespace events
 
   // Private Methods
 
-  void grid :: print() const
+  std :: ostream & grid :: print(std :: ostream & out) const
   {
-    std :: cout << "Event grid at time: " << this->_time;
+    out << "Event grid at time: " << this->_time;
+    return out;
   }
 };

@@ -186,9 +186,10 @@ namespace events
 
   // Private methods
 
-  void molecule :: print() const
+  std :: ostream & molecule :: print(std :: ostream & out) const
   {
-    std :: cout << "Event molecule_molecule at time: " << this->_time;
+    out << "Event molecule_molecule at time: " << this->_time;
+    return out;
   }
 
   double molecule :: collision(const :: molecule & alpha, const size_t & index_alpha, const :: molecule & beta, const size_t & index_beta, const double & beg, const double & end, const int & fold)

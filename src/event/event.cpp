@@ -64,6 +64,13 @@ double event :: time()
 
 std :: ostream & operator << (std :: ostream & out, const event & event)
 {
-  event.print();
+  return event.print(out);
+}
+
+// Private Methods
+
+std :: ostream & event :: print(std :: ostream & out) const
+{
+  out << "Event at time: " << this->_time;
   return out;
 }
