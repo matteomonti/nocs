@@ -3,6 +3,7 @@
 #include <iostream>
 #include <unistd.h>
 
+#include "engine/grid.hpp"
 #include "event/events/molecule.h"
 #include "event/events/bumper.h"
 #include "event/events/grid.h"
@@ -40,22 +41,11 @@ int main()
   grid.add(alpha);
   grid.add(beta);
 
-  events :: grid * event1 = new events :: grid(alpha, grid);
-  events :: bumper * event2 = new events :: bumper(alpha,0, beta);
-  events :: molecule * event3 = new events :: molecule(alpha,0, gamma);
-
-  heap <event :: wrapper> heap;
-
-  heap.push(event :: wrapper(event1));
-  heap.push(event :: wrapper(event2));
-  heap.push(event :: wrapper(event3));
-
-  std :: cout << * (heap.peek()) << std :: endl;
-  std :: cout << * (heap.pop()) << std :: endl;
-  std :: cout << * (heap.peek()) << std :: endl;
-  std :: cout << * (heap.pop()) << std :: endl;
-  std :: cout << * (heap.peek()) << std :: endl;
-  std :: cout << * (heap.pop()) << std :: endl;
+  grid.each <molecule> (0, 0, [](molecule & molecule)
+  {
+    std :: cout << molecule;
+    std :: cout << std :: endl;
+  });
 }
 
 #endif
