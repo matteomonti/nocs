@@ -1,5 +1,7 @@
 // Forward declarations
 
+class engine;
+
 #if !defined(__forward__) && !defined(__nobb__engine__engine__h)
 #define __nobb__engine__engine__h
 
@@ -8,6 +10,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include <iostream> // Remove me
 
 // Forward includes
 
@@ -92,6 +95,11 @@ public:
   // Constructors
 
   engine(const size_t &);
+
+  // Methods
+
+  size_t add(const molecule &);
+  void run(const size_t &);
 
 private:
 

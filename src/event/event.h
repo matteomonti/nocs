@@ -10,6 +10,13 @@ class event;
 #include <iostream>
 #include <limits>
 
+// Forward includes
+
+#define __forward__
+#include "engine/engine.h"
+#include "molecule/molecule.h"
+#undef __forward__
+
 class event
 {
 public:
@@ -53,13 +60,14 @@ public:
 
   // Getters
 
-  bool happens();
-  double time();
+  bool happens() const;
+  double time() const;
 
   // Public Methods
 
   virtual bool current() = 0;
-  virtual void resolve() = 0;
+  virtual bool resolve() = 0;
+  virtual void each(engine *, void (engine :: *)(molecule &)) = 0;
 
   // Standard Output
 

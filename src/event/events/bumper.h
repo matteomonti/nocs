@@ -12,6 +12,12 @@ namespace events
 
 #include <cmath>
 
+// Forward includes
+
+#define __forward__
+#include "engine/engine.h"
+#undef __forward__
+
 // Includes
 
 #include "molecule/molecule.h"
@@ -43,14 +49,11 @@ namespace events
 
     bumper(:: molecule &, const int &, :: bumper &);
 
-    // Getters
-
-    :: molecule & molecule();
-
     // Methods
 
     bool current();
-    void resolve();
+    bool resolve();
+    void each(engine *, void (engine :: *)(:: molecule &));
 
     // Private Methods
 

@@ -96,6 +96,37 @@ engine :: engine(const size_t & fineness) : _grid(fineness)
 {
 }
 
+// Methods
+
+size_t engine :: add(const molecule & molecule)
+{
+  class molecule * entry = new class molecule(molecule);
+  this->_molecules.add(entry);
+
+  this->_grid.add(*entry);
+  this->refresh(*entry);
+
+  return entry->tag.id();
+}
+
+void engine :: run(const size_t & time)
+{
+  while(this->_events.size() && ((const event *) (this->_events.peek()))->time() <= time)
+  {
+    event * event = this->_events.pop();
+
+    std :: cout << (*event) << std :: endl;
+
+    event->resolve();
+    std :: cout << "Solved" << std :: endl;
+
+    event->each(this, &engine :: refresh);
+    std :: cout << "Eached" << std :: endl;
+
+    delete event;
+  }
+}
+
 // Private methods
 
 void engine :: refresh(molecule & molecule)

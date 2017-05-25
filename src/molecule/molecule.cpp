@@ -56,7 +56,7 @@ molecule :: molecule(const std :: vector<atom> & atoms, const vec & position, co
     }
 }
 
-molecule :: molecule(const molecule & m) : _size(m.size()), _atoms(new atom[m.size()]), _position(m.position()), _velocity(m.velocity()), _orientation(m.orientation()), _angular_velocity(m.angular_velocity()), _mass(m.mass()), _radius(m.radius()), _inertia_moment(m.inertia_moment())
+molecule :: molecule(const molecule & m) : _size(m.size()), _atoms(new atom[m.size()]), _position(m.position()), _velocity(m.velocity()), _orientation(m.orientation()), _angular_velocity(m.angular_velocity()), _mass(m.mass()), _radius(m.radius()), _inertia_moment(m.inertia_moment()), mark(m.mark), tag(m.tag)
 {
 	for(size_t i = 0; i < this->_size; i++)
 		this->_atoms[i] = m[i];

@@ -1,4 +1,5 @@
 #include "grid.h"
+#include "engine/engine.h"
 
 namespace events
 {
@@ -33,13 +34,6 @@ namespace events
     this->_grid = &grid;
   }
 
-  // Getters
-
-  molecule & grid :: molecule()
-  {
-    return *(this->_molecule.molecule);
-  }
-
   // Methods
 
   bool grid :: current()
@@ -47,12 +41,12 @@ namespace events
     return this->_molecule.version == this->_molecule.molecule->version();
   }
 
-  void grid :: resolve()
+  bool grid :: resolve()
   {
     // Check version
 
     if(!current())
-      return;
+      return false;
 
     // Update version
 
@@ -62,6 +56,13 @@ namespace events
 
     this->_molecule.molecule->integrate(this->_time);
     this->_grid->update(*(this->_molecule.molecule), this->_fold);
+
+    return true;
+  }
+
+  void grid :: each(engine * engine, void (engine :: * callback)(:: molecule &))
+  {  
+    (engine->*callback)(*(this->_molecule.molecule));
   }
 
   // Private Methods

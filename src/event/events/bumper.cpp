@@ -1,4 +1,5 @@
 #include "bumper.hpp"
+#include "engine/engine.h"
 
 namespace events
 {
@@ -96,13 +97,6 @@ namespace events
     this->_happens = false;
   }
 
-  // Getters
-
-  :: molecule & bumper :: molecule()
-  {
-    return *(this->_molecule.molecule);
-  }
-
   // Methods
 
   bool bumper :: current()
@@ -110,12 +104,12 @@ namespace events
     return this->_molecule.version == this->_molecule.molecule->version();
   }
 
-  void bumper :: resolve()
+  bool bumper :: resolve()
   {
     // Check version
 
     if(!current())
-      return;
+      return false;
 
     // Integrate to collision
 
@@ -144,6 +138,13 @@ namespace events
     // Update molecule velocity and angular_velocity
 
     this->_molecule.molecule->impulse(r, module * n);
+
+    return true;
+  }
+
+  void bumper :: each(engine * engine, void (engine :: * callback)(:: molecule &))
+  {
+    (engine->*callback)(*(this->_molecule.molecule));
   }
 
   // Private Methods
