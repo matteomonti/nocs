@@ -16,6 +16,7 @@ class molecule;
 #include "geometry/vec.h"
 #include "molecule/atom.h"
 #include "engine/grid.h"
+#include "engine/engine.h"
 
 class molecule
 {
@@ -38,7 +39,7 @@ public:
 		printer(std :: ostream &);
 
 	public:
-  
+
 		// Operators
 
 		printer operator << (const molecule &);
@@ -70,6 +71,7 @@ public:
   // Public members
 
   grid :: mark mark;
+  engine :: tag tag;
 
 	// Constructors
 

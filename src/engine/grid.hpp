@@ -15,7 +15,7 @@ template <typename type, typename lambda, typename std :: enable_if <std :: is_s
 
 template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type *> void grid :: each(const size_t & x, const size_t & y, const lambda & callback)
 {
-  this->_molecules[x][y].each([&](bumper * bumper)
+  this->_bumpers[x][y].each([&](bumper * bumper)
   {
     callback(*bumper);
   });
