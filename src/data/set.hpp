@@ -37,18 +37,16 @@ template <typename type> void set <type> :: add(const type & item)
 
 template <typename type> void set <type> :: remove(const type & item)
 {
-  size_t cursor = 0;
-  size_t skip = 0;
+  size_t read = 0;
+  size_t write = 0;
 
-  for(cursor = 0; skip + cursor < this->_size; cursor++)
+  for(read = 0; read < this->_size; read++)
   {
-    while(this->_items[cursor + skip] == item)
-      skip++;
-
-    this->_items[cursor] = this->_items[cursor + skip];
+    if(this->_items[read] != item)
+      this->_items[write++] = this->_items[read];
   }
 
-  this->_size = cursor;
+  this->_size = write;
 }
 
 template <typename type> template <typename lambda, typename std :: enable_if <set <type> :: template valid <lambda> :: value> :: type *> void set <type> :: each(const lambda & callback)
