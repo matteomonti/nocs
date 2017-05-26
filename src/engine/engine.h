@@ -10,7 +10,7 @@ class engine;
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <iostream> // Remove me
+#include <type_traits>
 
 // Forward includes
 
@@ -90,6 +90,8 @@ private:
   set <molecule *> _molecules;
   set <bumper *> _bumpers;
 
+  double _time;
+  
 public:
 
   // Constructors
@@ -100,6 +102,8 @@ public:
 
   size_t add(const molecule &);
   void run(const size_t &);
+
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const lambda &); // TODO: Add validation for lambda
 
 private:
 

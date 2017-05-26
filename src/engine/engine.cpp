@@ -1,4 +1,4 @@
-#include "engine.h"
+#include "engine.hpp"
 #include "event/events/molecule.h"
 #include "event/events/bumper.h"
 #include "event/events/grid.h"
@@ -118,13 +118,13 @@ void engine :: run(const size_t & time)
     std :: cout << (*event) << std :: endl;
 
     event->resolve();
-    std :: cout << "Solved" << std :: endl;
-
     event->each(this, &engine :: refresh);
-    std :: cout << "Eached" << std :: endl;
 
     delete event;
   }
+
+  if(time > this->_time)
+    this->_time = time;
 }
 
 // Private methods

@@ -76,8 +76,8 @@ public:
   void remove(molecule &);
   void update(molecule &, const vec :: fold &);
 
-  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &);
-  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &);
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &); // TODO: Add validation for lambda
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type * = nullptr> void each(const size_t &, const size_t &, const lambda &); // TODO: Add validation for lambda
 
 private:
 
