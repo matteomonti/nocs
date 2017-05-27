@@ -38,14 +38,14 @@ public:
 		printer(std :: ostream &);
 
 	public:
-  
+
 		// Operators
 
 		printer operator << (const molecule &);
 		template <typename type> std :: ostream & operator << (const type &);
 	};
 
-private:
+public:
 
 	// Members
 
