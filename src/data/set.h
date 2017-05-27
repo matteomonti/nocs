@@ -51,7 +51,7 @@ public:
   void add(const type &);
   void remove(const type &);
 
-  template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda &);
+  template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda &) const;
 };
 
 #endif

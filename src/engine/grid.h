@@ -67,7 +67,7 @@ public:
 
   // Getters
 
-  size_t fineness() const;
+  const size_t & fineness() const;
 
   // Methods
 

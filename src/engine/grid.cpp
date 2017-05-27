@@ -46,7 +46,7 @@ grid :: ~grid()
 
 // Getters
 
-size_t grid :: fineness() const
+const size_t & grid :: fineness() const
 {
   return this->_fineness;
 }

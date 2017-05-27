@@ -92,8 +92,15 @@ size_t engine :: tag :: autoincrement = 1;
 
 // Constructors
 
-engine :: engine(const size_t & fineness) : _grid(fineness)
+engine :: engine(const size_t & fineness) : _time(0), _grid(fineness)
 {
+}
+
+// Getters
+
+const size_t & engine :: fineness() const
+{
+  return this->_grid.fineness();
 }
 
 // Methods
@@ -109,16 +116,17 @@ size_t engine :: add(const molecule & molecule)
   return entry->tag.id();
 }
 
-void engine :: run(const size_t & time)
+void engine :: run(const double & time)
 {
   while(this->_events.size() && ((const event *) (this->_events.peek()))->time() <= time)
   {
     event * event = this->_events.pop();
 
-    std :: cout << (*event) << std :: endl;
-
-    event->resolve();
-    event->each(this, &engine :: refresh);
+    if(event->resolve())
+    {
+      std :: cout << (*event) << std :: endl;
+      event->each(this, &engine :: refresh);
+    }
 
     delete event;
   }

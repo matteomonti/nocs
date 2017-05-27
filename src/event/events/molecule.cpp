@@ -161,6 +161,9 @@ namespace events
     this->_alpha.molecule->impulse(r1, module * n);
     this->_beta.molecule->impulse(r2, -module * n);
 
+    this->_alpha.molecule->integrate(this->_time + 1.e-6); // Remove me
+    this->_beta.molecule->integrate(this->_time + 1.e-6); // Remove me
+
     return true;
   }
 

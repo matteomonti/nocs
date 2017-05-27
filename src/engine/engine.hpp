@@ -6,7 +6,7 @@
 
 // Methods
 
-template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type *> void engine :: each(const lambda & callback)
+template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type *> void engine :: each(const lambda & callback) const
 {
   this->_molecules.each([&](molecule * molecule)
   {

@@ -1,5 +1,7 @@
 #include "window.h"
 
+#include <iostream> // Remove me
+
 // Constructors
 
 window :: window(const char * title, int width, int height, int position_x, int position_y, lockpick :: color background, int frame_width_percentage, int frame_height_percentage) : lockpick :: window(title, width, height, position_x, position_y, background, frame_width_percentage, frame_height_percentage)
@@ -7,6 +9,21 @@ window :: window(const char * title, int width, int height, int position_x, int 
 }
 
 // Methods
+
+void window :: draw(const engine & engine)
+{
+  double step = 1. / engine.fineness();
+  for(size_t i = 1; i < engine.fineness(); i++)
+  {
+    this->line({step * i, 0.}, {step * i, 1.});
+    this->line({0., step * i}, {1., step * i});
+  }
+
+  engine.each <molecule> ([&](const molecule & molecule)
+  {
+    this->draw(molecule);
+  });
+}
 
 void window :: draw(const molecule & molecule)
 {

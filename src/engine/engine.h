@@ -91,19 +91,23 @@ private:
   set <bumper *> _bumpers;
 
   double _time;
-  
+
 public:
 
   // Constructors
 
   engine(const size_t &);
 
+  // Getters
+
+  const size_t & fineness() const;
+
   // Methods
 
   size_t add(const molecule &);
-  void run(const size_t &);
+  void run(const double &);
 
-  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const lambda &); // TODO: Add validation for lambda
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
 
 private:
 

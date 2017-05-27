@@ -12,6 +12,7 @@ class window;
 // Includes
 
 #include "molecule/atom.h"
+#include "engine/engine.hpp"
 #include "molecule/molecule.h"
 #include "elements/bumper.h"
 
@@ -25,6 +26,7 @@ public:
 
   // Methods
 
+  void draw(const engine &);
   void draw(const molecule &);
   void draw(const bumper &);
 };
