@@ -172,4 +172,15 @@ namespace events
     double binmax = gss :: max(distsquared, beg, binmin);
     return secant :: compute(distsquared, binmax, binmin);
   }
+
+  // Operators
+
+  bool bumper :: operator == (const event & rho) const
+  {
+    if(typeid(*this) != typeid(rho))
+      return false;
+
+    const bumper & bho = (const bumper &) rho;
+    return fabs(this->time() - bho.time()) < time_compare_threshold && this->_molecule.molecule == bho._molecule.molecule && this->_molecule.atom == bho._molecule.atom && this->_bumper == bho._bumper;
+  };
 };

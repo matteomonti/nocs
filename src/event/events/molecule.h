@@ -13,6 +13,7 @@ namespace events
 #include <iostream>
 #include <cmath>
 #include <math.h>
+#include <typeinfo>
 
 // Forward includes
 
@@ -69,6 +70,14 @@ namespace events
     std :: ostream & print(std :: ostream &) const;
 
     double collision(const :: molecule &, const size_t &, const :: molecule &, const size_t &, const double &, const double &, const int & = vec :: direct);
+
+  public:
+
+    // Operators
+
+    bool operator == (const event &) const;
+
+  private:
 
     // Static private methods
 

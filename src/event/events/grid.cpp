@@ -61,7 +61,7 @@ namespace events
   }
 
   void grid :: each(engine * engine, void (engine :: * callback)(:: molecule &))
-  {  
+  {
     (engine->*callback)(*(this->_molecule.molecule));
   }
 
@@ -71,5 +71,16 @@ namespace events
   {
     out << "Event grid at time: " << this->_time;
     return out;
+  }
+
+  // Operators
+
+  bool grid :: operator == (const event & rho) const
+  {
+    if(typeid(*this) != typeid(rho))
+      return false;
+
+    const grid & gho = (const grid &) rho;
+    return fabs(this->time() - gho.time()) < time_compare_threshold && this->_molecule.molecule == gho._molecule.molecule && this->_fold == gho._fold;
   }
 };

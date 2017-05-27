@@ -74,3 +74,10 @@ std :: ostream & event :: print(std :: ostream & out) const
   out << "Event at time: " << this->_time;
   return out;
 }
+
+// Operators
+
+bool event :: operator != (const event & rho) const
+{
+  return !((*this) == rho);
+}

@@ -161,9 +161,6 @@ namespace events
     this->_alpha.molecule->impulse(r1, module * n);
     this->_beta.molecule->impulse(r2, -module * n);
 
-    this->_alpha.molecule->integrate(this->_time + 1.e-6); // Remove me
-    this->_beta.molecule->integrate(this->_time + 1.e-6); // Remove me
-
     return true;
   }
 
@@ -197,5 +194,16 @@ namespace events
 
     double binmax = gss :: max(distsquared, beg, binmin);
     return secant :: compute(distsquared, binmax, binmin);
+  }
+
+  // Operators
+
+  bool molecule :: operator == (const event & rho) const
+  {
+    if(typeid(*this) != typeid(rho))
+      return false;
+
+    const molecule & mho = (const molecule &) rho;
+    return fabs(this->time() - mho.time()) < time_compare_threshold && ((this->_alpha.molecule == mho._alpha.molecule && this->_alpha.atom == mho._alpha.atom && this->_beta.molecule == mho._beta.molecule && this->_beta.atom == mho._beta.atom) || (this->_alpha.molecule == mho._beta.molecule && this->_alpha.atom == mho._beta.atom && this->_beta.molecule == mho._alpha.molecule && this->_beta.atom == mho._alpha.atom));
   }
 };
