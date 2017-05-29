@@ -164,10 +164,10 @@ namespace events
     return true;
   }
 
-  void molecule :: each(engine * engine, void (engine :: * callback)(:: molecule &))
+  void molecule :: each(engine * engine, void (engine :: * callback)(:: molecule &, const size_t &))
   {
-    (engine->*callback)(*(this->_alpha.molecule));
-    (engine->*callback)(*(this->_beta.molecule));
+    (engine->*callback)(*(this->_alpha.molecule), 0);
+    (engine->*callback)(*(this->_beta.molecule), this->_alpha.molecule->tag.id());
   }
 
   // Private methods

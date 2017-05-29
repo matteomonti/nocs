@@ -113,7 +113,7 @@ private:
 
   // Private methods
 
-  void refresh(molecule &);
+  void refresh(molecule &, const size_t & = 0);
 };
 
 #endif

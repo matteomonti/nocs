@@ -64,7 +64,7 @@ namespace events
 
     bool current();
     bool resolve();
-    void each(engine *, void (engine :: *)(:: molecule &));
+    void each(engine *, void (engine :: *)(:: molecule &, const size_t &));
 
   private:
 

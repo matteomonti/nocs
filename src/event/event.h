@@ -67,7 +67,7 @@ public:
 
   virtual bool current() = 0;
   virtual bool resolve() = 0;
-  virtual void each(engine *, void (engine :: *)(molecule &)) = 0;
+  virtual void each(engine *, void (engine :: *)(molecule &, const size_t &)) = 0;
 
   // Standard Output
 

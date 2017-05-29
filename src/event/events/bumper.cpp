@@ -142,9 +142,9 @@ namespace events
     return true;
   }
 
-  void bumper :: each(engine * engine, void (engine :: * callback)(:: molecule &))
+  void bumper :: each(engine * engine, void (engine :: * callback)(:: molecule &, const size_t &))
   {
-    (engine->*callback)(*(this->_molecule.molecule));
+    (engine->*callback)(*(this->_molecule.molecule), 0);
   }
 
   // Private Methods

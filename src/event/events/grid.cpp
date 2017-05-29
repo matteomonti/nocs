@@ -60,9 +60,9 @@ namespace events
     return true;
   }
 
-  void grid :: each(engine * engine, void (engine :: * callback)(:: molecule &))
-  {  
-    (engine->*callback)(*(this->_molecule.molecule));
+  void grid :: each(engine * engine, void (engine :: * callback)(:: molecule &, const size_t &))
+  {
+    (engine->*callback)(*(this->_molecule.molecule), 0);
   }
 
   // Private Methods

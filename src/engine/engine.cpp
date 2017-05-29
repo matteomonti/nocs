@@ -123,10 +123,7 @@ void engine :: run(const double & time)
     event * event = this->_events.pop();
 
     if(event->resolve())
-    {
-      std :: cout << (*event) << std :: endl;
       event->each(this, &engine :: refresh);
-    }
 
     delete event;
   }
@@ -137,7 +134,7 @@ void engine :: run(const double & time)
 
 // Private methods
 
-void engine :: refresh(molecule & molecule)
+void engine :: refresh(molecule & molecule, const size_t & skip)
 {
   // Grid event
 
@@ -173,7 +170,7 @@ void engine :: refresh(molecule & molecule)
 
       this->_grid.each <class molecule> (x, y, [&](class molecule & beta)
       {
-        if(molecule.tag.id() == beta.tag.id())
+        if(molecule.tag.id() == beta.tag.id() || molecule.tag.id() == skip)
           return;
 
         events :: molecule * event = new events :: molecule(molecule, fold, beta);
