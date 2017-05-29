@@ -17,7 +17,7 @@ double rnd1()
 
 int main()
 {
-  srand(time(nullptr));
+  srand(0);
 
   molecule alpha
   (
@@ -84,7 +84,7 @@ int main()
 
   window my_window;
 
-  for(double t = 0;; t += 0.1)
+  for(double t = 0; t <= 10; t += 0.1)
   {
     engine.run(t);
 
@@ -92,32 +92,37 @@ int main()
     my_window.draw(engine);
     my_window.flush();
 
-    double energy = 0.;
+    usleep(1.e4);
+  }
 
-    engine.each <molecule> ([&](const molecule & alpha)
-    {
-      energy += alpha.energy();
-      engine.each <molecule> ([&](const molecule & beta)
-      {
-        if(alpha.tag.id() == beta.tag.id())
-          return;
+  window :: wait_click();
 
-        for(size_t i = 0; i < alpha.size(); i++)
-          for(size_t j = 0; j < beta.size(); j++)
-          {
-            vec xa = alpha.position() + alpha[i].position() % alpha.orientation();
-            vec xb = beta.position() + beta[j].position() % beta.orientation();
+  molecule eta
+  (
+    {{{0, 0}, 1, 0.025}},
+    {0.5, 0.5},
+    {0., 0.},
+    0.,
+    0.
+  );
 
-            if(!(xa - xb) < alpha[i].radius() + beta[i].radius() - 1.e-6)
-            {
-              std :: cout << "Compenetration found!" << std :: endl;
-              window :: wait_click();
-            }
-          }
-      });
-    });
+  engine.add(eta);
 
-    std :: cout << std :: setw(6) << std :: setprecision(1) << std :: fixed << t << ": " << energy << std :: endl;
+  my_window.clear();
+  my_window.draw(engine);
+  my_window.flush();
+
+  window :: wait_click();
+
+  for(double t = 10;; t += 0.1)
+  {
+    engine.run(t);
+
+    my_window.clear();
+    my_window.draw(engine);
+    my_window.flush();
+
+    usleep(1.e4);
   }
 }
 
