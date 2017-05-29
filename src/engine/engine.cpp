@@ -170,7 +170,7 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
 
       this->_grid.each <class molecule> (x, y, [&](class molecule & beta)
       {
-        if(molecule.tag.id() == beta.tag.id() || molecule.tag.id() == skip)
+        if(beta.tag.id() == molecule.tag.id() || beta.tag.id() == skip)
           return;
 
         events :: molecule * event = new events :: molecule(molecule, fold, beta);
