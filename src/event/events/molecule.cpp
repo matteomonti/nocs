@@ -161,9 +161,6 @@ namespace events
     this->_alpha.molecule->impulse(r1, module * n);
     this->_beta.molecule->impulse(r2, -module * n);
 
-    this->_alpha.molecule->integrate(this->_time + 1.e-6); // Remove me
-    this->_beta.molecule->integrate(this->_time + 1.e-6); // Remove me
-
     return true;
   }
 
@@ -196,6 +193,8 @@ namespace events
       return NaN;
 
     double binmax = gss :: max(distsquared, beg, binmin);
-    return secant :: compute(distsquared, binmax, binmin);
+    double zero = secant :: compute(distsquared, binmax, binmin);
+
+    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NaN;
   }
 };

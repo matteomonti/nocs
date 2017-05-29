@@ -33,6 +33,10 @@ namespace events
 {
   class molecule : public event
   {
+    // Settings
+
+    static constexpr double time_epsilon = 1.e-9;
+
     // Members
 
     struct
