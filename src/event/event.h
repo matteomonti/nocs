@@ -21,10 +21,6 @@ class event
 {
 public:
 
-  // Settings
-
-  static constexpr double time_compare_threshold = 10. * std :: numeric_limits <double> :: epsilon();
-
   // Nested classes
 
   class wrapper
@@ -72,11 +68,6 @@ public:
   virtual bool current() = 0;
   virtual bool resolve() = 0;
   virtual void each(engine *, void (engine :: *)(molecule &)) = 0;
-
-  // Operators
-
-  virtual bool operator == (const event &) const = 0;
-  bool operator != (const event &) const;
 
   // Standard Output
 

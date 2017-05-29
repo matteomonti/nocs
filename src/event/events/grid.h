@@ -11,7 +11,6 @@ namespace events
 // Libraries
 
 #include <cmath>
-#include <typeinfo>
 
 // Forward includes
 
@@ -61,12 +60,6 @@ namespace events
     // Private Methods
 
     std :: ostream & print(std :: ostream &) const;
-
-  public:
-
-    // Operators
-
-    bool operator == (const event &) const;
   };
 };
 

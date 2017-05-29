@@ -11,7 +11,6 @@ namespace events
 // Libraries
 
 #include <cmath>
-#include <typeinfo>
 
 // Forward includes
 
@@ -56,20 +55,11 @@ namespace events
     bool resolve();
     void each(engine *, void (engine :: *)(:: molecule &));
 
-  private:
-
     // Private Methods
 
     std :: ostream & print(std :: ostream &) const;
+
     double collision(const :: molecule &, const size_t &, const :: bumper &, const double &, const double &, const int & = vec :: direct);
-
-  public:
-
-    // Operators
-
-    bool operator == (const event &) const;
-
-  private:
 
     // Static private methods
 
