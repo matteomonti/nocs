@@ -58,14 +58,14 @@ private:
 
   // Private methods
 
-  size_t slot(const ktype &);
+  size_t slot(const ktype &) const;
   void realloc(const size_t &);
 
 public:
 
   // Operators
 
-  const vtype & operator [] (const ktype &);
+  const vtype & operator [] (const ktype &) const;
 
 private:
 

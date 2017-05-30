@@ -83,7 +83,7 @@ template <typename ktype, typename vtype> template <typename lambda> void hashta
 
 // Private methods
 
-template <typename ktype, typename vtype> size_t hashtable <ktype, vtype> :: slot(const ktype & key)
+template <typename ktype, typename vtype> size_t hashtable <ktype, vtype> :: slot(const ktype & key) const
 {
   size_t index = hash(key) % this->_alloc;
   assert(this->_items[index].active);
@@ -121,7 +121,7 @@ template <typename ktype, typename vtype> void hashtable <ktype, vtype> :: reall
 
 // Operators
 
-template <typename ktype, typename vtype> const vtype & hashtable <ktype, vtype> :: operator [] (const ktype & key)
+template <typename ktype, typename vtype> const vtype & hashtable <ktype, vtype> :: operator [] (const ktype & key) const
 {
   return this->_items[this->slot(key)].value;
 }
@@ -144,7 +144,7 @@ template <typename ktype, typename vtype> template <typename type, typename std 
 
 template <typename ktype, typename vtype> template <typename type, typename std :: enable_if <sizeof(type) == 8> :: type *> size_t hashtable <ktype, vtype> :: hash(const type & item)
 {
-  uint64_t key = *(reinterpret_cast <const uint32_t *> (&item));
+  uint64_t key = *(reinterpret_cast <const uint64_t *> (&item));
 
   key = (~key) + (key << 21);
   key = key ^ (key >> 24);
