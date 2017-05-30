@@ -59,6 +59,7 @@ public:
 
     const size_t & id() const;
     size_t size() const;
+    const size_t & references() const;
 
   private:
 
@@ -121,6 +122,8 @@ private:
 
   void incref(molecule &, const size_t &);
   void decref(molecule &, const size_t &);
+
+  void collect();
 };
 
 #endif

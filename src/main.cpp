@@ -125,25 +125,28 @@ int main()
     usleep(1.e4);
   }
 
-  window :: wait_click();
-
-  engine.remove(1);
-
-  my_window.clear();
-  my_window.draw(engine);
-  my_window.flush();
-
-  window :: wait_click();
-
-  for(double t = 20;; t += 0.1)
+  for(size_t i = 1; i <= 6; i++)
   {
-    engine.run(t);
+    window :: wait_click();
+
+    engine.remove(i);
 
     my_window.clear();
     my_window.draw(engine);
     my_window.flush();
 
-    usleep(1.e4);
+    window :: wait_click();
+
+    for(double t = 10 + 10 * i; t < 20 + 10 * i || i == 6; t += 0.1)
+    {
+      engine.run(t);
+
+      my_window.clear();
+      my_window.draw(engine);
+      my_window.flush();
+
+      usleep(1.e4);
+    }
   }
 }
 

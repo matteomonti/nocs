@@ -28,6 +28,11 @@ size_t engine :: tag :: size() const
   return tags;
 }
 
+const size_t & engine :: tag :: references() const
+{
+  return this->_references;
+}
+
 // Private methods
 
 void engine :: tag :: add(const uint8_t & tag)
@@ -136,6 +141,8 @@ void engine :: run(const double & time)
 
   if(time > this->_time)
     this->_time = time;
+
+  this->collect();
 }
 
 // Private methods
@@ -218,4 +225,22 @@ void engine :: incref(molecule & molecule, const size_t &)
 void engine :: decref(molecule & molecule, const size_t &)
 {
   molecule.tag--;
+}
+
+void engine :: collect()
+{
+  set <molecule *> old;
+
+  this->_garbage.each([&](molecule * entry)
+  {
+    if(!(entry->tag.references()))
+      old.add(entry);
+  });
+
+  old.each([&](molecule * entry)
+  {
+    std :: cout << "Collecting " << entry->tag.id() << std :: endl;
+    this->_garbage.remove(entry);
+    delete entry;
+  });
 }
