@@ -118,6 +118,7 @@ void engine :: remove(const size_t & id)
   entry->disable();
 
   this->_molecules.remove(id);
+  this->_garbage.add(entry);
 }
 
 void engine :: run(const double & time)

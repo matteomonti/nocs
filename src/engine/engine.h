@@ -90,6 +90,8 @@ private:
   hashtable <size_t, molecule *> _molecules;
   set <bumper *> _bumpers;
 
+  set <molecule *> _garbage;
+
   double _time;
 
 public:
