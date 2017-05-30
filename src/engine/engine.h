@@ -116,6 +116,9 @@ private:
   // Private methods
 
   void refresh(molecule &, const size_t & = 0);
+
+  void incref(molecule &, const size_t &);
+  void decref(molecule &, const size_t &);
 };
 
 #endif

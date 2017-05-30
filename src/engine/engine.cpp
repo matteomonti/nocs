@@ -125,6 +125,7 @@ void engine :: run(const double & time)
   while(this->_events.size() && ((const event *) (this->_events.peek()))->time() <= time)
   {
     event * event = this->_events.pop();
+    event->each(this, &engine :: decref);
 
     if(event->resolve())
       event->each(this, &engine :: refresh);
@@ -145,7 +146,10 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
   events :: grid * event = new events :: grid(molecule, this->_grid);
 
   if(event->happens())
+  {
+    event->each(this, &engine :: incref);
     this->_events.push(event :: wrapper(event));
+  }
   else
     delete event;
 
@@ -180,7 +184,10 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
         events :: molecule * event = new events :: molecule(molecule, fold, beta);
 
         if(event->happens())
+        {
+          event->each(this, &engine :: incref);
           this->_events.push(event);
+        }
         else
           delete event;
       });
@@ -192,9 +199,22 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
         events :: bumper * event = new events :: bumper(molecule, fold, bumper);
 
         if(event->happens())
+        {
+          event->each(this, &engine :: incref);
           this->_events.push(event);
+        }
         else
           delete event;
       });
     }
+}
+
+void engine :: incref(molecule & molecule, const size_t &)
+{
+  molecule.tag++;
+}
+
+void engine :: decref(molecule & molecule, const size_t &)
+{
+  molecule.tag--;
 }
