@@ -19,11 +19,6 @@ const size_t & engine :: tag :: id() const
   return this->_id;
 }
 
-bool engine :: tag :: alive() const
-{
-  return !(this->_id);
-}
-
 size_t engine :: tag :: size() const
 {
   for(size_t i = 0; i < tags; i++)

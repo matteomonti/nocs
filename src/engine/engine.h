@@ -58,7 +58,6 @@ public:
     // Getters
 
     const size_t & id() const;
-    bool alive() const;
     size_t size() const;
 
   private:
