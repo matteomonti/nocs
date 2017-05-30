@@ -114,7 +114,28 @@ int main()
 
   window :: wait_click();
 
-  for(double t = 10;; t += 0.1)
+  for(double t = 10; t <= 20; t += 0.1)
+  {
+    engine.run(t);
+
+    my_window.clear();
+    my_window.draw(engine);
+    my_window.flush();
+
+    usleep(1.e4);
+  }
+
+  window :: wait_click();
+
+  engine.remove(1);
+
+  my_window.clear();
+  my_window.draw(engine);
+  my_window.flush();
+
+  window :: wait_click();
+
+  for(double t = 20;; t += 0.1)
   {
     engine.run(t);
 

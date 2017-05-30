@@ -104,6 +104,8 @@ public:
 	void impulse(const vec &, const vec &);
 	void teleport(const vec :: fold &);
 
+  void disable();
+
 	// Operators
 
 	const atom & operator [] (const size_t &) const;

@@ -145,6 +145,11 @@ void molecule :: teleport(const vec :: fold & fold)
   this->_position += vec(fold);
 }
 
+void molecule :: disable()
+{
+  this->_version = -1;
+}
+
 // Public Operators
 
 const atom & molecule :: operator [] (const size_t & n) const

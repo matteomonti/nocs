@@ -111,6 +111,15 @@ size_t engine :: add(const molecule & molecule)
   return entry->tag.id();
 }
 
+void engine :: remove(const size_t & id)
+{
+  molecule * entry = this->_molecules[id];
+  this->_grid.remove(*entry);
+  entry->disable();
+
+  this->_molecules.remove(id);
+}
+
 void engine :: run(const double & time)
 {
   while(this->_events.size() && ((const event *) (this->_events.peek()))->time() <= time)

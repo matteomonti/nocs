@@ -105,6 +105,8 @@ public:
   // Methods
 
   size_t add(const molecule &);
+  void remove(const size_t &);
+
   void run(const double &);
 
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
