@@ -12,6 +12,13 @@ engine :: tag :: tag() : _id(autoincrement++), _references(0)
   memset(this->_tags, '\0', tags);
 }
 
+// Destructor
+
+engine :: ~engine()
+{
+  delete [] this->_tags;
+}
+
 // Getters
 
 const size_t & engine :: tag :: id() const
@@ -62,6 +69,13 @@ void engine :: tag :: remove(const uint8_t & tag)
   }
 }
 
+// Operators
+
+const uint8_t & engine :: tag :: operator [] (const size_t & index) const
+{
+  return this->_tags[index];
+}
+
 // Private operators
 
 void engine :: tag :: operator ++ ()
@@ -84,7 +98,7 @@ void engine :: tag :: operator -- (int)
   --(*this);
 }
 
-// Static members
+// Private static members
 
 size_t engine :: tag :: autoincrement = 1;
 
@@ -92,7 +106,7 @@ size_t engine :: tag :: autoincrement = 1;
 
 // Constructors
 
-engine :: engine(const size_t & fineness) : _time(0), _grid(fineness)
+engine :: engine(const size_t & fineness) : _time(0), _grid(fineness), _tags(new hashtable <size_t, molecule *> [256])
 {
 }
 
@@ -124,6 +138,20 @@ void engine :: remove(const size_t & id)
 
   this->_molecules.remove(id);
   this->_garbage.add(entry);
+}
+
+void engine :: tag(const size_t & id, const uint8_t & tag)
+{
+  molecule * entry = this->_molecules[id];
+  entry->tag.add(tag);
+  this->_tags[tag].add(id, entry);
+}
+
+void engine :: untag(const size_t & id, const uint8_t & tag)
+{
+  molecule * entry = this->_molecules[id];
+  entry->tag.remove(tag);
+  this->_tags[tag].remove(id);
 }
 
 void engine :: run(const double & time)

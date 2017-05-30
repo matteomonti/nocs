@@ -27,8 +27,15 @@ public:
   // Methods
 
   void draw(const engine &);
+  void draw(const engine &, const uint8_t &);
   void draw(const molecule &);
   void draw(const bumper &);
+
+private:
+  
+  // Private methods
+
+  void grid(const engine &);
 };
 
 #endif

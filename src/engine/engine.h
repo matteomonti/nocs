@@ -68,6 +68,14 @@ public:
     void add(const uint8_t &);
     void remove(const uint8_t &);
 
+  public:
+
+    // Operators
+
+    const uint8_t & operator [] (const size_t &) const;
+
+  private:
+
     // Private operators
 
     void operator ++ ();
@@ -76,7 +84,7 @@ public:
     void operator -- ();
     void operator -- (int);
 
-    // Static members
+    // Private static members
 
     static size_t autoincrement;
   };
@@ -91,6 +99,7 @@ private:
   hashtable <size_t, molecule *> _molecules;
   set <bumper *> _bumpers;
 
+  hashtable <size_t, molecule *> * _tags;
   set <molecule *> _garbage;
 
   double _time;
@@ -101,6 +110,10 @@ public:
 
   engine(const size_t &);
 
+  // Destructor
+
+  ~engine();
+
   // Getters
 
   const size_t & fineness() const;
@@ -110,9 +123,13 @@ public:
   size_t add(const molecule &);
   void remove(const size_t &);
 
+  void tag(const size_t &, const uint8_t &);
+  void untag(const size_t &, const uint8_t &);
+
   void run(const double &);
 
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
+  template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const uint8_t &, const lambda &) const; // TODO: Add validation for lambda
 
 private:
 

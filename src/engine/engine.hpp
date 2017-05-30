@@ -15,4 +15,13 @@ template <typename type, typename lambda, typename std :: enable_if <std :: is_s
   });
 }
 
+template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type *> void engine :: each(const uint8_t & tag, const lambda & callback) const
+{
+  this->_tags[tag].each([&](molecule * molecule)
+  {
+    molecule->integrate(this->_time);
+    callback((const class molecule &) (*molecule));
+  });
+}
+
 #endif

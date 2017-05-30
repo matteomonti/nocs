@@ -71,7 +71,7 @@ public:
   // Public members
 
   grid :: mark mark;
-  engine :: tag tag;
+  class engine :: tag tag;
 
 	// Constructors
 

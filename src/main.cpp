@@ -84,65 +84,26 @@ int main()
 
   window my_window;
 
-  for(double t = 0; t <= 10; t += 0.1)
+  engine.tag(1, 0);
+  engine.tag(2, 0);
+
+  bool show = false;
+
+  for(double t = 0;; t += 1.)
   {
-    engine.run(t);
+    show = !show;
 
-    my_window.clear();
-    my_window.draw(engine);
-    my_window.flush();
-
-    usleep(1.e4);
-  }
-
-  window :: wait_click();
-
-  molecule eta
-  (
-    {{{0, 0}, 1, 0.025}},
-    {0.5, 0.5},
-    {0., 0.},
-    0.,
-    0.
-  );
-
-  engine.add(eta);
-
-  my_window.clear();
-  my_window.draw(engine);
-  my_window.flush();
-
-  window :: wait_click();
-
-  for(double t = 10; t <= 20; t += 0.1)
-  {
-    engine.run(t);
-
-    my_window.clear();
-    my_window.draw(engine);
-    my_window.flush();
-
-    usleep(1.e4);
-  }
-
-  for(size_t i = 1; i <= 6; i++)
-  {
-    window :: wait_click();
-
-    engine.remove(i);
-
-    my_window.clear();
-    my_window.draw(engine);
-    my_window.flush();
-
-    window :: wait_click();
-
-    for(double t = 10 + 10 * i; t < 20 + 10 * i || i == 6; t += 0.1)
+    if(show)
+      engine.tag(3, 0);
+    else
+      engine.untag(3, 0);
+      
+    for(double d = 0; d < 1; d += 0.01)
     {
-      engine.run(t);
+      engine.run(t + d);
 
       my_window.clear();
-      my_window.draw(engine);
+      my_window.draw(engine, 0);
       my_window.flush();
 
       usleep(1.e4);
