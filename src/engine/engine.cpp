@@ -108,7 +108,7 @@ const size_t & engine :: fineness() const
 size_t engine :: add(const molecule & molecule)
 {
   class molecule * entry = new class molecule(molecule);
-  this->_molecules.add(entry);
+  this->_molecules.add(entry->tag.id(), entry);
 
   this->_grid.add(*entry);
   this->refresh(*entry);

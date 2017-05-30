@@ -22,6 +22,7 @@ class engine;
 // Includes
 
 #include "data/heap.hpp"
+#include "data/hashtable.hpp"
 #include "data/set.hpp"
 #include "grid.hpp"
 #include "event/event.h"
@@ -87,7 +88,7 @@ private:
   heap <event :: wrapper> _events;
   grid _grid;
 
-  set <molecule *> _molecules;
+  hashtable <size_t, molecule *> _molecules;
   set <bumper *> _bumpers;
 
   double _time;
