@@ -99,8 +99,6 @@ template <typename ktype, typename vtype> size_t hashtable <ktype, vtype> :: slo
 
 template <typename ktype, typename vtype> void hashtable <ktype, vtype> :: realloc(const size_t & alloc)
 {
-  std :: cout << "Realloc to " << alloc << std :: endl;
-
   item * old = this->_items;
 
   size_t old_alloc = this->_alloc;
