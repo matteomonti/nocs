@@ -114,7 +114,7 @@ const double & molecule :: time() const
 	return this->_time;
 }
 
-const unsigned int & molecule :: version() const
+const ssize_t & molecule :: version() const
 {
 	return this->_version;
 }
@@ -159,7 +159,7 @@ const atom & molecule :: operator [] (const size_t & n) const
 
 molecule & molecule :: operator ++ ()
 {
-  this->_version++;
+  (this->_version + 1 < 0 ? this->_version = 0 : this->_version++);
   return *this;
 }
 

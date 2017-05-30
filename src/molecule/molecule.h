@@ -64,7 +64,7 @@ private:
 	double _inertia_moment;
 
 	double _time;
-	unsigned int _version;
+	ssize_t _version;
 
 public:
 
@@ -94,7 +94,7 @@ public:
 	const double & mass() const;
 	const double & inertia_moment() const;
 	const double & time() const;
-	const unsigned int & version() const;
+	const ssize_t & version() const;
 
 	const double energy() const;
 
