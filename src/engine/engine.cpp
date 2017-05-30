@@ -239,7 +239,6 @@ void engine :: collect()
 
   old.each([&](molecule * entry)
   {
-    std :: cout << "Collecting " << entry->tag.id() << std :: endl;
     this->_garbage.remove(entry);
     delete entry;
   });

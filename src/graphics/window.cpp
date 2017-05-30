@@ -1,7 +1,5 @@
 #include "window.h"
 
-#include <iostream> // Remove me
-
 // Constructors
 
 window :: window(const char * title, int width, int height, int position_x, int position_y, lockpick :: color background, int frame_width_percentage, int frame_height_percentage) : lockpick :: window(title, width, height, position_x, position_y, background, frame_width_percentage, frame_height_percentage)
