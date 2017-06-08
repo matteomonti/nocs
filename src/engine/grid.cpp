@@ -1,4 +1,4 @@
-#include "grid.h"
+#include "grid.hpp"
 #include "molecule/molecule.h"
 
 // Nested classes
@@ -46,7 +46,7 @@ grid :: ~grid()
 
 // Getters
 
-size_t grid :: fineness() const
+const size_t & grid :: fineness() const
 {
   return this->_fineness;
 }

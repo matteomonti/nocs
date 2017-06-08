@@ -12,6 +12,12 @@ namespace events
 
 #include <cmath>
 
+// Forward includes
+
+#define __forward__
+#include "engine/engine.h"
+#undef __forward__
+
 // Includes
 
 #include "molecule/molecule.h"
@@ -20,6 +26,7 @@ namespace events
 #include "math/newton.h"
 #include "math/gss.h"
 #include "math/secant.h"
+#include "engine/engine.h"
 
 namespace events
 {
@@ -42,14 +49,11 @@ namespace events
 
     grid(:: molecule &, :: grid &);
 
-    // Getters
-
-    molecule & molecule();
-
     // Methods
 
     bool current();
-    void resolve();
+    bool resolve();
+    void each(engine *, void (engine :: *)(:: molecule &, const size_t &));
 
   private:
 

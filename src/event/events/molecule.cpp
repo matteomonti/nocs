@@ -1,4 +1,5 @@
 #include "molecule.hpp"
+#include "engine/engine.h"
 
 namespace events
 {
@@ -107,28 +108,6 @@ namespace events
     this->_happens = false;
   }
 
-  // Getters
-
-  :: molecule & molecule :: alpha()
-  {
-    return *(this->_alpha.molecule);
-  }
-
-  size_t molecule :: alpha_atom()
-  {
-    return this->_alpha.atom;
-  }
-
-  :: molecule & molecule :: beta()
-  {
-    return *(this->_beta.molecule);
-  }
-
-  size_t molecule :: beta_atom()
-  {
-    return this->_beta.atom;
-  }
-
   // Methods
 
   bool molecule :: current()
@@ -136,12 +115,12 @@ namespace events
     return this->_alpha.version == this->_alpha.molecule->version() && this->_beta.version == this->_beta.molecule->version();
   }
 
-  void molecule :: resolve()
+  bool molecule :: resolve()
   {
     // Check version
 
     if(!current())
-      return;
+      return false;
 
     // Integrate to collision
 
@@ -182,6 +161,13 @@ namespace events
     this->_alpha.molecule->impulse(r1, module * n);
     this->_beta.molecule->impulse(r2, -module * n);
 
+    return true;
+  }
+
+  void molecule :: each(engine * engine, void (engine :: * callback)(:: molecule &, const size_t &))
+  {
+    (engine->*callback)(*(this->_alpha.molecule), 0);
+    (engine->*callback)(*(this->_beta.molecule), this->_alpha.molecule->tag.id());
   }
 
   // Private methods
@@ -207,6 +193,8 @@ namespace events
       return NaN;
 
     double binmax = gss :: max(distsquared, beg, binmin);
-    return secant :: compute(distsquared, binmax, binmin);
+    double zero = secant :: compute(distsquared, binmax, binmin);
+
+    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NaN;
   }
 };

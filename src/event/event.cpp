@@ -50,12 +50,12 @@ event :: wrapper :: operator const event * () const
 
 // Getters
 
-bool event :: happens()
+bool event :: happens() const
 {
   return this->_happens;
 }
 
-double event :: time()
+double event :: time() const
 {
   return this->_time;
 }

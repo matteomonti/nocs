@@ -16,6 +16,7 @@ class molecule;
 #include "geometry/vec.h"
 #include "molecule/atom.h"
 #include "engine/grid.h"
+#include "engine/engine.h"
 
 class molecule
 {
@@ -63,13 +64,14 @@ public:
 	double _inertia_moment;
 
 	double _time;
-	unsigned int _version;
+	int32_t _version;
 
 public:
 
   // Public members
 
   grid :: mark mark;
+  class engine :: tag tag;
 
 	// Constructors
 
@@ -92,7 +94,7 @@ public:
 	const double & mass() const;
 	const double & inertia_moment() const;
 	const double & time() const;
-	const unsigned int & version() const;
+	const int32_t & version() const;
 
 	const double energy() const;
 
@@ -101,6 +103,8 @@ public:
   void integrate(const double &);
 	void impulse(const vec &, const vec &);
 	void teleport(const vec :: fold &);
+
+  void disable();
 
 	// Operators
 
