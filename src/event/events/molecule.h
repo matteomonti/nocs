@@ -18,8 +18,8 @@ namespace events
 
 #define __forward__
 #include "engine/engine.h"
+#include "event/reports/molecule.h"
 #undef __forward__
-
 
 // Includes
 
@@ -36,6 +36,10 @@ namespace events
     // Settings
 
     static constexpr double time_epsilon = 1.e-9;
+
+    // Friends
+
+    friend class reports :: molecule;
 
     // Members
 

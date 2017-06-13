@@ -75,9 +75,9 @@ int main()
 
   engine engine(4);
 
-  engine.on <events :: molecule> ([]()
+  engine.on <events :: molecule> ([](const reports :: molecule & report)
   {
-    std :: cout << "Molecule event!" << std :: endl;
+    std :: cout << "Molecule event between " << report.alpha() << " and " << report.beta() << std :: endl;
   });
 
   engine.add(alpha);

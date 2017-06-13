@@ -2,6 +2,7 @@
 #define __nobb__callback__callbacks__molecule__hpp
 
 #include "molecule.h"
+#include "event/reports/molecule.h"
 
 // Constructors
 
@@ -13,7 +14,7 @@ template <typename lambda> callback <events :: molecule, lambda> :: callback(con
 
 template <typename lambda> void callback <events :: molecule, lambda> :: trigger(const events :: molecule & event)
 {
-  this->_callback();
+  this->_callback(reports :: molecule(event));
 }
 
 #endif

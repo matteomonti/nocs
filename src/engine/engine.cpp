@@ -162,9 +162,11 @@ void engine :: run(const double & time)
     event->each(this, &engine :: decref);
 
     if(event->resolve())
+    {
       event->each(this, &engine :: refresh);
-
-    event->callback(this->_dispatcher);
+      event->callback(this->_dispatcher);
+    }
+    
     delete event;
   }
 
