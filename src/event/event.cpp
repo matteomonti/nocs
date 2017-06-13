@@ -60,6 +60,12 @@ double event :: time() const
   return this->_time;
 }
 
+// Methods
+
+void event :: callback(dispatcher &)
+{
+}
+
 // Standard Output
 
 std :: ostream & operator << (std :: ostream & out, const event & event)

@@ -35,7 +35,7 @@ namespace events
 
     struct
     {
-      molecule * molecule;
+      :: molecule * molecule;
       unsigned int version;
       size_t atom;
     } _molecule;

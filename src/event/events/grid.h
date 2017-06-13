@@ -36,7 +36,7 @@ namespace events
 
     struct
     {
-      molecule * molecule;
+      :: molecule * molecule;
       unsigned int version;
     } _molecule;
 

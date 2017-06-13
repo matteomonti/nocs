@@ -26,6 +26,7 @@ class engine;
 #include "data/set.hpp"
 #include "grid.hpp"
 #include "event/event.h"
+#include "callback/dispatcher.h"
 
 class engine
 {
@@ -102,6 +103,8 @@ private:
   hashtable <size_t, molecule *> * _tags;
   set <molecule *> _garbage;
 
+  dispatcher _dispatcher;
+
   double _time;
 
 public:
@@ -130,6 +133,8 @@ public:
 
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, molecule> :: value> :: type * = nullptr> void each(const uint8_t &, const lambda &) const; // TODO: Add validation for lambda
+
+  template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value> :: type * = nullptr> size_t on(const lambda &); // TODO: Add validation for lambda
 
 private:
 

@@ -164,6 +164,7 @@ void engine :: run(const double & time)
     if(event->resolve())
       event->each(this, &engine :: refresh);
 
+    event->callback(this->_dispatcher);
     delete event;
   }
 

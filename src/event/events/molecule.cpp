@@ -1,5 +1,6 @@
 #include "molecule.hpp"
 #include "engine/engine.h"
+#include "callback/dispatcher.h"
 
 namespace events
 {
@@ -168,6 +169,11 @@ namespace events
   {
     (engine->*callback)(*(this->_alpha.molecule), 0);
     (engine->*callback)(*(this->_beta.molecule), this->_alpha.molecule->tag.id());
+  }
+
+  void molecule :: callback(dispatcher & dispatcher)
+  {
+    dispatcher.trigger(*this);
   }
 
   // Private methods

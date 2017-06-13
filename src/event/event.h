@@ -15,6 +15,7 @@ class event;
 #define __forward__
 #include "engine/engine.h"
 #include "molecule/molecule.h"
+#include "callback/dispatcher.h"
 #undef __forward__
 
 class event
@@ -68,6 +69,7 @@ public:
   virtual bool current() = 0;
   virtual bool resolve() = 0;
   virtual void each(engine *, void (engine :: *)(molecule &, const size_t &)) = 0;
+  virtual void callback(dispatcher &);
 
   // Standard Output
 
