@@ -52,7 +52,7 @@ namespace reports
 
         const vec & before() const;
         const vec & after() const;
-        const vec & delta() const;
+        const vec delta() const;
 
       } velocity;
 
@@ -71,8 +71,8 @@ namespace reports
         // Getters
 
         const vec & before() const;
-        const vec & after() const;
-        const vec & delta() const;
+        const vec after() const;
+        const vec delta() const;
 
       } momentum;
 
@@ -92,7 +92,7 @@ namespace reports
 
         const double & before() const;
         const double & after() const;
-        const double & delta() const;
+        const double delta() const;
 
       } angular_velocity;
 
@@ -111,8 +111,8 @@ namespace reports
         // Getters
 
         const double & before() const;
-        const double & after() const;
-        const double & delta() const;
+        const double after() const;
+        const double delta() const;
 
       } angular_momentum;
 
@@ -130,9 +130,9 @@ namespace reports
 
         // Getters
 
-        const double & before() const;
-        const double & after() const;
-        const double & delta() const;
+        const double before() const;
+        const double after() const;
+        const double delta() const;
 
       } energy;
 
@@ -180,7 +180,7 @@ namespace reports
 
         const vec & before() const;
         const vec & after() const;
-        const vec & delta() const;
+        const vec delta() const;
 
       } velocity;
 
@@ -199,8 +199,8 @@ namespace reports
         // Getters
 
         const vec & before() const;
-        const vec & after() const;
-        const vec & delta() const;
+        const vec after() const;
+        const vec delta() const;
 
       } momentum;
 
@@ -220,7 +220,7 @@ namespace reports
 
         const double & before() const;
         const double & after() const;
-        const double & delta() const;
+        const double delta() const;
 
       } angular_velocity;
 
@@ -239,8 +239,8 @@ namespace reports
         // Getters
 
         const double & before() const;
-        const double & after() const;
-        const double & delta() const;
+        const double after() const;
+        const double delta() const;
 
       } angular_momentum;
 
@@ -258,9 +258,9 @@ namespace reports
 
         // Getters
 
-        const double & before() const;
-        const double & after() const;
-        const double & delta() const;
+        const double before() const;
+        const double after() const;
+        const double delta() const;
 
       } energy;
 

@@ -121,7 +121,7 @@ const int32_t & molecule :: version() const
 
 const double molecule :: energy() const
 {
-  return 0.5 * ( (this->_mass * (this->_velocity * this->_velocity)) + (this->_inertia_moment * this->_angular_velocity * this->_angular_velocity) );
+  return 0.5 * ( (this->_mass * (~this->_velocity)) + (this->_inertia_moment * this->_angular_velocity * this->_angular_velocity) );
 }
 
 // Methods
