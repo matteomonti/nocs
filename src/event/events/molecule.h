@@ -58,6 +58,20 @@ namespace events
       unsigned int version;
     } _beta;
 
+    // Working members
+
+    vec v1;
+    vec v2;
+    vec p1;
+    vec p2;
+    double av1;
+    double av2;
+    double l1;
+    double l2;
+    vec r1;
+    vec r2;
+    double module;
+
   public:
 
     // Constructors

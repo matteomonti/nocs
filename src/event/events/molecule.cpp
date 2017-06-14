@@ -140,22 +140,28 @@ namespace events
 
     vec n = (b - a).normalize(); // Versor of the impulse from alpha to beta
 
+    this->v1 = this->_alpha.molecule->velocity();
+    this->v2 = this->_beta.molecule->velocity();
+
+    this->av1 = this->_alpha.molecule->angular_velocity();
+    this->av2 = this->_beta.molecule->angular_velocity();
+
     double m1 = this->_alpha.molecule->mass();
     double m2 = this->_beta.molecule->mass();
 
     double i1 = this->_alpha.molecule->inertia_moment();
     double i2 = this->_beta.molecule->inertia_moment();
 
-    double l1 = this->_alpha.molecule->angular_velocity() * i1;
-    double l2 = this->_beta.molecule->angular_velocity() * i2;
+    this->l1 = this->av1 * i1;
+    this->l2 = this->av2 * i2;
 
-    vec p1 = m1 * this->_alpha.molecule->velocity();
-    vec p2 = m2 * this->_beta.molecule->velocity();
+    this->p1 = m1 * this->v1;
+    this->p2 = m2 * this->v2;
 
-    vec r1 = (*(this->_alpha.molecule))[this->_alpha.atom].position() % this->_alpha.molecule->orientation() + (*(this->_alpha.molecule))[this->_alpha.atom].radius() * n;
-    vec r2 = (*(this->_beta.molecule))[this->_beta.atom].position() % this->_beta.molecule->orientation() - (*(this->_beta.molecule))[this->_beta.atom].radius() * n;
+    this->r1 = (*(this->_alpha.molecule))[this->_alpha.atom].position() % this->_alpha.molecule->orientation() + (*(this->_alpha.molecule))[this->_alpha.atom].radius() * n;
+    this->r2 = (*(this->_beta.molecule))[this->_beta.atom].position() % this->_beta.molecule->orientation() - (*(this->_beta.molecule))[this->_beta.atom].radius() * n;
 
-    double module = (-(2 * p1 * n) / (m1) + (2 * p2 * n) / (m2) - (2 * l1 * (r1 ^ n)) / (i1) + (2 * l2 * (r2 ^ n)) / (i2)) / ((1 / m1) + (1 / m2) + (r1 ^ n) * (r1 ^ n) / (i1) + (r2 ^ n) * (r2 ^ n) / (i2)); // Module of the impulse
+    this->module = (-(2 * p1 * n) / (m1) + (2 * p2 * n) / (m2) - (2 * l1 * (r1 ^ n)) / (i1) + (2 * l2 * (r2 ^ n)) / (i2)) / ((1 / m1) + (1 / m2) + (r1 ^ n) * (r1 ^ n) / (i1) + (r2 ^ n) * (r2 ^ n) / (i2)); // Module of the impulse
 
     // Update molecules' velocity and angular_velocity
 

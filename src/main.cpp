@@ -77,7 +77,12 @@ int main()
 
   engine.on <events :: molecule> ([](const reports :: molecule & report)
   {
-    std :: cout << "Molecule event between " << report.alpha() << " and " << report.beta() << std :: endl;
+    std :: cout << "Molecule event between " << report.alpha.id() << " and " << report.beta.id() << std :: endl;
+    std :: cout << "General info about " << report.alpha.id() << ":" << std :: endl
+    << "Velocity before: " << report.alpha.velocity.before() << std :: endl
+    << "Velocity after: " << report.alpha.velocity.after() << std :: endl;
+
+
   });
 
   engine.add(alpha);
