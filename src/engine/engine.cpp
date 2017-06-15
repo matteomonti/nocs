@@ -119,6 +119,14 @@ const size_t & engine :: fineness() const
 
 // Methods
 
+void engine :: add(const bumper & bumper)
+{
+  class bumper * entry = new class bumper(bumper);
+  this->_bumpers.add(entry);
+
+  this->_grid.add(*entry);
+}
+
 size_t engine :: add(const molecule & molecule)
 {
   class molecule * entry = new class molecule(molecule);
@@ -166,7 +174,7 @@ void engine :: run(const double & time)
       event->each(this, &engine :: refresh);
       event->callback(this->_dispatcher);
     }
-    
+
     delete event;
   }
 

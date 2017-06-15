@@ -128,12 +128,14 @@ namespace events
 
     double m = this->_molecule.molecule->mass();
     double i = this->_molecule.molecule->inertia_moment();
-    double w = this->_molecule.molecule->angular_velocity();
-    vec v = this->_molecule.molecule->velocity();
+    this->av = this->_molecule.molecule->angular_velocity();
+    this->l = i * this->av;
+    this->v = this->_molecule.molecule->velocity();
+    this->p = this->v * m;
 
-    vec r = (*(this->_molecule.molecule))[this->_molecule.atom].position() % this->_molecule.molecule->orientation() + (*(this->_molecule.molecule))[this->_molecule.atom].radius() * (-n);
+    this->r = (*(this->_molecule.molecule))[this->_molecule.atom].position() % this->_molecule.molecule->orientation() + (*(this->_molecule.molecule))[this->_molecule.atom].radius() * (-n);
 
-    double module = (2 * v * n + 2 * w * (r ^ n)) / -(1 / m + ((r ^ n) * (r ^ n)) / i); // TODO: n-ple check this equation when developing tests, but it should be right.
+    this->module = (2 * v * n + 2 * av * (r ^ n)) / -(1 / m + ((r ^ n) * (r ^ n)) / i); // TODO: n-ple check this equation when developing tests, but it should be right.
 
     // Update molecule velocity and angular_velocity
 
@@ -145,6 +147,11 @@ namespace events
   void bumper :: each(engine * engine, void (engine :: * callback)(:: molecule &, const size_t &))
   {
     (engine->*callback)(*(this->_molecule.molecule), 0);
+  }
+
+  void bumper :: callback(dispatcher & dispatcher)
+  {
+    dispatcher.trigger(*this);
   }
 
   // Private Methods

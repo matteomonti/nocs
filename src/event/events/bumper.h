@@ -16,6 +16,7 @@ namespace events
 
 #define __forward__
 #include "engine/engine.h"
+#include "event/reports/bumper.h"
 #undef __forward__
 
 // Includes
@@ -31,6 +32,10 @@ namespace events
 {
   class bumper : public event
   {
+    // Friends
+
+    friend class reports :: report <events :: bumper>;
+
     // Members
 
     struct
@@ -43,6 +48,16 @@ namespace events
     :: bumper * _bumper;
     int _fold;
 
+    // Working members
+
+    vec v;
+    vec p;
+    double av;
+    double l;
+    vec r;
+    double module;
+
+
   public:
 
     // Constructors
@@ -54,8 +69,9 @@ namespace events
     bool current();
     bool resolve();
     void each(engine *, void (engine :: *)(:: molecule &, const size_t &));
+    void callback(dispatcher &);
 
-    // Private Methods
+    // Private methods
 
     std :: ostream & print(std :: ostream &) const;
 

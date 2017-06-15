@@ -1,9 +1,14 @@
 // Forward declarations
 
+#ifndef __nobb__event__reports__reportforward
+#define __nobb__event__reports__reportforward
+
 namespace reports
 {
-  class molecule;
+  template <typename> class report;
 };
+
+#endif
 
 #if !defined(__forward__) && !defined(__nobb__event__reports__molecule__h)
 #define __nobb__event__reports__molecule__h
@@ -24,7 +29,7 @@ namespace reports
 
 namespace reports
 {
-  class molecule
+  template <> class report <events :: molecule>
   {
     // Public nested classes
 
@@ -296,7 +301,7 @@ namespace reports
 
     // Constructors
 
-    molecule(const events :: molecule &);
+    report(const events :: molecule &);
 
     // Getters
 

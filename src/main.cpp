@@ -7,6 +7,7 @@
 
 #include "engine/engine.hpp"
 #include "molecule/molecule.h"
+#include "elements/bumper.h"
 #include "graphics/window.h"
 
 
@@ -73,9 +74,44 @@ int main()
     M_PI/4
   );
 
+  bumper bumpy_bumpy
+  (
+    {0.6, 0.6},
+    0.2
+  );
+
   engine engine(4);
 
-  engine.on <events :: molecule> ([](const reports :: molecule & report)
+  engine.on <events :: bumper> ([](const reports :: report <events :: bumper> & report)
+  {
+    std :: cout << "Bumper event between molecule " << report.id() << " and a bumper." << std :: endl;
+
+    std :: cout << "General info about " << report.id() << ":" << std :: endl
+    << "Velocity before:\t" << report.velocity.before() << std :: endl
+    << "Velocity after:\t" << report.velocity.after() << std :: endl
+    << "Delta Velocity:\t" << report.velocity.delta() << std :: endl
+    << "Momentum before:\t" << report.momentum.before() << std :: endl
+    << "Momentum after:\t" << report.momentum.after() << std :: endl
+    << "Delta Momentum:\t" << report.momentum.delta() << std :: endl
+    << "Angular_velocity before:\t" << report.angular_velocity.before() << std :: endl
+    << "Angular_velocity after:\t" << report.angular_velocity.after() << std :: endl
+    << "Delta Angular_velocity:\t" << report.angular_velocity.delta() << std :: endl
+    << "angular_momentum before:\t" << report.angular_momentum.before() << std :: endl
+    << "angular_momentum after:\t" << report.angular_momentum.after() << std :: endl
+    << "Delta angular_momentum:\t" << report.angular_momentum.delta() << std :: endl
+    << "energy before:\t" << report.energy.before() << std :: endl
+    << "energy after:\t" << report.energy.after() << std :: endl
+    << "Delta energy:\t" << report.energy.delta() << std :: endl
+    << "Atom involved:\t" << report.atom() << std :: endl
+    << "Molecule mass:\t" << report.mass() << std :: endl << std :: endl;
+
+    std :: cout << "General info about bumper:" << std :: endl
+    << "Position: " << report.bumper.position() << std :: endl
+    << "Radius: " << report.bumper.radius() << std :: endl << std :: endl;
+
+  });
+
+  engine.on <events :: molecule> ([](const reports :: report <events :: molecule> & report)
   {
     std :: cout << "Molecule event between " << report.alpha.id() << " and " << report.beta.id() << std :: endl << std :: endl;
 
@@ -119,14 +155,19 @@ int main()
 
   });
 
+  // ADD FIRSTLY ALL THE BUMPERS!!!
+  engine.add(bumpy_bumpy);
+
   engine.add(alpha);
   engine.add(beta);
+
   /*
   engine.add(gamma);
   engine.add(delta);
   engine.add(epsilon);
   engine.add(zeta);
   */
+
   window my_window;
 
   for(double t = 0;; t += 0.003)

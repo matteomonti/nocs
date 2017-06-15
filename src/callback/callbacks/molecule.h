@@ -1,6 +1,11 @@
 // Forward declarations
 
+#ifndef __nobb__callback__callbacks__callbackforward
+#define __nobb__callback__callbacks__callbackforward
+
 template <typename, typename = void> class callback;
+
+#endif
 
 #if !defined(__forward__) && !defined(__nobb__callback__callbacks__molecule__h)
 #define __nobb__callback__callbacks__molecule__h

@@ -7,14 +7,13 @@
 // Constructors
 
 template <typename lambda> callback <events :: molecule, lambda> :: callback(const lambda & callback) : _callback(callback)
-{
-}
+{}
 
 // Methods
 
 template <typename lambda> void callback <events :: molecule, lambda> :: trigger(const events :: molecule & event)
 {
-  this->_callback(reports :: molecule(event));
+  this->_callback(reports :: report <events :: molecule>(event));
 }
 
 #endif

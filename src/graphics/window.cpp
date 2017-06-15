@@ -15,6 +15,11 @@ void window :: draw(const engine & engine)
   {
     this->draw(molecule);
   });
+
+  engine.each <bumper> ([&](const bumper & bumper)
+  {
+    this->draw(bumper);
+  });
 }
 
 void window :: draw(const engine & engine, const uint8_t & tag)
@@ -54,5 +59,5 @@ void window :: grid(const engine & engine)
   {
     this->line({step * i, 0.}, {step * i, 1.});
     this->line({0., step * i}, {1., step * i});
-  }  
+  }
 }
