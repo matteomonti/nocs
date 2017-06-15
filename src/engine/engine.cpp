@@ -136,6 +136,18 @@ void engine :: add(const bumper & bumper)
   this->_bumpers.add(entry);
 
   this->_grid.add(*entry);
+
+  for(ssize_t dx = -1; dx <= 1; dx++)
+    for(ssize_t dy = -1; dy <= 1; dy++)
+    {
+      ssize_t x = (bumper.mark.x() + this->_grid.fineness() + dx) % this->_grid.fineness();
+      ssize_t y = (bumper.mark.y() + this->_grid.fineness() + dy) % this->_grid.fineness();
+      
+      this->_grid.each <class molecule> (x, y, [&](class molecule & molecule)
+      {
+        this->refresh(molecule);
+      });
+    }
 }
 
 void engine :: remove(const size_t & id)

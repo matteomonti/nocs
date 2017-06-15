@@ -10,7 +10,6 @@
 #include "elements/bumper.h"
 #include "graphics/window.h"
 
-
 double rnd1()
 {
   return ((double) rand()) / RAND_MAX - 0.5;
@@ -51,24 +50,6 @@ int main()
   (
     {{{0, 0}, 1, 0.025}, {{0.05, 0}, 1, 0.025}, {{0.1, 0}, 1, 0.025}, {{0.15, 0}, 1, 0.025}, {{0, 0.05}, 1, 0.025}, {{0, 0.1}, 1, 0.025}, {{0, 0.15}, 1, 0.025}},
     {0.4, 0.4},
-    {rnd1(), rnd1()},
-    0,
-    M_PI/4
-  );
-
-  molecule epsilon
-  (
-    {{{0, 0}, 1, 0.025}, {{0.05, 0}, 1, 0.025}, {{0.1, 0}, 1, 0.025}, {{0.15, 0}, 1, 0.025}, {{0, 0.05}, 1, 0.025}, {{0, 0.1}, 1, 0.025}, {{0, 0.15}, 1, 0.025}},
-    {0.5, 0.5},
-    {rnd1(), rnd1()},
-    0,
-    M_PI/4
-  );
-
-  molecule zeta
-  (
-    {{{0, 0}, 1, 0.025}, {{0.05, 0}, 1, 0.025}, {{0.1, 0}, 1, 0.025}, {{0.15, 0}, 1, 0.025}, {{0, 0.05}, 1, 0.025}, {{0, 0.1}, 1, 0.025}, {{0, 0.15}, 1, 0.025}},
-    {0.6, 0.6},
     {rnd1(), rnd1()},
     0,
     M_PI/4
@@ -155,18 +136,12 @@ int main()
 
   });
 
-  // ADD FIRSTLY ALL THE BUMPERS!!!
-  engine.add(bumpy_bumpy);
-
   engine.add(alpha);
   engine.add(beta);
-
-  /*
   engine.add(gamma);
   engine.add(delta);
-  engine.add(epsilon);
-  engine.add(zeta);
-  */
+
+  engine.add(bumpy_bumpy);
 
   window my_window;
 

@@ -57,7 +57,6 @@ namespace events
     vec r;
     double module;
 
-
   public:
 
     // Constructors

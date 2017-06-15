@@ -12,6 +12,7 @@ class bumper;
 // Includes
 
 #include "geometry/vec.h"
+#include "engine/grid.h"
 
 class bumper
 {
@@ -28,6 +29,10 @@ public:
   bumper(const vec &, const double &);
 
 public:
+
+  // Public members
+
+  grid :: mark mark;
 
   // Getters
 

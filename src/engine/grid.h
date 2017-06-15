@@ -14,12 +14,13 @@ class grid;
 
 #define __forward__
 #include "molecule/molecule.h"
+#include "elements/bumper.h"
 #undef __forward__
 
 // Includes
 
+#include "geometry/vec.h"
 #include "data/set.hpp"
-#include "elements/bumper.h"
 
 class grid
 {
@@ -84,6 +85,7 @@ private:
   // Private methods
 
   void add(molecule &, const size_t &, const size_t &);
+  void add(bumper &, const size_t &, const size_t &);
 };
 
 #endif

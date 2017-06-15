@@ -1,5 +1,6 @@
 #include "grid.hpp"
 #include "molecule/molecule.h"
+#include "elements/bumper.h"
 
 // Nested classes
 
@@ -60,7 +61,7 @@ void grid :: add(molecule & molecule)
 
 void grid :: add(bumper & bumper)
 {
-  this->_bumpers[(size_t) (bumper.position().x * this->_fineness)][(size_t) (bumper.position().y * this->_fineness)].add(&bumper);
+  this->add(bumper, (size_t) (bumper.position().x * this->_fineness), (size_t) (bumper.position().y * this->_fineness));
 }
 
 void grid :: remove(molecule & molecule)
@@ -117,4 +118,12 @@ void grid :: add(molecule & molecule, const size_t & x, const size_t & y)
   molecule.mark._y = y;
 
   this->_molecules[molecule.mark._x][molecule.mark._y].add(&molecule);
+}
+
+void grid :: add(bumper & bumper, const size_t & x, const size_t & y)
+{
+  bumper.mark._x = x;
+  bumper.mark._y = y;
+
+  this->_bumpers[bumper.mark._x][bumper.mark._y].add(&bumper);
 }
