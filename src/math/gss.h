@@ -45,6 +45,7 @@ public:
   // Static members
 
   static constexpr double epsilon = 5. * std :: numeric_limits <double> :: epsilon();
+  static constexpr unsigned int rounds = 256;
 
   // Static methods
 

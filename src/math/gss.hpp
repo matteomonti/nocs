@@ -12,7 +12,7 @@ template <typename type, typename std :: enable_if <gss :: valid <type> :: value
   double c = b - (b - a) / ratio;
   double d = a + (b - a) / ratio;
 
-  while(fabs(c - d) > std :: numeric_limits <double> :: epsilon())
+  for(unsigned int i = 0; fabs(c - d) > std :: numeric_limits <double> :: epsilon() && i < rounds; i++)
   {
     if(f(c) < f(d))
       b = d;
@@ -33,7 +33,7 @@ template <typename type, typename std :: enable_if <gss :: valid <type> :: value
   double c = b - (b - a) / ratio;
   double d = a + (b - a) / ratio;
 
-  while(fabs(c - d) > std :: numeric_limits <double> :: epsilon())
+  for(unsigned int i = 0; fabs(c - d) > std :: numeric_limits <double> :: epsilon() && i < rounds; i++)
   {
     if(f(c) > f(d))
       b = d;

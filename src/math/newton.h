@@ -13,8 +13,8 @@
 namespace newton
 {
   constexpr double epsilon = 5. * std :: numeric_limits <double> :: epsilon();
-  constexpr unsigned int rounds = 50;
-  
+  constexpr unsigned int rounds = 128;
+
   double quadratic(const double &, const double &, const double &, double = 0);
 };
 
