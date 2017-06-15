@@ -34,7 +34,7 @@ namespace events
   {
     // Friends
 
-    friend class reports :: report <events :: bumper>;
+    friend class report <events :: bumper>;
 
     // Members
 

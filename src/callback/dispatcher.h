@@ -24,8 +24,10 @@ public:
 
   size_t add(callback <events :: molecule> *);
   size_t add(callback <events :: bumper> *);
+
   void trigger(const events :: molecule &);
   void trigger(const events :: bumper &);
+  
   template <typename etype> void remove(const size_t &);
 
 private:

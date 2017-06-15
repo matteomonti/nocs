@@ -14,7 +14,7 @@ template <typename lambda> callback <events :: bumper, lambda> :: callback(const
 
 template <typename lambda> void callback <events :: bumper, lambda> :: trigger(const events :: bumper & event)
 {
-  this->_callback(reports :: report <events :: bumper>(event));
+  this->_callback(report <events :: bumper> (event));
 }
 
 #endif

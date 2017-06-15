@@ -82,7 +82,7 @@ int main()
 
   engine engine(4);
 
-  engine.on <events :: bumper> ([](const reports :: report <events :: bumper> & report)
+  engine.on <events :: bumper> ([](const report <events :: bumper> & report)
   {
     std :: cout << "Bumper event between molecule " << report.id() << " and a bumper." << std :: endl;
 
@@ -111,7 +111,7 @@ int main()
 
   });
 
-  engine.on <events :: molecule> ([](const reports :: report <events :: molecule> & report)
+  engine.on <events :: molecule> ([](const report <events :: molecule> & report)
   {
     std :: cout << "Molecule event between " << report.alpha.id() << " and " << report.beta.id() << std :: endl << std :: endl;
 
@@ -170,7 +170,7 @@ int main()
 
   window my_window;
 
-  for(double t = 0;; t += 0.003)
+  for(double t = 0;; t += 0.03)
   {
     engine.run(t);
 

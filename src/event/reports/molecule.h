@@ -1,14 +1,6 @@
 // Forward declarations
 
-#ifndef __nobb__event__reports__reportforward
-#define __nobb__event__reports__reportforward
-
-namespace reports
-{
-  template <typename> class report;
-};
-
-#endif
+template <typename> class report;
 
 #if !defined(__forward__) && !defined(__nobb__event__reports__molecule__h)
 #define __nobb__event__reports__molecule__h
@@ -27,122 +19,20 @@ namespace reports
 #include "event/events/molecule.h"
 #undef __forward__
 
-namespace reports
+template <> class report <events :: molecule>
 {
-  template <> class report <events :: molecule>
+  // Public nested classes
+
+public:
+
+  class alpha
   {
     // Public nested classes
 
   public:
 
-    class alpha
+    class velocity
     {
-      // Public nested classes
-
-    public:
-
-      class velocity
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        velocity(const events :: molecule &);
-
-        // Getters
-
-        const vec & before() const;
-        const vec & after() const;
-        const vec delta() const;
-
-      } velocity;
-
-      class momentum
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        momentum(const events :: molecule &);
-
-        // Getters
-
-        const vec & before() const;
-        const vec after() const;
-        const vec delta() const;
-
-      } momentum;
-
-      class angular_velocity
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        angular_velocity(const events :: molecule &);
-
-        // Getters
-
-        const double & before() const;
-        const double & after() const;
-        const double delta() const;
-
-      } angular_velocity;
-
-      class angular_momentum
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        angular_momentum(const events :: molecule &);
-
-        // Getters
-
-        const double & before() const;
-        const double after() const;
-        const double delta() const;
-
-      } angular_momentum;
-
-      class energy
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        energy(const events :: molecule &);
-
-        // Getters
-
-        const double before() const;
-        const double after() const;
-        const double delta() const;
-
-      } energy;
-
-    private:
-
       // Members
 
       const events :: molecule & _event;
@@ -151,126 +41,18 @@ namespace reports
 
       // Constructors
 
-      alpha(const events :: molecule &);
+      velocity(const events :: molecule &);
 
       // Getters
 
-      const size_t & id() const;
-      const size_t & atom() const;
-      const vec & position() const;
-      const double & orientation() const;
-      const double & mass() const;
+      const vec & before() const;
+      const vec & after() const;
+      const vec delta() const;
 
-    } alpha;
+    } velocity;
 
-    class beta
+    class momentum
     {
-      // Public nested classes
-
-    public:
-
-      class velocity
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        velocity(const events :: molecule &);
-
-        // Getters
-
-        const vec & before() const;
-        const vec & after() const;
-        const vec delta() const;
-
-      } velocity;
-
-      class momentum
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        momentum(const events :: molecule &);
-
-        // Getters
-
-        const vec & before() const;
-        const vec after() const;
-        const vec delta() const;
-
-      } momentum;
-
-      class angular_velocity
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        angular_velocity(const events :: molecule &);
-
-        // Getters
-
-        const double & before() const;
-        const double & after() const;
-        const double delta() const;
-
-      } angular_velocity;
-
-      class angular_momentum
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        angular_momentum(const events :: molecule &);
-
-        // Getters
-
-        const double & before() const;
-        const double after() const;
-        const double delta() const;
-
-      } angular_momentum;
-
-      class energy
-      {
-        // Members
-
-        const events :: molecule & _event;
-
-      public:
-
-        // Constructors
-
-        energy(const events :: molecule &);
-
-        // Getters
-
-        const double before() const;
-        const double after() const;
-        const double delta() const;
-
-      } energy;
-
-    private:
-
       // Members
 
       const events :: molecule & _event;
@@ -279,17 +61,75 @@ namespace reports
 
       // Constructors
 
-      beta(const events :: molecule &);
+      momentum(const events :: molecule &);
 
       // Getters
 
-      const size_t & id() const;
-      const size_t & atom() const;
-      const vec & position() const;
-      const double & orientation() const;
-      const double & mass() const;
+      const vec & before() const;
+      const vec after() const;
+      const vec delta() const;
 
-    } beta;
+    } momentum;
+
+    class angular_velocity
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      angular_velocity(const events :: molecule &);
+
+      // Getters
+
+      const double & before() const;
+      const double & after() const;
+      const double delta() const;
+
+    } angular_velocity;
+
+    class angular_momentum
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      angular_momentum(const events :: molecule &);
+
+      // Getters
+
+      const double & before() const;
+      const double after() const;
+      const double delta() const;
+
+    } angular_momentum;
+
+    class energy
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      energy(const events :: molecule &);
+
+      // Getters
+
+      const double before() const;
+      const double after() const;
+      const double delta() const;
+
+    } energy;
 
   private:
 
@@ -301,14 +141,162 @@ namespace reports
 
     // Constructors
 
-    report(const events :: molecule &);
+    alpha(const events :: molecule &);
 
     // Getters
 
-    const double & time() const;
-    const double & module() const;
-  };
+    const size_t & id() const;
+    const size_t & atom() const;
+    const vec & position() const;
+    const double & orientation() const;
+    const double & mass() const;
 
+  } alpha;
+
+  class beta
+  {
+    // Public nested classes
+
+  public:
+
+    class velocity
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      velocity(const events :: molecule &);
+
+      // Getters
+
+      const vec & before() const;
+      const vec & after() const;
+      const vec delta() const;
+
+    } velocity;
+
+    class momentum
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      momentum(const events :: molecule &);
+
+      // Getters
+
+      const vec & before() const;
+      const vec after() const;
+      const vec delta() const;
+
+    } momentum;
+
+    class angular_velocity
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      angular_velocity(const events :: molecule &);
+
+      // Getters
+
+      const double & before() const;
+      const double & after() const;
+      const double delta() const;
+
+    } angular_velocity;
+
+    class angular_momentum
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      angular_momentum(const events :: molecule &);
+
+      // Getters
+
+      const double & before() const;
+      const double after() const;
+      const double delta() const;
+
+    } angular_momentum;
+
+    class energy
+    {
+      // Members
+
+      const events :: molecule & _event;
+
+    public:
+
+      // Constructors
+
+      energy(const events :: molecule &);
+
+      // Getters
+
+      const double before() const;
+      const double after() const;
+      const double delta() const;
+
+    } energy;
+
+  private:
+
+    // Members
+
+    const events :: molecule & _event;
+
+  public:
+
+    // Constructors
+
+    beta(const events :: molecule &);
+
+    // Getters
+
+    const size_t & id() const;
+    const size_t & atom() const;
+    const vec & position() const;
+    const double & orientation() const;
+    const double & mass() const;
+
+  } beta;
+
+private:
+
+  // Members
+
+  const events :: molecule & _event;
+
+public:
+
+  // Constructors
+
+  report(const events :: molecule &);
+
+  // Getters
+
+  const double & time() const;
+  const double & module() const;
 };
 
 #endif

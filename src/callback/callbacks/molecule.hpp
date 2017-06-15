@@ -13,7 +13,7 @@ template <typename lambda> callback <events :: molecule, lambda> :: callback(con
 
 template <typename lambda> void callback <events :: molecule, lambda> :: trigger(const events :: molecule & event)
 {
-  this->_callback(reports :: report <events :: molecule>(event));
+  this->_callback(report <events :: molecule>(event));
 }
 
 #endif

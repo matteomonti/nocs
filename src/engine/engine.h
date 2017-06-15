@@ -123,9 +123,9 @@ public:
 
   // Methods
 
+  size_t add(const molecule &);
   void add(const bumper &);
 
-  size_t add(const molecule &);
   void remove(const size_t &);
 
   void tag(const size_t &, const uint8_t &);
@@ -138,9 +138,7 @@ public:
 
   template <typename type, typename lambda, typename std :: enable_if <std :: is_same <type, bumper> :: value> :: type * = nullptr> void each(const lambda &) const; // TODO: Add validation for lambda
 
-
   template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value> :: type * = nullptr> size_t on(const lambda &); // TODO: Add validation for lambda
-
   template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const lambda &); // TODO: Add validation for lambda
 
 private:

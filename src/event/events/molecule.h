@@ -39,7 +39,7 @@ namespace events
 
     // Friends
 
-    friend class reports :: report <events :: molecule>;
+    friend class report <events :: molecule>;
 
     // Members
 
