@@ -27,10 +27,15 @@ class engine;
 #include "grid.hpp"
 #include "event/event.h"
 #include "callback/dispatcher.h"
+#include "resetter.h"
 
 class engine
 {
 public:
+
+  // Friends
+
+  friend class resetter;
 
   // Nested classes
 
@@ -115,6 +120,10 @@ private:
   double _time;
 
 public:
+
+  // Public members
+
+  resetter reset;
 
   // Constructors
 

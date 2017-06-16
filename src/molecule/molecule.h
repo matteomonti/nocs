@@ -103,6 +103,7 @@ public:
   void integrate(const double &);
 	void impulse(const vec &, const vec &);
 	void teleport(const vec :: fold &);
+  void scale_energy(const double &);
 
   void disable();
 

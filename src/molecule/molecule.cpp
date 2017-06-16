@@ -145,6 +145,14 @@ void molecule :: teleport(const vec :: fold & fold)
   this->_position += vec(fold);
 }
 
+void molecule :: scale_energy(const double & target)
+{
+  double ratio = sqrt(target / this->energy());
+
+  this->_velocity *= ratio;
+  this->_angular_velocity *= ratio;
+}
+
 void molecule :: disable()
 {
   this->_version = -1;

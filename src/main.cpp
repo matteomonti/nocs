@@ -60,23 +60,28 @@ int main()
 
   engine.elasticity(big, big, 0.4);
 
-  for(double t = 0;; t += 0.03)
+  for(double t = 0;; t += 1.)
   {
-    engine.run(t);
+    engine.reset.energy.tag(small, 10.);
 
-    double energy = 0;
-    engine.each <molecule> ([&](const molecule & molecule)
+    for(double dt = 0.; dt < 1.; dt += 0.03)
     {
-      energy += molecule.energy();
-    });
+      engine.run(t + dt);
 
-    std :: cout << energy << std :: endl;
+      double energy = 0;
+      engine.each <molecule> ([&](const molecule & molecule)
+      {
+        energy += molecule.energy();
+      });
 
-    my_window.clear();
-    my_window.draw(engine);
-    my_window.flush();
+      std :: cout << energy << std :: endl;
 
-    usleep(1.e4);
+      my_window.clear();
+      my_window.draw(engine);
+      my_window.flush();
+
+      usleep(1.e4);
+    }
   }
 }
 

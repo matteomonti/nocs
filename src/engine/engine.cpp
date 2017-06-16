@@ -106,7 +106,7 @@ size_t engine :: tag :: autoincrement = 1;
 
 // Constructors
 
-engine :: engine(const size_t & fineness) : _time(0), _grid(fineness), _tags(new hashtable <size_t, molecule *> [256])
+engine :: engine(const size_t & fineness) : _time(0), _grid(fineness), _tags(new hashtable <size_t, molecule *> [256]), reset(*this)
 {
   this->_elasticity.all = 1.;
 
