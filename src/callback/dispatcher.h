@@ -45,7 +45,14 @@ class dispatcher
 
   struct
   {
+    hashtable <size_t, type> types;
     hashtable <size_t, callback <events :: bumper> *> all;
+
+    struct
+    {
+      hashtable <size_t, std :: tuple <callback <events :: bumper> *, uint8_t>> handles;
+      set <callback <events :: bumper> *> map[255];
+    } stag;
   } _bumper;
 
 public:
@@ -57,6 +64,7 @@ public:
   size_t add(callback <events :: molecule> *, const uint8_t &, const uint8_t &);
 
   size_t add(callback <events :: bumper> *);
+  size_t add(callback <events :: bumper> *, const uint8_t &);
 
   void trigger(const events :: molecule &);
   void trigger(const events :: bumper &);

@@ -1,5 +1,6 @@
 #include "dispatcher.h"
 #include "event/events/molecule.h"
+#include "event/events/bumper.h"
 
 // Methods
 
@@ -41,9 +42,22 @@ size_t dispatcher :: add(callback <events :: molecule> * event, const uint8_t & 
 size_t dispatcher :: add(callback <events :: bumper> * event)
 {
   size_t id = autoincrement++;
+
+  this->_bumper.types.add(id, all);
   this->_bumper.all.add(id, event);
 
   return id;
+}
+
+size_t dispatcher :: add(callback <events :: bumper> * event, const uint8_t & tag)
+{
+    size_t id = autoincrement++;
+
+    this->_bumper.types.add(id, stag);
+    this->_bumper.stag.handles.add(id, {event, tag});
+    this->_bumper.stag.map[tag].add(event);
+
+    return id;
 }
 
 void dispatcher :: trigger(const events :: molecule & event)
@@ -91,10 +105,21 @@ void dispatcher :: trigger(const events :: molecule & event)
 
 void dispatcher :: trigger(const events :: bumper & event)
 {
-  this->_bumper.all.each([&](callback <events :: bumper> * callback)
+  auto trigger = [&](callback <events :: bumper> * callback)
   {
     callback->trigger(event);
-  });
+  };
+
+  this->_bumper.all.each(trigger);
+
+  bool striggered[255];
+  memset(striggered, '\0', 255 * sizeof(bool));
+
+  for(size_t i = 0; i < event.molecule().tag.size(); i++)
+  {
+    striggered[event.molecule().tag[i]] = true;
+    this->_bumper.stag.map[event.molecule().tag[i]].each(trigger);
+  }
 }
 
 template <> void dispatcher :: remove <events :: molecule> (const size_t & id)
@@ -132,7 +157,26 @@ template <> void dispatcher :: remove <events :: molecule> (const size_t & id)
 
 template <> void dispatcher :: remove <events :: bumper> (const size_t & id)
 {
-  this->_bumper.all.remove(id);
+  switch(this->_bumper.types[id])
+  {
+    case all:
+    {
+      this->_bumper.all.remove(id);
+      break;
+    }
+    case stag:
+    {
+      auto handle = this->_bumper.stag.handles[id];
+
+      this->_bumper.stag.handles.remove(id);
+      this->_bumper.stag.map[std :: get <1> (handle)].remove(std :: get <0> (handle));
+
+      break;
+    }
+    default:
+    {
+    }
+  }
 }
 
 // Private static members

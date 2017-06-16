@@ -21,7 +21,7 @@ int main()
 {
   srand(0);
 
-  engine engine(8);
+  engine engine(4);
 
 
   std :: cout << "SMALL IS " << small << std :: endl;
@@ -76,7 +76,7 @@ int main()
     {
       {{0, 0}, 1, 0.05}
     },
-    {0.5, 0.5},
+    {0.5, 0.8},
     {rnd1(), rnd1()},
     0,
     M_PI/4
@@ -85,17 +85,28 @@ int main()
   size_t big2id = engine.add(big2);
   engine.tag(big2id, big);
 
+  bumper bumpy
+  {
+    {0.5, 0.2},
+    0.2
+  };
+
+  engine.add(bumpy);
+
   engine.each <molecule> ([&](const molecule & molecule)
   {
     std :: cout << molecule.tag.id() << " (" << (size_t) molecule.tag[0] << ")" << std :: endl;
   });
 
-  size_t handle = engine.on <events :: molecule> (small, small, [](const report <events :: molecule> & report)
+  size_t handle = engine.on <events :: bumper> ([](const report <events :: bumper> & report)
   {
-    std :: cout << "Collision small-to-small between " << report.alpha.id() << " and " << report.beta.id() << std :: endl;
+    std :: cout << "Collision between " << report.id() << " and bumper" << std :: endl;
   });
 
   window my_window;
+
+  my_window.draw(engine);
+  window :: wait_click();
 
   bool removed = false;
 
@@ -110,7 +121,7 @@ int main()
     if(t > 100 && !removed)
     {
       std :: cout << "Unsubscribing!" << std :: endl;
-      engine.unsubscribe <events :: molecule> (handle);
+      engine.unsubscribe <events :: bumper> (handle);
       removed = true;
     }
 

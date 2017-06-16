@@ -56,5 +56,10 @@ template <typename etype, typename lambda, typename std :: enable_if <std :: is_
   return this->_dispatcher.add(wrapper);
 }
 
+template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: bumper> :: value> :: type *> size_t engine :: on(const uint8_t & tag, const lambda & callback)
+{
+  :: callback <events :: bumper> * wrapper = new :: callback <events :: bumper, lambda> (callback);
+  return this->_dispatcher.add(wrapper, tag);
+}
 
 #endif

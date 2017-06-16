@@ -32,6 +32,10 @@ namespace events
 {
   class bumper : public event
   {
+    // Settings
+
+    static constexpr double time_epsilon = 1.e-9;
+    
     // Friends
 
     friend class report <events :: bumper>;
@@ -62,6 +66,10 @@ namespace events
     // Constructors
 
     bumper(:: molecule &, const int &, :: bumper &);
+
+    // Getters
+
+    const :: molecule & molecule() const;
 
     // Methods
 

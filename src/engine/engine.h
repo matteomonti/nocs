@@ -143,6 +143,7 @@ public:
   template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value> :: type * = nullptr> size_t on(const uint8_t &, const uint8_t &, const lambda &); // TODO: Add validation for lambda
 
   template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const lambda &); // TODO: Add validation for lambda
+  template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const uint8_t &, const lambda &); // TODO: Add validation for lambda
 
   template <typename etype> void unsubscribe(const size_t &);
 

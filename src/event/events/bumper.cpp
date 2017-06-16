@@ -97,6 +97,13 @@ namespace events
     this->_happens = false;
   }
 
+  // Geters
+
+  const :: molecule & bumper :: molecule() const
+  {
+    return *(this->_molecule.molecule);
+  }
+
   // Methods
 
   bool bumper :: current()
@@ -177,6 +184,8 @@ namespace events
       return NaN;
 
     double binmax = gss :: max(distsquared, beg, binmin);
-    return secant :: compute(distsquared, binmax, binmin);
+    double zero = secant :: compute(distsquared, binmax, binmin);
+
+    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NaN;
   }
 };
