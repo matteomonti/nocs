@@ -24,7 +24,7 @@ int main()
   engine engine(8);
 
   for(double x = 0.1; x < 1.; x += 0.1)
-    for(double y = 0.1; y < 0.5; y += 0.1)
+    for(double y = 0.1; y < 0.8; y += 0.1)
     {
       std :: cout << x << ", " << y << std :: endl << std :: flush;
       molecule molecule
@@ -44,7 +44,7 @@ int main()
       molecule molecule
       (
         {{{0, 0}, 1, 0.05}},
-        {x, 0.8},
+        {x, 0.9},
         {rnd1(), rnd1()},
         0,
         M_PI/4

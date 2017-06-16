@@ -132,12 +132,22 @@ void engine :: elasticity(const double & elasticity)
 {
   assert(elasticity > 0);
   this->_elasticity.all = elasticity;
+
+  this->_molecules.each([&](molecule * molecule)
+  {
+    this->refresh(*molecule);
+  });
 }
 
 void engine :: elasticity(const uint8_t & tag, const double & elasticity)
 {
   assert(elasticity > 0);
   this->_elasticity.stag[tag] = elasticity;
+
+  this->_molecules.each([&](molecule * molecule)
+  {
+    this->refresh(*molecule);
+  });
 }
 
 void engine :: elasticity(const uint8_t & alpha, const uint8_t & beta, const double & elasticity)
@@ -145,6 +155,11 @@ void engine :: elasticity(const uint8_t & alpha, const uint8_t & beta, const dou
   assert(elasticity > 0);
   this->_elasticity.dtag[alpha][beta] = elasticity;
   this->_elasticity.dtag[beta][alpha] = elasticity;
+
+  this->_molecules.each([&](molecule * molecule)
+  {
+    this->refresh(*molecule);
+  });
 }
 
 // Methods
