@@ -108,6 +108,15 @@ size_t engine :: tag :: autoincrement = 1;
 
 engine :: engine(const size_t & fineness) : _time(0), _grid(fineness), _tags(new hashtable <size_t, molecule *> [256])
 {
+  this->_elasticity.all = 1.;
+
+  for(size_t i = 0; i < 255; i++)
+  {
+    this->_elasticity.stag[i] = -1;
+
+    for(size_t j = 0; j < 255; j++)
+      this->_elasticity.dtag[i][j] = -1;
+  }
 }
 
 // Getters
@@ -115,6 +124,27 @@ engine :: engine(const size_t & fineness) : _time(0), _grid(fineness), _tags(new
 const size_t & engine :: fineness() const
 {
   return this->_grid.fineness();
+}
+
+// Setters
+
+void engine :: elasticity(const double & elasticity)
+{
+  assert(elasticity > 0);
+  this->_elasticity.all = elasticity;
+}
+
+void engine :: elasticity(const uint8_t & tag, const double & elasticity)
+{
+  assert(elasticity > 0);
+  this->_elasticity.stag[tag] = elasticity;
+}
+
+void engine :: elasticity(const uint8_t & alpha, const uint8_t & beta, const double & elasticity)
+{
+  assert(elasticity > 0);
+  this->_elasticity.dtag[alpha][beta] = elasticity;
+  this->_elasticity.dtag[beta][alpha] = elasticity;
 }
 
 // Methods
@@ -198,6 +228,18 @@ void engine :: run(const double & time)
 
 // Private methods
 
+double engine :: elasticity(const molecule & alpha, const molecule & beta)
+{
+  if(alpha.tag.size() == 1 && beta.tag.size() == 1 && this->_elasticity.dtag[alpha.tag[0]][beta.tag[0]] > 0)
+    return this->_elasticity.dtag[alpha.tag[0]][beta.tag[0]];
+  else if(alpha.tag.size() == 1 && beta.tag.size() == 0 && this->_elasticity.stag[alpha.tag[0]] > 0)
+    return this->_elasticity.stag[alpha.tag[0]];
+  else if(alpha.tag.size() == 0 && beta.tag.size() == 1 && this->_elasticity.stag[beta.tag[0]] > 0)
+    return this->_elasticity.stag[beta.tag[0]];
+  else
+    return this->_elasticity.all;
+}
+
 void engine :: refresh(molecule & molecule, const size_t & skip)
 {
   // Grid event
@@ -240,7 +282,7 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
         if(beta.tag.id() == molecule.tag.id() || beta.tag.id() == skip)
           return;
 
-        events :: molecule * event = new events :: molecule(molecule, fold, beta);
+        events :: molecule * event = new events :: molecule(molecule, fold, beta, this->elasticity(molecule, beta));
 
         if(event->happens())
         {

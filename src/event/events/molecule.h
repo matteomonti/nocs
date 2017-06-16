@@ -58,6 +58,8 @@ namespace events
       unsigned int version;
     } _beta;
 
+    double _elasticity;
+
     // Working members
 
     vec v1;
@@ -76,7 +78,7 @@ namespace events
 
     // Constructors
 
-    molecule(:: molecule &, const int &, :: molecule &);
+    molecule(:: molecule &, const int &, :: molecule &, const double & = 1.);
 
     // Getters
 

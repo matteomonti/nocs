@@ -105,6 +105,13 @@ private:
 
   dispatcher _dispatcher;
 
+  struct
+  {
+    double all;
+    double stag[255];
+    double dtag[255][255];
+  } _elasticity;
+
   double _time;
 
 public:
@@ -120,6 +127,12 @@ public:
   // Getters
 
   const size_t & fineness() const;
+
+  // Setters
+
+  void elasticity(const double &);
+  void elasticity(const uint8_t &, const double &);
+  void elasticity(const uint8_t &, const uint8_t &, const double &);
 
   // Methods
 
@@ -147,6 +160,8 @@ public:
 private:
 
   // Private methods
+
+  double elasticity(const molecule &, const molecule &);
 
   void refresh(molecule &, const size_t & = 0);
 

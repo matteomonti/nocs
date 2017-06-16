@@ -6,7 +6,7 @@ namespace events
 {
   // Constructors
 
-  molecule :: molecule(:: molecule & alpha, const int & fold, :: molecule & beta)
+  molecule :: molecule(:: molecule & alpha, const int & fold, :: molecule & beta, const double & elasticity)
   {
     vec xa = alpha.position() + vec(fold);
     vec xb = beta.position();
@@ -102,6 +102,8 @@ namespace events
         this->_beta.molecule = &beta;
         this->_beta.version = beta.version();
 
+        this->_elasticity = elasticity;
+
         return;
       }
     }
@@ -173,7 +175,7 @@ namespace events
     this->r1 = (*(this->_alpha.molecule))[this->_alpha.atom].position() % this->_alpha.molecule->orientation() + (*(this->_alpha.molecule))[this->_alpha.atom].radius() * n;
     this->r2 = (*(this->_beta.molecule))[this->_beta.atom].position() % this->_beta.molecule->orientation() - (*(this->_beta.molecule))[this->_beta.atom].radius() * n;
 
-    this->module = (-(2 * p1 * n) / (m1) + (2 * p2 * n) / (m2) - (2 * l1 * (r1 ^ n)) / (i1) + (2 * l2 * (r2 ^ n)) / (i2)) / ((1 / m1) + (1 / m2) + (r1 ^ n) * (r1 ^ n) / (i1) + (r2 ^ n) * (r2 ^ n) / (i2)); // Module of the impulse
+    this->module = (1. + this->_elasticity) * (-(p1 * n) / (m1) + (p2 * n) / (m2) - (l1 * (r1 ^ n)) / (i1) + (l2 * (r2 ^ n)) / (i2)) / ((1 / m1) + (1 / m2) + (r1 ^ n) * (r1 ^ n) / (i1) + (r2 ^ n) * (r2 ^ n) / (i2)); // Module of the impulse
 
     // Update molecules' velocity and angular_velocity
 
