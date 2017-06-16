@@ -196,16 +196,6 @@ void engine :: run(const double & time)
   this->collect();
 }
 
-template <> void engine :: unsubscribe <events :: molecule> (const size_t & id)
-{
-  this->_dispatcher.remove <events :: molecule> (id);
-}
-
-template <> void engine :: unsubscribe <events :: bumper> (const size_t & id)
-{
-  this->_dispatcher.remove <events :: bumper> (id);
-}
-
 // Private methods
 
 void engine :: refresh(molecule & molecule, const size_t & skip)

@@ -23,7 +23,6 @@ int main()
 
   engine engine(4);
 
-
   std :: cout << "SMALL IS " << small << std :: endl;
   std :: cout << "BIG IS " << big << std :: endl;
 
