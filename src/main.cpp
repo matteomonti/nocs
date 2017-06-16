@@ -26,17 +26,24 @@ int main()
   for(double x = 0.1; x < 1.; x += 0.1)
     for(double y = 0.1; y < 0.8; y += 0.1)
     {
-      std :: cout << x << ", " << y << std :: endl << std :: flush;
-      molecule molecule
-      (
-        {{{0, 0}, 1, 0.025}},
-        {x, y},
-        {rnd1(), rnd1()},
-        0,
-        M_PI/4
-      );
+      if(!(vec(x, y) - vec(0.5, 0.5)) < 0.001)
+      {
+        bumper bumpy({0.5, 0.5}, 0.05);
+        engine.add(bumpy);
+      }
+      else
+      {
+        molecule molecule
+        (
+          {{{0, 0}, 1, 0.025}},
+          {x, y},
+          {rnd1(), rnd1()},
+          0,
+          M_PI/4
+        );
 
-      engine.tag(engine.add(molecule), small);
+        engine.tag(engine.add(molecule), small);
+      }
     }
 
   for(double x = 0.2; x < 1.; x += 0.2)
