@@ -71,9 +71,9 @@ void engine :: tag :: remove(const uint8_t & tag)
 
 // Operators
 
-const uint8_t & engine :: tag :: operator [] (const size_t & index) const
+uint8_t engine :: tag :: operator [] (const size_t & index) const
 {
-  return this->_tags[index];
+  return this->_tags[index] - 1;
 }
 
 // Private operators
@@ -142,7 +142,7 @@ void engine :: add(const bumper & bumper)
     {
       ssize_t x = (bumper.mark.x() + this->_grid.fineness() + dx) % this->_grid.fineness();
       ssize_t y = (bumper.mark.y() + this->_grid.fineness() + dy) % this->_grid.fineness();
-      
+
       this->_grid.each <class molecule> (x, y, [&](class molecule & molecule)
       {
         this->refresh(molecule);
@@ -194,6 +194,11 @@ void engine :: run(const double & time)
     this->_time = time;
 
   this->collect();
+}
+
+template <> void engine :: unsubscribe <events :: molecule> (const size_t & id)
+{
+  this->_dispatcher.remove <events :: molecule> (id);
 }
 
 // Private methods

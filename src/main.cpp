@@ -10,6 +10,8 @@
 #include "elements/bumper.h"
 #include "graphics/window.h"
 
+enum {small, big};
+
 double rnd1()
 {
   return ((double) rand()) / RAND_MAX - 0.5;
@@ -19,24 +21,83 @@ int main()
 {
   srand(0);
 
-  engine engine(80);
+  engine engine(8);
 
-  for(double x = 0.01; x < 1.; x += 0.01)
-    for(double y = 0.01; y < 1.; y += 0.01)
+
+  std :: cout << "SMALL IS " << small << std :: endl;
+  std :: cout << "BIG IS " << big << std :: endl;
+
+  molecule small1
+  (
     {
-      molecule molecule
-      (
-        {{{0, 0}, 1, 0.0025}},
-        {x, y},
-        {rnd1(), rnd1()},
-        0,
-        M_PI/4
-      );
+      {{0, 0}, 1, 0.025},
+      {{0, 0.05}, 1, 0.025}
+    },
+    {0.1, 0.2},
+    {rnd1(), rnd1()},
+    0,
+    M_PI/4
+  );
 
-      engine.add(molecule);
-    }
+  size_t small1id = engine.add(small1);
+  engine.tag(small1id, small);
+
+  molecule small2
+  (
+    {
+      {{0, 0}, 1, 0.025},
+      {{0, 0.05}, 1, 0.025}
+    },
+    {0.1, 0.8},
+    {rnd1(), rnd1()},
+    0,
+    M_PI/4
+  );
+
+  size_t small2id = engine.add(small2);
+  engine.tag(small2id, small);
+
+  molecule big1
+  (
+    {
+      {{0, 0}, 1, 0.05}
+    },
+    {0.5, 0.5},
+    {rnd1(), rnd1()},
+    0,
+    M_PI/4
+  );
+
+  size_t big1id = engine.add(big1);
+  engine.tag(big1id, big);
+
+  molecule big2
+  (
+    {
+      {{0, 0}, 1, 0.05}
+    },
+    {0.5, 0.5},
+    {rnd1(), rnd1()},
+    0,
+    M_PI/4
+  );
+
+  size_t big2id = engine.add(big2);
+  engine.tag(big2id, big);
+
+  engine.each <molecule> ([&](const molecule & molecule)
+  {
+    std :: cout << molecule.tag.id() << " (" << (size_t) molecule.tag[0] << ")" << std :: endl;
+  });
+
+  size_t handle = engine.on <events :: molecule> (small, small, [](const report <events :: molecule> & report)
+  {
+    std :: cout << "Collision small-to-small between " << report.alpha.id() << " and " << report.beta.id() << std :: endl;
+  });
 
   window my_window;
+
+  bool removed = false;
 
   for(double t = 0;; t += 0.03)
   {
@@ -45,6 +106,13 @@ int main()
     my_window.clear();
     my_window.draw(engine);
     my_window.flush();
+
+    if(t > 100 && !removed)
+    {
+      std :: cout << "Unsubscribing!" << std :: endl;
+      engine.unsubscribe <events :: molecule> (handle);
+      removed = true;
+    }
 
     usleep(1.e4);
   }

@@ -78,6 +78,11 @@ namespace events
 
     molecule(:: molecule &, const int &, :: molecule &);
 
+    // Getters
+
+    const :: molecule & alpha() const;
+    const :: molecule & beta() const;
+
     // Methods
 
     bool current();

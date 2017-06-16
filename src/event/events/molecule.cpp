@@ -109,6 +109,18 @@ namespace events
     this->_happens = false;
   }
 
+  // Getters
+
+  const :: molecule & molecule :: alpha() const
+  {
+    return *(this->_alpha.molecule);
+  }
+
+  const :: molecule & molecule :: beta() const
+  {
+    return *(this->_beta.molecule);
+  }
+
   // Methods
 
   bool molecule :: current()
