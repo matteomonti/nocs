@@ -40,13 +40,13 @@ template <typename etype, typename lambda, typename std :: enable_if <std :: is_
 
 template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type *> size_t engine :: on(const uint8_t & tag, const lambda & callback)
 {
-  :: callback <etype> * wrapper = new :: callback <etype> (callback);
+  :: callback <etype> * wrapper = new :: callback <etype, lambda> (callback);
   return this->_dispatcher.add(wrapper, tag);
 }
 
 template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value> :: type *> size_t engine :: on(const uint8_t & alpha, const uint8_t & beta, const lambda & callback)
 {
-  :: callback <etype> * wrapper = new :: callback <etype> (callback);
+  :: callback <etype> * wrapper = new :: callback <etype, lambda> (callback);
   return this->_dispatcher.add(wrapper, alpha, beta);
 }
 

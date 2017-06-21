@@ -1,98 +1,105 @@
 #ifdef __main__
 
 #include <iostream>
-#include <unistd.h>
-#include <assert.h>
 #include <iomanip>
 
 #include "engine/engine.hpp"
-#include "molecule/molecule.h"
-#include "elements/bumper.h"
 #include "graphics/window.h"
-
-double rnd1()
-{
-  return ((double) rand()) / RAND_MAX - 0.5;
-}
-
-enum {small, big};
 
 int main()
 {
-  srand(0);
+    enum tags {fatty, ninja};
 
-  engine engine(8);
+    window my_window; // Just a window
 
-  for(double x = 0.1; x < 1.; x += 0.1)
-    for(double y = 0.1; y < 0.8; y += 0.1)
+    engine my_engine(6); // 6x6 zones
+
+    for(double x = 0.1; x <= 0.9; x += 0.1)
+        for(double y = 0.1; y <= 0.4; y += 0.1)
+        {
+            molecule my_molecule
+            (
+                { // Array of atoms
+                    {{0., 0.}, 1., 0.005}, // Position (arbitrary reference system), mass, radius
+                    {{0., 0.02}, 10., 0.015}
+                },
+                {x, y}, // Position of center of mass
+                {0, 0}, // Velocity of center of mass
+                0., // Initial orientation (in radians)
+                M_PI / 4. // Angular velocity (in radians / time unit)
+            );
+
+            size_t my_molecule_id = my_engine.add(my_molecule); // Now the molecule is in your engine, ready to work
+            my_engine.tag(my_molecule_id, fatty); // Adds tag fatty to the first molecule. Note that you can add tags only after inserting them in the engine.
+        }
+
+    double swap = 1.;
+
+    for(double x = 0.1; x <= 0.9; x += 0.1)
+        for(double y = 0.6; y <= 0.9; y += 0.1)
+        {
+            molecule my_other_molecule // Same thing as before
+            (
+                {
+                    {{0., 0.}, 0.01, 0.02}
+                },
+                {x, y},
+                {3. * swap, 3. * swap},
+                0.,
+                0.
+            );
+
+            swap *= -1; // This serves the purpose to have a null total momentum
+
+            size_t my_other_molecule_id = my_engine.add(my_other_molecule); // Same for the other
+            my_engine.tag(my_other_molecule_id, ninja); // Same thing for the other molecule
+        }
+
+    bumper my_bumper({0.5, 0.5}, 0.03);
+    my_engine.add(my_bumper);
+
+    my_engine.elasticity(fatty, fatty, 0.8);
+
+    my_window.draw(my_engine); // Drasw the content of the engine on the window
+    my_window.flush(); // You need this to render on screen, draw is not sufficient
+    my_window.wait_click(); // Guess what
+
+    my_engine.on <events :: molecule> (fatty, ninja, [&](const report <events :: molecule> my_report)
     {
-      if(!(vec(x, y) - vec(0.5, 0.5)) < 0.001)
-      {
-        bumper bumpy({0.5, 0.5}, 0.05);
-        //engine.add(bumpy);
-      }
-      else
-      {
-        molecule molecule
-        (
-          {
-            {{0, 0}, 1, 0.0125},
-            {{0, 0.025}, 1, 0.0125}
-          },
-          {x, y},
-          {rnd1(), rnd1()},
-          0,
-          M_PI/4
-        );
+        std :: cout << "There has been a collision between " << my_report.alpha.id() << " and " << my_report.beta.id() << std :: endl;
+        std :: cout << "Delta energy for alpha: " << my_report.alpha.energy.delta() << std :: endl;
+    });
 
-        engine.tag(engine.add(molecule), small);
-      }
-    }
-
-  for(double x = 0.2; x < 1.; x += 0.2)
-  {
-    molecule molecule
-    (
-      {{{0, 0}, 1, 0.05}},
-      {x, 0.9},
-      {rnd1(), rnd1()},
-      0,
-      M_PI/4
-    );
-
-    engine.tag(engine.add(molecule), big);
-  }
-
-  window my_window;
-
-  my_window.draw(engine);
-  window :: wait_click();
-
-  engine.elasticity(big, big, 0.4);
-
-  for(double t = 0;; t += 1.)
-  {
-    engine.reset.energy.tag(small, 10.);
-
-    for(double dt = 0.; dt < 1.; dt += 0.03)
+    for(double time = 0.;; time += 0.01)
     {
-      engine.run(t + dt);
+        my_engine.run(time); // Run UNTIL time
 
-      double energy = 0;
-      engine.each <molecule> (small, [&](const molecule & molecule)
-      {
-        energy += molecule.energy();
-      });
+        double fatty_total_energy = 0.;
 
-      std :: cout << energy << std :: endl;
+        my_engine.each <molecule> (fatty, [&](const molecule & current_molecule) // Dear engine, for each molecule with tag fatty, please execute this lambda that accepts a const reference
+                                                                                 // to the current molecule and captures fatty_total_energy. Each time it is called the lambda adds to
+                                                                                 // fatty_total_energy the energy of the current molecule. Also known as: sum the energies of all the fatty molecules.
+        {
+            fatty_total_energy += current_molecule.energy();
+        });
 
-      my_window.clear();
-      my_window.draw(engine);
-      my_window.flush();
+        double ninja_total_energy = 0.;
 
-      usleep(1.e4);
+        my_engine.each <molecule> (ninja, [&](const molecule & current_molecule)
+        {
+            ninja_total_energy += current_molecule.energy();
+        });
+
+        std :: cout << std :: setw(10) << fatty_total_energy << std :: setw(10) << ninja_total_energy << std :: endl;
+
+        my_engine.reset.energy.tag(ninja, 1.);
+
+        my_window.clear(); // Remove what was drawn before
+        my_window.draw(my_engine);
+        my_window.flush();
+
+        usleep(1.e4);
     }
-  }
 }
 
 #endif
