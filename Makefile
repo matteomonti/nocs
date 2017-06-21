@@ -26,7 +26,8 @@ TTREE := $(patsubst %/,%,$(dir $(TOBJS)))
 SCPPFLAGS  = -MMD -MP -MF $(@:$(SOBJDIR)/%.o=$(SDEPDIR)/%.d)
 TCPPFLAGS  = -MMD -MP -MF $(@:$(TOBJDIR)/%.o=$(TDEPDIR)/%.d)
 
-BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z
+BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z -stdlib=libc++
+BLINKERFLAGS = -stdlib=libc++
 
 all: CXXFLAGS = $(BCXXFLAGS) -D __main__
 test: CXXFLAGS = $(BCXXFLAGS) -D __test__
@@ -67,7 +68,7 @@ $(BINDIR)/$(TESTEXEC): $(SOBJS) $(TOBJS) $(BINDIR)
 	$(CXX) -o $(BINDIR)/$(TESTEXEC) $(SOBJS) $(TOBJS)
 
 $(BINDIR)/$(MAINEXEC): $(SOBJS) $(BINDIR)
-	$(CXX) $(LINKERFLAGS) -o $(BINDIR)/$(MAINEXEC) $(SOBJS)
+	$(CXX) $(BLINKERFLAGS) $(LINKERFLAGS) -o $(BINDIR)/$(MAINEXEC) $(SOBJS)
 ifeq "$(MAKECMDGOALS)" ""
 -include $(SDEPS)
 -include $(TDEPS)
