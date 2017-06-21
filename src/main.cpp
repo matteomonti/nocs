@@ -29,13 +29,16 @@ int main()
       if(!(vec(x, y) - vec(0.5, 0.5)) < 0.001)
       {
         bumper bumpy({0.5, 0.5}, 0.05);
-        engine.add(bumpy);
+        //engine.add(bumpy);
       }
       else
       {
         molecule molecule
         (
-          {{{0, 0}, 1, 0.025}},
+          {
+            {{0, 0}, 1, 0.0125},
+            {{0, 0.025}, 1, 0.0125}
+          },
           {x, y},
           {rnd1(), rnd1()},
           0,
@@ -47,18 +50,18 @@ int main()
     }
 
   for(double x = 0.2; x < 1.; x += 0.2)
-    {
-      molecule molecule
-      (
-        {{{0, 0}, 1, 0.05}},
-        {x, 0.9},
-        {rnd1(), rnd1()},
-        0,
-        M_PI/4
-      );
+  {
+    molecule molecule
+    (
+      {{{0, 0}, 1, 0.05}},
+      {x, 0.9},
+      {rnd1(), rnd1()},
+      0,
+      M_PI/4
+    );
 
-      engine.tag(engine.add(molecule), big);
-    }
+    engine.tag(engine.add(molecule), big);
+  }
 
   window my_window;
 
@@ -76,7 +79,7 @@ int main()
       engine.run(t + dt);
 
       double energy = 0;
-      engine.each <molecule> ([&](const molecule & molecule)
+      engine.each <molecule> (small, [&](const molecule & molecule)
       {
         energy += molecule.energy();
       });
