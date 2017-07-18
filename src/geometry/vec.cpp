@@ -6,7 +6,7 @@ vec :: vec()
 {
 }
 
-vec :: vec(double x, double y): x(x), y(y)
+vec :: vec(const double & x, const double & y): x(x), y(y)
 {
 }
 

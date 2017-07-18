@@ -23,7 +23,7 @@ struct vec
   // Constructors
 
   vec();
-  vec(double, double);
+  vec(const double &, const double &);
   vec(int);
 
   // Methods
