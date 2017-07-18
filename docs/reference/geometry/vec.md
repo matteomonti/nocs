@@ -99,12 +99,6 @@ int main()
 
 ### Nested enum `fold`
 
-#### Declaration
-
-```c++
-enum fold {direct = 0x0, left = 0x1, right = 0x2, up = 0x4, down = 0x8, horizontal = 0x3, vertical = 0xc};
-```
-
 #### Overview
 
 Enum `fold` is a bitmask-wise object for representing the possible combination of translations inside the continuos space.
@@ -119,7 +113,15 @@ It's made of six elements:
     horizontal, vertical
 
 It's possible to assemble one horizontal and one vertical translation into a single integer representation with the operator `||`.
-It's also possible to check the horizontal or the vertical component of the integer representation with one extractiong element and the operator `&&`
+It's also possible to check the horizontal or the vertical component of the integer representation with one extractiong element and the operator `&&`.
+
+**REMARK: the simulation always works within a range ([0,1],[0,1]).**
+
+#### Declaration
+
+```c++
+enum fold {direct = 0x0, left = 0x1, right = 0x2, up = 0x4, down = 0x8, horizontal = 0x3, vertical = 0xc};
+```
 
 #### Example usage of `fold`
 
