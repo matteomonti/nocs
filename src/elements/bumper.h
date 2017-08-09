@@ -28,8 +28,6 @@ public:
   bumper();
   bumper(const vec &, const double &);
 
-public:
-
   // Public members
 
   grid :: mark mark;
