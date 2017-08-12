@@ -94,13 +94,13 @@ Class `tag` is what allows to identify any object of the simulation with a serie
     given a lambda function that takes for argument a `bumper`, it executes the lambda function to each `bumper` inside the engine.
 
   * `template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const lambda & function)`
-    given a lambda function that takes as argument an `event :: molecule` or an `event :: bumper`, the engine registers it as a subscription and will execute it from now on with all the events of the chosen type. Returns the id of the subscription.
+    given a lambda function that takes as argument a `const report <events :: molecule>` or a `const report <events :: bumper>`, the engine registers it as a subscription and will execute it from now on with all the events of the chosen type. Returns the id of the subscription.
 
   * `template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> size_t on(const uint8_t & tag, const lambda & function)`
-    given a lambda function that takes as argument an `event :: molecule` or an `event :: bumper`, the engine registers it as a subscription and will execute it from now on with all the events of the chosen type that involve a molecule with the given tag. Returns the id of the subscription.
+    given a lambda function that takes as argument a `const report <events :: molecule>` or a `const report <events :: bumper>`, the engine registers it as a subscription and will execute it from now on with all the events of the chosen type that involve a molecule with the given tag. Returns the id of the subscription.
 
   * `template <typename etype, typename lambda, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value> :: type * = nullptr> size_t on(const uint8_t & alpha_tag, const uint8_t & beta_tag, const lambda & function)`
-    given a lambda function that takes as argument an `event :: molecule`, the engine registers it as a subscription and will execute it from now on with all the `event :: molecule`s that involve two molecules with the given tags. Returns the id of the subscription.
+    given a lambda function that takes as argument a `const report <events :: molecule>`, the engine registers it as a subscription and will execute it from now on with all the `event :: molecule`s that involve two molecules with the given tags. Returns the id of the subscription.
 
   * `template <typename etype, typename std :: enable_if <std :: is_same <etype, events :: molecule> :: value || std :: is_same <etype, events :: bumper> :: value> :: type * = nullptr> void unsubscribe(const size_t & id);`
     given the id of the subscription, cancels the subscription.
