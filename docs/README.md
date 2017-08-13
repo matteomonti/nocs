@@ -20,7 +20,7 @@ int main()
 {
   engine my_engine(6); /* This declares an engine with a 6x6 grid subdivision.
                           my_engine will then be the framework for the entire
-                          simulation *//**/
+                          simulation */
 }
 ```
 
@@ -62,8 +62,14 @@ int main()
               M_PI / 4. // Angular velocity (in radians / time unit)
           );
 
-          size_t my_molecule_id = my_engine.add(my_molecule); // Now the molecule is in the engine, ready to work. The function returns the id of the molecule inside the engine.
-          my_engine.tag(my_molecule_id, heavy); // Adds tag heavy to the molecule. REMARK: you can add tags to the molecule only after inserting it in the engine.
+          size_t my_molecule_id = my_engine.add(my_molecule);
+          // Now the molecule is in the engine, ready to work.
+          // The function returns the id of the molecule inside the engine.
+
+          my_engine.tag(my_molecule_id, heavy);
+          // Adds tag heavy to the molecule.
+          // REMARK: you can add tags to molecules only
+          //  after inserting them into the engine.
       }
 
       double swap = 1.;
@@ -82,10 +88,10 @@ int main()
                   0.
               );
 
-              swap *= -1; // This serves the purpose to have a null total momentum
+              swap *= -1; // Serves the purpose to have a null total momentum
 
-              size_t my_other_molecule_id = my_engine.add(my_other_molecule); // Same for the other
-              my_engine.tag(my_other_molecule_id, light); // Same thing for the other molecule
+              size_t my_other_molecule_id = my_engine.add(my_other_molecule);
+              my_engine.tag(my_other_molecule_id, light);
           }
 }
 ```
@@ -113,11 +119,14 @@ int main()
 {
   //[...]
 
-  my_engine.elasticity(heavy, heavy, 0.8); // Now if two molecules with tag heavy collide, the collision will be anelastic with a coefficent of 0.8
+  my_engine.elasticity(heavy, heavy, 0.8); // Now if two molecules with tag
+    // heavy collide, the collision will be anelastic with a coefficent of 0.8
 
-  my_engine.elasticity(light, 1.5); // Now any collision involving a molecule with tag light will be superelastic with a coefficent of 1.5
+  my_engine.elasticity(light, 1.5); // Now any collision involving a molecule
+    // with tag light will be superelastic with a coefficent of 1.5
 
-  my_engine.elasticity(1.0); // Now every collision is just normal and fully elastic
+  my_engine.elasticity(1.0); // Now every collision is just normal
+                             // and fully elastic
 }
 ```
 
@@ -151,13 +160,17 @@ int main()
 
   id_of_subscription = my_engine.on // I want to subscribe to...
     <events :: molecule>  // ...any collision between two molecules
-    (
-      [&](const report <events :: molecule> my_report) // So I make a lambda function that takes this kind of report as argument
+    ( // So I make a lambda function that takes this kind of report as argument
+      [&](const report <events :: molecule> my_report)
       {
         /*and I write now here what I want it to do and print*/
 
-        std :: cout << "There has been a collision between " << my_report.alpha.id() << " and " << my_report.beta.id() << std :: endl;
-        std :: cout << "Delta energy for alpha: " << my_report.alpha.energy.delta() << std :: endl;
+        std :: cout << "There has been a collision between "
+          << my_report.alpha.id() << " and "
+          << my_report.beta.id() << std :: endl;
+
+        std :: cout << "Delta energy for alpha: "
+          << my_report.alpha.energy.delta() << std :: endl;
       }
     ); // and I've also memorized the subscription's id
 
@@ -165,32 +178,42 @@ int main()
     <events :: bumper>  // ...any collision between a bumper and a molecule...
     (
       heavy,  // ...that involves a molecule with a tag heavy
-      [&](const report <events :: bumper> my_report) // So I make a lambda function that takes this kind of report as argument
+
+      // So I make a lambda function that takes this kind of report as argument
+      [&](const report <events :: bumper> my_report)
       {
         /*and I write now here what I want it to do and print*/
 
-        std :: cout << "There has been a collision between " << my_report.id() << " and " << a bumper << std :: endl;
+        std :: cout << "There has been a collision between "
+          << my_report.id() << " and " << a bumper << std :: endl;
+
         std :: cout << "And the molecule was heavy!" << std :: endl;
       }
     );
 
   my_engine.on // I want to subscribe to...
-    <events :: molecule>  // ...any collision between a molecule and a molecule...
+    <events :: molecule>  // ...any collision between a molecule and a molecule
     (
       heavy,  // ...that involves a molecule with a tag heavy
       light,  // ...AND a molecule with a tag light
-      [&](const report <events :: molecule> my_report) // So I make a lambda function that takes this kind of report as argument
+      // So I make a lambda function that takes this kind of report as argument
+      [&](const report <events :: molecule> my_report)
       {
         /*and I write now here what I want it to do and print*/
 
-        std :: cout << "There has been a VERY SPECIFIC collision between " << my_report.alpha.id() << " and " << my_report.beta.id() << std :: endl;
-        std :: cout << "Delta energy for alpha: " << my_report.alpha.energy.delta() << std :: endl;
+        std :: cout << "There has been a VERY SPECIFIC collision between "
+          << my_report.alpha.id() << " and "
+          << my_report.beta.id() << std :: endl;
+
+        std :: cout << "Delta energy for alpha: "
+          << my_report.alpha.energy.delta() << std :: endl;
       }
     );
 
   //...time goes on...
 
-  my_engine.unsubscribe(id_of_subscription) // Now I want to unsubscribe from the first subscription because I don't need it anymore
+  my_engine.unsubscribe(id_of_subscription) // Now I want to unsubscribe from
+                      // the first subscription because I don't need it anymore
 }
 ```
 
@@ -245,11 +268,14 @@ int main()
 {
   //[...]
 
-  my_engine.reset.energy.id(1, 10.5) // I want to set the energy of the molecule with id 1 to 10.5 units of energy
+  my_engine.reset.energy.id(1, 10.5)
+  // set the energy of the molecule with id 1 to 10.5 units of energy
 
-  my_engine.reset.energy.tag(heavy, 0.1) // I want to set the energy of all the molecules with tag heavy to 0.1 units of energy
+  my_engine.reset.energy.tag(heavy, 0.1)
+  // set the energy of all the molecules with tag heavy to 0.1 units of energy
 
-  my_engine.reset.energy.all(1.0) // Now every molecule has 1 unit of energy as energy
+  my_engine.reset.energy.all(1.0)
+  // Now every molecule has 1 unit of energy as energy
 }
 ```
 ### And now, some grpahics
@@ -268,21 +294,30 @@ int main()
   my_engine.add(a_random_molecule);
   my_engine.add(a_random_bumper);
 
-  window my_window; // Initialize a window with standard parameters (which is highly suggested)
+  window my_window;
+  // Initialize a window with standard parameters (which is highly suggested)
 
-  my_window.wait_click(); // Blocks the execution until a mouse click is detected inside the window
+  my_window.wait_click();
+  // Blocks the execution until a mouse click is detected inside the window
 
-  my_window.wait_enter(); // Blocks the execution until an enter click is detected with the cursor inside the window
+  my_window.wait_enter();
+  // Blocks the execution until an enter click
+  // is detected with the cursor inside the window
 
-  my_window.draw(my_engine); // I want you window to draw all the elements inside engine
+  my_window.draw(my_engine);
+  // I want you window to draw all the elements inside engine
 
-  my_window.flush(); // And now render what I have just said
+  my_window.flush();
+  // And now render what I have just said
 
   my_window.wait_click();
 
-  my_window.clear(); // And now clean everything! (you may want to use a wait_click() or a usleep() in order to actually see something)
+  my_window.clear();
+  // And now clean everything! (you may want to use a wait_click() or a usleep()
+  // in order to actually see something)
 
-  my_window.draw(my_engine, heavy); // Now I want you window to draw all the elements inside engine with tag heavy
+  my_window.draw(my_engine, heavy);
+  // Now I want you window to draw all the elements inside engine with tag heavy
 
   my_window.draw(* a_random_molecule); // Draw that molecule!
   my_window.draw(* a_random_bumper); // Draw that bumper!
