@@ -235,3 +235,60 @@ int main()
   );
 }
 ```
+
+### Resetting the energy of one or more molecules
+
+If you want to alter the energy of a molecule and at the same time maintaining all the proportion in the energy distribution (translational and rotational) you can use these methods:
+
+```cpp
+int main()
+{
+  //[...]
+
+  my_engine.reset.energy.id(1, 10.5) // I want to set the energy of the molecule with id 1 to 10.5 units of energy
+
+  my_engine.reset.energy.tag(heavy, 0.1) // I want to set the energy of all the molecules with tag heavy to 0.1 units of energy
+
+  my_engine.reset.energy.all(1.0) // Now every molecule has 1 unit of energy as energy
+}
+```
+### And now, some grpahics
+
+```cpp
+
+int main()
+{
+  engine my_engine(6);
+
+  //[... adding random things into the engine just like above]
+
+  molecule * a_random_molecule = new molecule (/*stuff*/);
+  bumper * a_random_bumper = new bumper(/*stuff*/);
+
+  my_engine.add(a_random_molecule);
+  my_engine.add(a_random_bumper);
+
+  window my_window; // Initialize a window with standard parameters (which is highly suggested)
+
+  my_window.wait_click(); // Blocks the execution until a mouse click is detected inside the window
+
+  my_window.wait_enter(); // Blocks the execution until an enter click is detected with the cursor inside the window
+
+  my_window.draw(my_engine); // I want you window to draw all the elements inside engine
+
+  my_window.flush(); // And now render what I have just said
+
+  my_window.wait_click();
+
+  my_window.clear(); // And now clean everything! (you may want to use a wait_click() or a usleep() in order to actually see something)
+
+  my_window.draw(my_engine, heavy); // Now I want you window to draw all the elements inside engine with tag heavy
+
+  my_window.draw(* a_random_molecule); // Draw that molecule!
+  my_window.draw(* a_random_bumper); // Draw that bumper!
+
+  my_window.flush(); // Now render everything!
+  my_window.wait_click();
+}
+
+```
