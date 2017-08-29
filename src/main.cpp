@@ -2,104 +2,144 @@
 
 #include <iostream>
 #include <iomanip>
+#include <random>
+
+#include <fstream>
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
 
+
 int main()
 {
-    enum tags {fatty, ninja};
+  // Setup File Stream
 
-    window my_window; // Just a window
+  std :: ofstream oeb("/home/carlidel/Scrivania/output_event_based.txt");
+  oeb << "Time \t Position \t Orientation \t Momentum \t Angluar Momentum \t Delta Momentum \t Delta Angular Momentum" << std :: endl;
+  oeb.precision(6);
+  oeb.setf( std::ios::fixed, std:: ios::floatfield );
 
-    engine my_engine(6); // 6x6 zones
+  std :: ofstream otb("/home/carlidel/Scrivania/output_time_based.txt");
+  otb << "Time \t Id \t Position \t Orientation \t Velocity \t Angular Velocity" << std :: endl;
+  otb.precision(6);
+  otb.setf( std::ios::fixed, std:: ios::floatfield );
 
-    for(double x = 0.1; x <= 0.9; x += 0.1)
-        for(double y = 0.1; y <= 0.4; y += 0.1)
-        {
-            molecule my_molecule
-            (
-                { // Array of atoms
-                    {{0., 0.}, 1., 0.005}, // Position (arbitrary reference system), mass, radius
-                    {{0., 0.02}, 10., 0.015}
-                },
-                {x, y}, // Position of center of mass
-                {0, 0}, // Velocity of center of mass
-                0., // Initial orientation (in radians)
-                M_PI / 4. // Angular velocity (in radians / time unit)
-            );
+  // Setup Random Generator
 
-            size_t my_molecule_id = my_engine.add(my_molecule); // Now the molecule is in your engine, ready to work
-            my_engine.tag(my_molecule_id, fatty); // Adds tag fatty to the first molecule. Note that you can add tags only after inserting them in the engine.
-        }
+  double lower_bound = -1;
+  double upper_bound = 1;
 
-    double swap = 1.;
+  std :: uniform_real_distribution<double> unif(lower_bound, upper_bound);
+  std :: default_random_engine re;
 
-    for(double x = 0.1; x <= 0.9; x += 0.1)
-        for(double y = 0.6; y <= 0.9; y += 0.1)
-        {
-            molecule my_other_molecule // Same thing as before
-            (
-                {
-                    {{0., 0.}, 0.01, 0.02}
-                },
-                {x, y},
-                {3. * swap, 3. * swap},
-                0.,
-                0.
-            );
+  // Tags
 
-            swap *= -1; // This serves the purpose to have a null total momentum
+  enum tags {simple, complex};
 
-            size_t my_other_molecule_id = my_engine.add(my_other_molecule); // Same for the other
-            my_engine.tag(my_other_molecule_id, ninja); // Same thing for the other molecule
-        }
+  // Initialization
 
-    bumper my_bumper({0.5, 0.5}, 0.03);
-    my_engine.add(my_bumper);
+  engine my_engine(10);
+  window my_window;
 
-    my_engine.elasticity(fatty, fatty, 0.8);
+  // Wind Breaker!
 
-    my_window.draw(my_engine); // Drasw the content of the engine on the window
-    my_window.flush(); // You need this to render on screen, draw is not sufficient
-    my_window.wait_click(); // Guess what
+  bumper wind_breaker({0., 0.}, 0.005);
+  my_engine.add(wind_breaker);
 
-    my_engine.on <events :: molecule> (fatty, ninja, [&](const report <events :: molecule> my_report)
+  // Simple molecules
+
+  double diameter = 0.01;
+
+  for(double x = 0.015; x < 0.83; x += diameter * 2)
+    for(double y = 0.015; y <= 0.995; y += diameter * 2)
     {
-        std :: cout << "There has been a collision between " << my_report.alpha.id() << " and " << my_report.beta.id() << std :: endl;
-        std :: cout << "Delta energy for alpha: " << my_report.alpha.energy.delta() << std :: endl;
-    });
-
-    for(double time = 0.;; time += 0.01)
-    {
-        my_engine.run(time); // Run UNTIL time
-
-        double fatty_total_energy = 0.;
-
-        my_engine.each <molecule> (fatty, [&](const molecule & current_molecule) // Dear engine, for each molecule with tag fatty, please execute this lambda that accepts a const reference
-                                                                                 // to the current molecule and captures fatty_total_energy. Each time it is called the lambda adds to
-                                                                                 // fatty_total_energy the energy of the current molecule. Also known as: sum the energies of all the fatty molecules.
+      molecule first
+      (
         {
-            fatty_total_energy += current_molecule.energy();
-        });
+          {{0., 0.}, 1., diameter / 2}
+        },
+        {x, y},
+        {unif(re), unif(re)},
+        0.,
+        0
+      );
 
-        double ninja_total_energy = 0.;
-
-        my_engine.each <molecule> (ninja, [&](const molecule & current_molecule)
-        {
-            ninja_total_energy += current_molecule.energy();
-        });
-
-        std :: cout << std :: setw(10) << fatty_total_energy << std :: setw(10) << ninja_total_energy << std :: endl;
-
-        my_engine.reset.energy.tag(ninja, 1.);
-
-        my_window.clear(); // Remove what was drawn before
-        my_window.draw(my_engine);
-        my_window.flush();
-
-        usleep(1.e4);
+      size_t molecule_id = my_engine.add(first);
+      my_engine.tag(molecule_id, simple);
     }
+
+  // PENIS ONE !!!
+
+  diameter *= 3;
+
+  molecule second
+  (
+
+      {
+        {{0., 0.}, 2., diameter / 2},
+        {{0., diameter}, 2., diameter / 2},
+        {{0., -diameter}, 2., diameter / 2},
+        {{diameter, 0.}, 2., diameter / 2},
+        {{diameter * 2, 0.}, 2, diameter / 2},
+        {{diameter * 3, 0.}, 2, diameter / 2},
+        {{diameter * 4, 0.}, 2, diameter / 2},
+      },
+      {0.9, 0.5},
+      {0,0},
+      M_PI / 2,
+      0
+  );
+
+  // Event-Based Data Gathering (works for single molecule)
+
+  size_t id_complex = my_engine.add(second);
+  my_engine.tag(id_complex, complex);
+
+  my_engine.on <events :: molecule>
+  (
+    complex,
+    [&](const report <events :: molecule> rep)
+    {
+      // Time - Position - Orientation - Momentum - Angluar Momentum - Delta Momentum - Delta Angular Momentum.
+      if(rep.alpha.id() == id_complex)
+      {
+        oeb << rep.time() << "\t" << rep.alpha.position() << "\t" << rep.alpha.orientation() << "\t" << rep.alpha.momentum.after() << "\t" << rep.alpha.angular_momentum.after() << "\t" << rep.alpha.momentum.delta() << "\t" << rep.alpha.angular_momentum.delta() << std :: endl;
+      }
+      else
+      {
+        oeb << rep.time() << "\t" << rep.beta.position() << "\t" << rep.beta.orientation() << "\t" << rep.beta.momentum.after() << "\t" << rep.beta.angular_momentum.after() << "\t" << rep.beta.momentum.delta() << "\t" << rep.beta.angular_momentum.delta() << std :: endl;
+      }
+    }
+  );
+
+  // Starting the Execution
+
+  my_window.clear();
+  my_window.draw(my_engine);
+  my_window.flush();
+  my_window.wait_click();
+  my_window.clear();
+
+  for(double time = 0.; ; time += 0.001)
+  {
+    my_engine.run(time);
+    my_window.clear();
+    my_window.draw(my_engine);
+
+    // Time-based Data Gathering
+
+    my_engine.each <molecule>
+    (
+      complex,
+      [&](const molecule & cur)
+      {
+        // Time - Id - Position - Orientation - Velocity - Angular Velocity
+        otb << time << "\t" << cur.tag.id() << "\t" << cur.position() << "\t" << cur.orientation() << "\t" << cur.velocity() << "\t" << cur.angular_velocity() << std :: endl;
+      }
+    );
+
+    my_window.flush();
+  }
 }
 
 #endif

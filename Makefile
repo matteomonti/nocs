@@ -1,3 +1,5 @@
+CXX := clang++
+
 SRCDIR := src
 TESTDIR := test
 
