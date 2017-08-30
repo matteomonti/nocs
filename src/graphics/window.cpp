@@ -10,6 +10,19 @@ window :: window(const char * title, int width, int height, int position_x, int 
 
 void window :: draw(const engine & engine)
 {
+  engine.each <molecule> ([&](const molecule & molecule)
+  {
+    this->draw(molecule);
+  });
+
+  engine.each <bumper> ([&](const bumper & bumper)
+  {
+    this->draw(bumper);
+  });
+}
+
+void window :: draw_with_grid(const engine & engine)
+{
   this->grid(engine);
   engine.each <molecule> ([&](const molecule & molecule)
   {
@@ -24,7 +37,6 @@ void window :: draw(const engine & engine)
 
 void window :: draw(const engine & engine, const uint8_t & tag)
 {
-  this->grid(engine);
   engine.each <molecule> (tag, [&](const molecule & molecule)
   {
     this->draw(molecule);
