@@ -1,4 +1,4 @@
-# Getting started with nobb
+# Getting started with nocs
 
 ## Basic commands
 
