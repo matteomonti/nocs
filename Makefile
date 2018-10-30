@@ -33,7 +33,7 @@ BLINKERFLAGS = -stdlib=libstdc++
 all: CXXFLAGS = $(BCXXFLAGS) -D __main__
 test: CXXFLAGS = $(BCXXFLAGS) -D __test__
 graphics: CXXFLAGS = $(BCXXFLAGS) -D __main__ -D __graphics__ -I/usr/X11/include -I$(PASSPARTOUT_PATH)/include
-graphics: LINKERFLAGS = -L/usr/X11/lib -L$(PASSPARTOUT_PATH)/lib -lXt -lX11 -lXext -lGG
+graphics: LINKERFLAGS = -L/usr/X11/lib -L$(PASSPARTOUT_PATH)/lib -lXt -lX11 -lXext -lGG -lGL
 
 .PHONY: all test clean graphics
 
