@@ -1,3 +1,4 @@
+CXX := clang++
 SRCDIR := src
 TESTDIR := test
 
@@ -26,8 +27,8 @@ TTREE := $(patsubst %/,%,$(dir $(TOBJS)))
 SCPPFLAGS  = -MMD -MP -MF $(@:$(SOBJDIR)/%.o=$(SDEPDIR)/%.d)
 TCPPFLAGS  = -MMD -MP -MF $(@:$(TOBJDIR)/%.o=$(TDEPDIR)/%.d)
 
-BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z -stdlib=libc++
-BLINKERFLAGS = -stdlib=libc++
+BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z -stdlib=libstdc++
+BLINKERFLAGS = -stdlib=libstdc++
 
 all: CXXFLAGS = $(BCXXFLAGS) -D __main__
 test: CXXFLAGS = $(BCXXFLAGS) -D __test__
