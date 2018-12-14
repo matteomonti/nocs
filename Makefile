@@ -1,4 +1,4 @@
-CXX := clang++
+OS := ($(shell uname))
 SRCDIR := src
 TESTDIR := test
 
@@ -27,12 +27,17 @@ TTREE := $(patsubst %/,%,$(dir $(TOBJS)))
 SCPPFLAGS  = -MMD -MP -MF $(@:$(SOBJDIR)/%.o=$(SDEPDIR)/%.d)
 TCPPFLAGS  = -MMD -MP -MF $(@:$(TOBJDIR)/%.o=$(TDEPDIR)/%.d)
 
-BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z -stdlib=libstdc++
-BLINKERFLAGS = -stdlib=libstdc++
+ifeq ($(OS),Darwin)
+	BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z -stdlib=libstdc++
+	BLINKERFLAGS = -stdlib=libstdc++
+	CXXFLAGS = -D __apple__
+else
+	BCXXFLAGS = -I$(SRCDIR) -I$(TESTDIR) -O3 -std=c++1z -fPIC
+endif
 
-all: CXXFLAGS = $(BCXXFLAGS) -D __main__
-test: CXXFLAGS = $(BCXXFLAGS) -D __test__
-graphics: CXXFLAGS = $(BCXXFLAGS) -D __main__ -D __graphics__ -I/usr/X11/include -I$(PASSPARTOUT_PATH)/include
+all: CXXFLAGS += $(BCXXFLAGS) -D __main__
+test: CXXFLAGS += $(BCXXFLAGS) -D __test__
+graphics: CXXFLAGS += $(BCXXFLAGS) -D __main__ -D __graphics__ -I/usr/X11/include -I$(PASSPARTOUT_PATH)/include
 graphics: LINKERFLAGS = -L/usr/X11/lib -L$(PASSPARTOUT_PATH)/lib -lXt -lX11 -lXext -lGG -lGL
 
 .PHONY: all test clean graphics
