@@ -37,8 +37,8 @@ endif
 
 all: CXXFLAGS += $(BCXXFLAGS) -D __main__
 test: CXXFLAGS += $(BCXXFLAGS) -D __test__
-graphics: CXXFLAGS += $(BCXXFLAGS) -D __main__ -D __graphics__ -I/usr/X11/include -I$(PASSPARTOUT_PATH)/include
-graphics: LINKERFLAGS = -L/usr/X11/lib -L$(PASSPARTOUT_PATH)/lib -lXt -lX11 -lXext -lGG -lGL
+graphics: CXXFLAGS += $(BCXXFLAGS) -D __main__ -D __graphics__ -I/usr/X11/include -I/usr/local/include
+graphics: LINKERFLAGS += -L/usr/local/lib64 -lGG -lGL -lGLU -lXt -lX11 -lXext
 
 .PHONY: all test clean graphics
 
@@ -74,7 +74,7 @@ $(BINDIR)/$(TESTEXEC): $(SOBJS) $(TOBJS) $(BINDIR)
 	$(CXX) -o $(BINDIR)/$(TESTEXEC) $(SOBJS) $(TOBJS)
 
 $(BINDIR)/$(MAINEXEC): $(SOBJS) $(BINDIR)
-	$(CXX) $(BLINKERFLAGS) $(LINKERFLAGS) -o $(BINDIR)/$(MAINEXEC) $(SOBJS)
+	$(CXX) -o $(BINDIR)/$(MAINEXEC) $(SOBJS) $(BLINKERFLAGS) $(LINKERFLAGS)
 ifeq "$(MAKECMDGOALS)" ""
 -include $(SDEPS)
 -include $(TDEPS)
