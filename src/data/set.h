@@ -51,7 +51,17 @@ public:
   void add(const type &);
   void remove(const type &);
 
+#ifdef __apple__
   template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda &) const;
+#endif
+#ifndef __apple__
+  template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda &callback) const
+  {
+    for (size_t i = 0; i < this->_size; i++)
+      callback(this->_items[i]);
+  }
+#endif
+
 };
 
 #endif
