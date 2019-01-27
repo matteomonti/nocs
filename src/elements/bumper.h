@@ -8,6 +8,7 @@ class bumper;
 // Libraries
 
 #include <cmath>
+#include <assert.h>
 
 // Includes
 
@@ -20,13 +21,14 @@ class bumper
 
   vec _position;
   double _radius;
+  double _temperature;
 
 public:
 
   // Constructors
 
   bumper();
-  bumper(const vec &, const double &);
+  bumper(const vec &, const double &, const double &);
 
   // Public members
 
@@ -36,6 +38,7 @@ public:
 
   const vec & position() const;
   const double & radius() const;
+  const double & temperature() const;
 };
 
 #endif
