@@ -151,10 +151,8 @@ namespace events
     // TODO: develop a meaningful system to define a bumper's temperature and the thermical exchange in a collision.
     if (this->_bumper->temperature() != -1)
     {
-      // THIS IS A TEMPORARY SOLUTION!
-      double exchange_scale = 1.0; // This makes no sense from a physical point of view and you know it!
-      double thermal_difference = this->_bumper->temperature() - this->_molecule.molecule->energy(); // Do we assume k_b = 1... just like everything else...?
-      this->_molecule.molecule->scale_energy(this->_molecule.molecule->energy() + thermal_difference * exchange_scale);
+      // FOR NOW WE JUST USE THIS BASIC REPLACEMENT!!! 
+      this->_molecule.molecule->scale_energy(this->_bumper->temperature());
     }
 
     return true;
