@@ -5,6 +5,9 @@
 #include <iomanip>
 #include <math.h>
 #include <random>
+#include <vector>
+#include <algorithm>
+
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
@@ -29,8 +32,8 @@ const double HEAVY_MOLECULE_STARTING_ENERGY = 0.05;
 
 const double TIME_TRACING_SKIP = 0.001; // visto che le molecole partono tutte pigiate come acciughe... magari val la pena di saltare il tracciamento degli eventi pigiati "al tempo 0"? Non lo so... val la pena di testare.
 
-const double SIMULATION_TIME = 100.0; // Tempo di arrivo finale della simulazione
-const unsigned int N_SAMPLES = 1000; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
+const double SIMULATION_TIME = 10.0; // Tempo di arrivo finale della simulazione
+const unsigned int N_SAMPLES = 100; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
 
 int main()
 {
@@ -63,6 +66,8 @@ int main()
 
     // Creazione dei tag
     enum tags {light, heavy, traced};
+    // Vector per gli ID tracciati
+    std :: vector <size_t> ids;
     
     double lower_bound = 0;
     double upper_bound = M_PI * 2;
@@ -92,7 +97,10 @@ int main()
             size_t my_id = my_engine.add(my_molecule);
             my_engine.tag(my_id, light);
             if (inserted < N_TRACED_LIGHT_MOLECULES)
+            {
                 my_engine.tag(my_id, traced);
+                ids.push_back(my_id);
+            }
             inserted++;
             if (inserted >= N_LIGHT_MOLECULES)
                 break;
@@ -123,7 +131,10 @@ int main()
             size_t my_id = my_engine.add(my_molecule);
             my_engine.tag(my_id, light);
             if (inserted < N_TRACED_HEAVY_MOLECULES)
+            {
                 my_engine.tag(my_id, traced);
+                ids.push_back(my_id);
+            }
             inserted++;
             if (inserted >= N_HEAVY_MOLECULES)
                 break;
@@ -141,23 +152,24 @@ int main()
         {   
             if(my_report.time() >= TIME_TRACING_SKIP)
             {
-                out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
-                           << std ::fixed << my_report.alpha.id() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.alpha.mass() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.alpha.energy.after() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.alpha.position().x << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.alpha.position().y << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.alpha.velocity.after().x << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.alpha.velocity.after().y << std::endl;
-
-                out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
-                           << std ::fixed << my_report.beta.id() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.beta.mass() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.beta.energy.after() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.beta.position().x << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.beta.position().y << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.beta.velocity.after().x << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.beta.velocity.after().y << std::endl;
+                if (std :: find(ids.begin(), ids.end(), my_report.alpha.id()) != ids.end())
+                    out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
+                               << std ::fixed << my_report.alpha.id() << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.alpha.mass() << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.alpha.energy.after() << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.alpha.position().x << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.alpha.position().y << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.alpha.velocity.after().x << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.alpha.velocity.after().y << std::endl;
+                else
+                    out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
+                               << std ::fixed << my_report.beta.id() << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.beta.mass() << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.beta.energy.after() << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.beta.position().x << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.beta.position().y << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.beta.velocity.after().x << "\t"
+                               << std ::fixed << std::setprecision(8) << my_report.beta.velocity.after().y << std::endl;
             } 
         }
     );
