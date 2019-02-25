@@ -38,8 +38,8 @@ const unsigned int N_SAMPLES = 100; // Quanti samples intermedi far fare alla si
 int main()
 {
     // Output setup
-    ofstream out_all ("output_all.txt");
-    ofstream out_traced ("output_traced.txt");
+    std :: ofstream out_all ("output_all.txt");
+    std :: ofstream out_traced ("output_traced.txt");
 
     window my_window; // Per la grafica...
     engine my_engine(50); // Regolare in base a dimensioni scelte
