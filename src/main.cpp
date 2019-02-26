@@ -25,7 +25,7 @@ const double LIGHT_MOLECULE_SPACING = 0.0005;
 const double LIGHT_MOLECULE_MASS = 1.0;
 const double LIGHT_MOLECULE_STARTING_ENERGY = 0.05;
 
-const unsigned int N_HEAVY_MOLECULES = 1000;
+const unsigned int N_HEAVY_MOLECULES = 0;
 const unsigned int N_TRACED_HEAVY_MOLECULES = 1;
 const double HEAVY_MOLECULE_RADIUS = 0.006;
 const double HEAVY_MOLECULE_SPACING = 0.0005;
@@ -84,68 +84,68 @@ int main()
     double starting_velocity = pow(LIGHT_MOLECULE_STARTING_ENERGY / (0.5 * LIGHT_MOLECULE_MASS), 0.5);
 
     unsigned int inserted = 0;
-
-    for (double y = LIGHT_MOLECULE_RADIUS; y < 1.0 - LIGHT_MOLECULE_RADIUS; y += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
-    {
-        for (double x = 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
+    if (N_LIGHT_MOLECULES)
+        for (double y = LIGHT_MOLECULE_RADIUS; y < 1.0 - LIGHT_MOLECULE_RADIUS; y += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
         {
-            double angle = unif(re);
-            double v_x = starting_velocity * cos(angle);
-            double v_y = starting_velocity * sin(angle);
-            molecule my_molecule(
-                {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
-                {x, y},
-                {v_x, v_y},
-                0.,
-                0.);
-            size_t my_id = my_engine.add(my_molecule);
-            my_engine.tag(my_id, light);
-            if (inserted < N_TRACED_LIGHT_MOLECULES)
+            for (double x = 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
             {
-                my_engine.tag(my_id, traced);
-                ids.push_back(my_id);
+                double angle = unif(re);
+                double v_x = starting_velocity * cos(angle);
+                double v_y = starting_velocity * sin(angle);
+                molecule my_molecule(
+                    {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
+                    {x, y},
+                    {v_x, v_y},
+                    0.,
+                    0.);
+                size_t my_id = my_engine.add(my_molecule);
+                my_engine.tag(my_id, light);
+                if (inserted < N_TRACED_LIGHT_MOLECULES)
+                {
+                    my_engine.tag(my_id, traced);
+                    ids.push_back(my_id);
+                }
+                inserted++;
+                if (inserted >= N_LIGHT_MOLECULES)
+                    break;
             }
-            inserted++;
             if (inserted >= N_LIGHT_MOLECULES)
                 break;
         }
-        if (inserted >= N_LIGHT_MOLECULES)
-            break;
-    }
 
     // Aggiunta delle molecole pesanti (occhio che non si intersechino!)
 
     starting_velocity = pow(HEAVY_MOLECULE_STARTING_ENERGY / (0.5 * HEAVY_MOLECULE_MASS), 0.5);
 
     inserted = 0;
-
-    for (double y = 1.0 - HEAVY_MOLECULE_RADIUS; y > HEAVY_MOLECULE_RADIUS; y -= 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
-    {
-        for (double x = 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x += 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
+    if (N_HEAVY_MOLECULES)
+        for (double y = 1.0 - HEAVY_MOLECULE_RADIUS; y > HEAVY_MOLECULE_RADIUS; y -= 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
         {
-            double angle = unif(re);
-            double v_x = starting_velocity * cos(angle);
-            double v_y = starting_velocity * sin(angle);
-            molecule my_molecule(
-                {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
-                {x, y},
-                {v_x, v_y},
-                0.,
-                0.);
-            size_t my_id = my_engine.add(my_molecule);
-            my_engine.tag(my_id, light);
-            if (inserted < N_TRACED_HEAVY_MOLECULES)
+            for (double x = 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x += 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
             {
-                my_engine.tag(my_id, traced);
-                ids.push_back(my_id);
+                double angle = unif(re);
+                double v_x = starting_velocity * cos(angle);
+                double v_y = starting_velocity * sin(angle);
+                molecule my_molecule(
+                    {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
+                    {x, y},
+                    {v_x, v_y},
+                    0.,
+                    0.);
+                size_t my_id = my_engine.add(my_molecule);
+                my_engine.tag(my_id, light);
+                if (inserted < N_TRACED_HEAVY_MOLECULES)
+                {
+                    my_engine.tag(my_id, traced);
+                    ids.push_back(my_id);
+                }
+                inserted++;
+                if (inserted >= N_HEAVY_MOLECULES)
+                    break;
             }
-            inserted++;
             if (inserted >= N_HEAVY_MOLECULES)
                 break;
         }
-        if (inserted >= N_HEAVY_MOLECULES)
-            break;
-    }
 
     // Sottoscrizione agli eventi delle molecole sotto tracciamento
 
