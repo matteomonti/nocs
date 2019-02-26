@@ -15,8 +15,8 @@
 // Parametri:
 
 const unsigned int N_BUMPERS = 100; // Più bumpers significa parete più fina e "liscia", visto che sono comunque sfere
-const double COLD_TEMPERATURE = 0.1;
-const double HOT_TEMPERATURE = 0.01;
+const double COLD_TEMPERATURE = 0.01;
+const double HOT_TEMPERATURE = 0.1;
 
 const unsigned int N_LIGHT_MOLECULES = 1000;
 const unsigned int N_TRACED_LIGHT_MOLECULES = 1;
