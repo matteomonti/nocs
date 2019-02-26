@@ -11,6 +11,7 @@
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
+#include "tqdm/tqdm.h"
 
 // Parametri:
 
@@ -199,14 +200,6 @@ int main()
 
     // Resto delle cose brutte
 
-    my_engine.each<molecule>([&](const molecule &current_molecule) {
-        out_all << std ::fixed << std ::setprecision(2) << 0.0 << "\t"
-            << std ::fixed << current_molecule.mass() << "\t"
-            << std ::fixed << std ::setprecision(8) << current_molecule.energy() << "\t"
-            << std ::fixed << std ::setprecision(8) << current_molecule.position().x << "\t"
-            << std ::fixed << std ::setprecision(8) << current_molecule.position().y << std::endl;
-    });
-
     my_window.draw(my_engine); // Draw the content of the engine on the window
     my_window.flush();         // You need this to render on screen, draw is not sufficient
     my_window.wait_click();    // Guess what
@@ -215,9 +208,17 @@ int main()
 #endif
 
     double time_interval = SIMULATION_TIME / N_SAMPLES;
-
-    for(unsigned int i = 1; i <= N_SAMPLES; ++i)
+    
+    // ORA TQDM È ANCHE IN C++!!!
+    tqdm bar;
+    // Il mio terminale windows non supporta molti caratteri ed è brutto a vedersi...
+    bar.set_theme_basic();
+    // Se non vuoi i colori attiva questa riga...
+    //bar.disable_colors();
+    
+    for(unsigned int i = 0; i <= N_SAMPLES; ++i)
     {
+        bar.progress(i, N_SAMPLES);
         my_engine.run(i * time_interval); // Run UNTIL time
         
         // Report di ogni molecola sul file di testo...
@@ -234,7 +235,7 @@ int main()
         my_window.draw(my_engine);
         my_window.flush();
     #ifdef __graphics__
-        usleep(5.e4);
+        usleep(10.e4);
     #endif
     }
 }
