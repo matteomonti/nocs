@@ -21,12 +21,14 @@ const double HOT_TEMPERATURE = 0.01;
 const unsigned int N_LIGHT_MOLECULES = 1000;
 const unsigned int N_TRACED_LIGHT_MOLECULES = 1;
 const double LIGHT_MOLECULE_RADIUS = 0.004;
+const double LIGHT_MOLECULE_SPACING = 0.0005;
 const double LIGHT_MOLECULE_MASS = 1.0;
 const double LIGHT_MOLECULE_STARTING_ENERGY = 0.05;
 
 const unsigned int N_HEAVY_MOLECULES = 1000;
 const unsigned int N_TRACED_HEAVY_MOLECULES = 1;
 const double HEAVY_MOLECULE_RADIUS = 0.006;
+const double HEAVY_MOLECULE_SPACING = 0.0005;
 const double HEAVY_MOLECULE_MASS = 100.0;
 const double HEAVY_MOLECULE_STARTING_ENERGY = 0.05;
 
@@ -73,17 +75,19 @@ int main()
     double upper_bound = M_PI * 2;
     std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
     std::default_random_engine re;
-    re.seed(42); // PSEUDORANDOM SEED (credo si faccia così?)
 
+    // PSEUDORANDOM SEED (credo si faccia così?)
+    re.seed(42);
+    
     // Aggiunta delle molecole leggere
 
     double starting_velocity = pow(LIGHT_MOLECULE_STARTING_ENERGY / (0.5 * LIGHT_MOLECULE_MASS), 0.5);
 
     unsigned int inserted = 0;
 
-    for (double y = LIGHT_MOLECULE_RADIUS; y < 1.0 - LIGHT_MOLECULE_RADIUS; y += 2 * LIGHT_MOLECULE_RADIUS)
+    for (double y = LIGHT_MOLECULE_RADIUS; y < 1.0 - LIGHT_MOLECULE_RADIUS; y += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
     {
-        for (double x = 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x += 2 * LIGHT_MOLECULE_RADIUS)
+        for (double x = 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
         {
             double angle = unif(re);
             double v_x = starting_velocity * cos(angle);
@@ -115,9 +119,9 @@ int main()
 
     inserted = 0;
 
-    for (double y = 1.0 - HEAVY_MOLECULE_RADIUS; y > HEAVY_MOLECULE_RADIUS; y -= 2 * HEAVY_MOLECULE_RADIUS)
+    for (double y = 1.0 - HEAVY_MOLECULE_RADIUS; y > HEAVY_MOLECULE_RADIUS; y -= 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
     {
-        for (double x = 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x += 2 * HEAVY_MOLECULE_RADIUS)
+        for (double x = 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x += 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
         {
             double angle = unif(re);
             double v_x = starting_velocity * cos(angle);
