@@ -15,6 +15,10 @@
 
 // Parametri:
 
+const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
+const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature dei bumpers?
+const double ALPHA = 1.0; // il parametro beta della funzione gamma della maxwelliana viene ricavato dal fatto che la media è E(X) = alpha/beta
+
 const unsigned int N_BUMPERS = 100; // Più bumpers significa parete più fina e "liscia", visto che sono comunque sfere
 const double COLD_TEMPERATURE = 0.01;
 const double HOT_TEMPERATURE = 0.1;
@@ -40,6 +44,11 @@ const unsigned int N_SAMPLES = 100; // Quanti samples intermedi far fare alla si
 
 int main()
 {
+    // RANDOM ENGINE SETUP
+    std::default_random_engine re;
+    // PSEUDORANDOM SEED (credo si faccia così?)
+    re.seed(42);
+
     // Output setup
     std :: ofstream out_all ("output_all.txt");
     std :: ofstream out_traced ("output_traced.txt");
@@ -51,20 +60,29 @@ int main()
     double bumper_radius = 1. / (N_BUMPERS * 2);
 
     // Costruzione delle pareti
-    for (int x = 0; x < N_BUMPERS; ++x)
+    if (WALLS)
     {
-        bumper cold_bumper(
-            {bumper_radius, x * bumper_radius * 2}, // coordinate
-            bumper_radius,                     // raggio
-            COLD_TEMPERATURE                   // temperatura fredda
-        );
-        bumper hot_bumper(
-            {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
-            bumper_radius,                            // raggio
-            HOT_TEMPERATURE                           // temperatura fredda
-        );
-        my_engine.add(cold_bumper);
-        my_engine.add(hot_bumper);
+        // Se si usa maxwelliana servono
+        const double BETA_COLD = ALPHA / COLD_TEMPERATURE;
+        const double BETA_HOT = ALPHA / HOT_TEMPERATURE;
+        std::gamma_distribution<double> gamma_cold(ALPHA, BETA_COLD);
+        std::gamma_distribution<double> gamma_hot(ALPHA, BETA_HOT);
+
+        for (int x = 0; x < N_BUMPERS; ++x)
+        {
+            bumper cold_bumper(
+                {bumper_radius, x * bumper_radius * 2}, // coordinate
+                bumper_radius,                     // raggio
+                (MAXWELL ? gamma_cold(re) : COLD_TEMPERATURE)                   // temperatura fredda
+            );
+            bumper hot_bumper(
+                {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
+                bumper_radius,                            // raggio
+                (MAXWELL ? gamma_hot(re) : HOT_TEMPERATURE)                           // temperatura calda
+            );
+            my_engine.add(cold_bumper);
+            my_engine.add(hot_bumper);
+        }
     }
 
     // Creazione dei tag
@@ -75,10 +93,6 @@ int main()
     double lower_bound = 0;
     double upper_bound = M_PI * 2;
     std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
-    std::default_random_engine re;
-
-    // PSEUDORANDOM SEED (credo si faccia così?)
-    re.seed(42);
     
     // Aggiunta delle molecole leggere
 
