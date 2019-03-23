@@ -15,8 +15,6 @@
 
 // Parametri:
 
-const bool LOAD_FROM_FILES = false; // Si vuole caricare una vecchia configurazione già termalizzata? 
-
 const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
 const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature dei bumpers?
 const double ALPHA = 1.0; // il parametro beta della funzione gamma della maxwelliana viene ricavato dal fatto che la media è E(X) = alpha/beta
@@ -54,16 +52,6 @@ int main()
     // Output setup
     std :: ofstream out_all ("output_all.txt");
     std :: ofstream out_traced ("output_traced.txt");
-
-    // Input setup (se necessario)
-    std :: ifstream in_light;
-    std :: ifstream in_heavy;
-    double x_file, y_file;
-    if (LOAD_FROM_FILES)
-    {
-        in_light = std ::ifstream("input_light.txt");
-        in_heavy = std ::ifstream("input_heavy.txt");            
-    }
 
     window my_window; // Per la grafica...
     engine my_engine(50); // Regolare in base a dimensioni scelte
@@ -119,27 +107,12 @@ int main()
                 double angle = unif(re);
                 double v_x = starting_velocity * cos(angle);
                 double v_y = starting_velocity * sin(angle);
-                molecule my_molecule;
-                if (LOAD_FROM_FILES)
-                {
-                    in_light >> x_file >> y_file;
-                    in_light >> v_x >> v_y;
-                    my_molecule = molecule(
-                        {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
-                        {x_file, y_file},
-                        {v_x, v_y},
-                        0.,
-                        0.);
-                }
-                else
-                {
-                    my_molecule = molecule(
-                        {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
-                        {x, y},
-                        {v_x, v_y},
-                        0.,
-                        0.);
-                }
+                molecule my_molecule(
+                    {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
+                    {x, y},
+                    {v_x, v_y},
+                    0.,
+                    0.);
                 size_t my_id = my_engine.add(my_molecule);
                 my_engine.tag(my_id, light);
                 if (inserted < N_TRACED_LIGHT_MOLECULES)
@@ -168,27 +141,12 @@ int main()
                 double angle = unif(re);
                 double v_x = starting_velocity * cos(angle);
                 double v_y = starting_velocity * sin(angle);
-                molecule my_molecule;
-                if (LOAD_FROM_FILES)
-                {
-                    in_heavy >> x_file >> y_file;
-                    in_heavy >> v_x >> v_y;
-                    my_molecule = molecule(
-                        {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
-                        {x_file, y_file},
-                        {v_x, v_y},
-                        0.,
-                        0.);
-                }
-                else
-                {
-                    my_molecule = molecule(
-                        {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
-                        {x, y},
-                        {v_x, v_y},
-                        0.,
-                        0.);
-                }
+                molecule my_molecule(
+                    {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
+                    {x, y},
+                    {v_x, v_y},
+                    0.,
+                    0.);
                 size_t my_id = my_engine.add(my_molecule);
                 my_engine.tag(my_id, light);
                 if (inserted < N_TRACED_HEAVY_MOLECULES)
