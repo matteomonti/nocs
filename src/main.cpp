@@ -15,6 +15,7 @@
 
 // Parametri:
 
+const bool LOAD_FROM_FILE = true;
 const bool RANDOM_BUMPERS = true; // ci sono bumpers con distribuzione randomica delle energie generate alle varie diverse collisioni?
 
 const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
@@ -22,17 +23,17 @@ const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature d
 const double ALPHA = 1.0; // il parametro beta della funzione gamma della maxwelliana viene ricavato dal fatto che la media è E(X) = alpha/beta
 
 const unsigned int N_BUMPERS = 100; // Più bumpers significa parete più fina e "liscia", visto che sono comunque sfere
-const double COLD_TEMPERATURE = 0.01;
+const double COLD_TEMPERATURE = 0.1;
 const double HOT_TEMPERATURE = 0.1;
 
-const unsigned int N_LIGHT_MOLECULES = 1000;
+const unsigned int N_LIGHT_MOLECULES = 1;
 const unsigned int N_TRACED_LIGHT_MOLECULES = 1;
-const double LIGHT_MOLECULE_RADIUS = 0.004;
+const double LIGHT_MOLECULE_RADIUS = 0.04;
 const double LIGHT_MOLECULE_SPACING = 0.0005;
 const double LIGHT_MOLECULE_MASS = 1.0;
 const double LIGHT_MOLECULE_STARTING_ENERGY = 0.05;
 
-const unsigned int N_HEAVY_MOLECULES = 0;
+const unsigned int N_HEAVY_MOLECULES = 1;
 const unsigned int N_TRACED_HEAVY_MOLECULES = 1;
 const double HEAVY_MOLECULE_RADIUS = 0.006;
 const double HEAVY_MOLECULE_SPACING = 0.0005;
@@ -41,8 +42,7 @@ const double HEAVY_MOLECULE_STARTING_ENERGY = 0.05;
 
 const double TIME_TRACING_SKIP = 0.001; // visto che le molecole partono tutte pigiate come acciughe... magari val la pena di saltare il tracciamento degli eventi pigiati "al tempo 0"? Non lo so... val la pena di testare.
 
-const double SIMULATION_TIME = 10.0; // Tempo di arrivo finale della simulazione
-const unsigned int N_SAMPLES = 100; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
+const double SIMULATION_TIME = 1000.0; // Tempo di arrivo finale della simulazione
 const unsigned int N_SAMPLES = 10000; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
 
 int main()
@@ -52,12 +52,22 @@ int main()
     // PSEUDORANDOM SEED (credo si faccia così?)
     re.seed(42);
 
+    // Input setup
+    std :: ifstream in_light;
+    std :: ifstream in_heavy;
+    double temp_x, temp_y;
+    if (LOAD_FROM_FILE)
+    {
+        in_light = std :: ifstream("light_input.txt");
+        in_heavy = std :: ifstream("heavy_input.txt");
+    }
+
     // Output setup
     std :: ofstream out_all ("output_all.txt");
     std :: ofstream out_traced ("output_traced.txt");
 
     window my_window; // Per la grafica...
-    engine my_engine(50); // Regolare in base a dimensioni scelte
+    engine my_engine(10); // Regolare in base a dimensioni scelte
 
     // Raggio dei bumpers?
     double bumper_radius = 1. / (N_BUMPERS * 2);
@@ -131,9 +141,11 @@ int main()
                 double angle = unif(re);
                 double v_x = starting_velocity * cos(angle);
                 double v_y = starting_velocity * sin(angle);
+                if (LOAD_FROM_FILE)
+                    in_light >> temp_x >> temp_y >> v_x >> v_y;
                 molecule my_molecule(
                     {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
-                    {x, y},
+                    {(LOAD_FROM_FILE ? temp_x : x), (LOAD_FROM_FILE ? temp_y : y)},
                     {v_x, v_y},
                     0.,
                     0.);
@@ -165,9 +177,11 @@ int main()
                 double angle = unif(re);
                 double v_x = starting_velocity * cos(angle);
                 double v_y = starting_velocity * sin(angle);
+                if (LOAD_FROM_FILE)
+                    in_heavy >> temp_x >> temp_y >> v_x >> v_y;
                 molecule my_molecule(
                     {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
-                    {x, y},
+                    {(LOAD_FROM_FILE ? temp_x : x), (LOAD_FROM_FILE ? temp_y : y)},
                     {v_x, v_y},
                     0.,
                     0.);
