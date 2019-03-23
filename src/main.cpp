@@ -15,6 +15,8 @@
 
 // Parametri:
 
+const bool RANDOM_BUMPERS = true; // ci sono bumpers con distribuzione randomica delle energie generate alle varie diverse collisioni?
+
 const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
 const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature dei bumpers?
 const double ALPHA = 1.0; // il parametro beta della funzione gamma della maxwelliana viene ricavato dal fatto che la media è E(X) = alpha/beta
@@ -41,6 +43,7 @@ const double TIME_TRACING_SKIP = 0.001; // visto che le molecole partono tutte p
 
 const double SIMULATION_TIME = 10.0; // Tempo di arrivo finale della simulazione
 const unsigned int N_SAMPLES = 100; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
+const unsigned int N_SAMPLES = 10000; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
 
 int main()
 {
@@ -68,21 +71,42 @@ int main()
         std::gamma_distribution<double> gamma_cold(ALPHA, BETA_COLD);
         std::gamma_distribution<double> gamma_hot(ALPHA, BETA_HOT);
 
-        for (int x = 0; x < N_BUMPERS; ++x)
-        {
-            bumper cold_bumper(
-                {bumper_radius, x * bumper_radius * 2}, // coordinate
-                bumper_radius,                     // raggio
-                (MAXWELL ? gamma_cold(re) : COLD_TEMPERATURE)                   // temperatura fredda
-            );
-            bumper hot_bumper(
-                {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
-                bumper_radius,                            // raggio
-                (MAXWELL ? gamma_hot(re) : HOT_TEMPERATURE)                           // temperatura calda
-            );
-            my_engine.add(cold_bumper);
-            my_engine.add(hot_bumper);
-        }
+        if (RANDOM_BUMPERS == false)
+            for (int x = 0; x < N_BUMPERS; ++x)
+            {
+                bumper cold_bumper(
+                    {bumper_radius, x * bumper_radius * 2}, // coordinate
+                    bumper_radius,                     // raggio
+                    (MAXWELL ? gamma_cold(re) : COLD_TEMPERATURE)                   // temperatura fredda
+                );
+                bumper hot_bumper(
+                    {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
+                    bumper_radius,                            // raggio
+                    (MAXWELL ? gamma_hot(re) : HOT_TEMPERATURE)                           // temperatura calda
+                );
+                my_engine.add(cold_bumper);
+                my_engine.add(hot_bumper);
+            }
+        else
+            for (int x = 0; x < N_BUMPERS; ++x)
+            {
+                bumper cold_bumper(
+                    {bumper_radius, x * bumper_radius * 2},       // coordinate
+                    bumper_radius,                                // raggio
+                    COLD_TEMPERATURE, // temperatura fredda
+                    true,
+                    & re
+                );
+                bumper hot_bumper(
+                    {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
+                    bumper_radius,                                // raggio
+                    HOT_TEMPERATURE,   // temperatura calda
+                    true,
+                    & re
+                );
+                my_engine.add(cold_bumper);
+                my_engine.add(hot_bumper);
+            }
     }
 
     // Creazione dei tag

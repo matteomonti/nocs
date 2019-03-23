@@ -9,6 +9,7 @@ class bumper;
 
 #include <cmath>
 #include <assert.h>
+#include <random>
 
 // Includes
 
@@ -22,13 +23,17 @@ class bumper
   vec _position;
   double _radius;
   double _temperature;
+  bool _randomness;
+  std :: exponential_distribution <double> _exp_distribution;
+  std :: default_random_engine * _random_engine;
+  
 
 public:
 
   // Constructors
 
   bumper();
-  bumper(const vec &, const double &, const double &);
+  bumper(const vec &, const double &, const double & = -1.0, const bool & = false, std :: default_random_engine * = NULL);
 
   // Public members
 
@@ -39,6 +44,12 @@ public:
   const vec & position() const;
   const double & radius() const;
   const double & temperature() const;
+  const bool & randomness() const;
+
+  // Methods
+
+  const double random_extraction();
+
 };
 
 #endif

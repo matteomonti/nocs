@@ -1,6 +1,8 @@
 #include "bumper.hpp"
 #include "engine/engine.h"
 
+#include <iostream>
+
 namespace events
 {
   // Constructors
@@ -151,8 +153,14 @@ namespace events
     // TODO: develop a meaningful system to define a bumper's temperature and the thermical exchange in a collision.
     if (this->_bumper->temperature() != -1)
     {
-      // FOR NOW WE JUST USE THIS BASIC REPLACEMENT!!! 
-      this->_molecule.molecule->scale_energy(this->_bumper->temperature());
+      if (this->_bumper->randomness())
+      {
+        this->_molecule.molecule->scale_energy(this->_bumper->random_extraction());
+      }
+      else
+      {
+        this->_molecule.molecule->scale_energy(this->_bumper->temperature());
+      }
     }
 
     return true;
