@@ -159,7 +159,9 @@ namespace events
       }
       else
       {
-        this->_molecule.molecule->scale_energy(this->_bumper->temperature());
+        // NOW HERE WE ARE DEALING WITH THIS "TEMPERATURE" WHICH IS ACTUALLY A DIRTY ELASTICITY CONSTANT.
+        this->_molecule.molecule->scale_energy(
+          this->_molecule.molecule->energy() * this->_bumper->temperature());
       }
     }
 

@@ -15,16 +15,19 @@
 
 // Parametri:
 
+// OCCHIO CHE QUA ORA LA "TEMPERATURA DEI BUMPERS" È PRATICAMENTE LA COSTANTE DI ELASTICITà PER URTO MOLECOLA-BUMPER. (1 è ELASTICO, MENO DI 1 INELASTICO, PIù DI 1 SUPERELASTICO).
+// PER USARE QUESTA COSA TENERE RANDOM_BUMPERS SU FALSE.
+
 const bool LOAD_FROM_FILE = true;
-const bool RANDOM_BUMPERS = true; // ci sono bumpers con distribuzione randomica delle energie generate alle varie diverse collisioni?
+const bool RANDOM_BUMPERS = false; // ci sono bumpers con distribuzione randomica delle energie generate alle varie diverse collisioni?
 
 const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
 const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature dei bumpers?
 const double ALPHA = 1.0; // il parametro beta della funzione gamma della maxwelliana viene ricavato dal fatto che la media è E(X) = alpha/beta
 
 const unsigned int N_BUMPERS = 100; // Più bumpers significa parete più fina e "liscia", visto che sono comunque sfere
-const double COLD_TEMPERATURE = 0.1;
-const double HOT_TEMPERATURE = 0.1;
+const double COLD_TEMPERATURE = 0.5;
+const double HOT_TEMPERATURE = 2.0;
 
 const unsigned int N_LIGHT_MOLECULES = 1;
 const unsigned int N_TRACED_LIGHT_MOLECULES = 1;
