@@ -149,7 +149,6 @@ namespace events
     // Update molecule velocity and angular_velocity
 
     this->_molecule.molecule->impulse(r, module * n);
-
     // TODO: develop a meaningful system to define a bumper's temperature and the thermical exchange in a collision.
     if (this->_bumper->temperature() != -1)
     {
@@ -159,9 +158,16 @@ namespace events
       }
       else
       {
-        // NOW HERE WE ARE DEALING WITH THIS "TEMPERATURE" WHICH IS ACTUALLY A DIRTY ELASTICITY CONSTANT.
-        this->_molecule.molecule->scale_energy(
-          this->_molecule.molecule->energy() * this->_bumper->temperature());
+        if (this->_bumper->multiplicative())
+        {
+          // NOW HERE WE ARE DEALING WITH THIS "TEMPERATURE" WHICH IS ACTUALLY A DIRTY ELASTICITY CONSTANT.
+          this->_molecule.molecule->scale_energy(
+            this->_molecule.molecule->energy() * this->_bumper->temperature());
+        }
+        else
+        {
+          this->_molecule.molecule->scale_energy(this->_bumper->temperature());
+        }
       }
     }
 

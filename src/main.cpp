@@ -16,10 +16,11 @@
 // Parametri:
 
 // OCCHIO CHE QUA ORA LA "TEMPERATURA DEI BUMPERS" È PRATICAMENTE LA COSTANTE DI ELASTICITà PER URTO MOLECOLA-BUMPER. (1 è ELASTICO, MENO DI 1 INELASTICO, PIù DI 1 SUPERELASTICO).
-// PER USARE QUESTA COSA TENERE RANDOM_BUMPERS SU FALSE.
+// PER USARE QUESTA COSA TENERE RANDOM_BUMPERS SU FALSE ED IMPOSTARE MULTIPLICATIVE_BUMPERS A TRUE.
 
 const bool LOAD_FROM_FILE = true;
 const bool RANDOM_BUMPERS = false; // ci sono bumpers con distribuzione randomica delle energie generate alle varie diverse collisioni?
+const bool MULTIPLICATIVE_BUMPERS = false;
 
 const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
 const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature dei bumpers?
@@ -88,14 +89,16 @@ int main()
             for (int x = 0; x < N_BUMPERS; ++x)
             {
                 bumper cold_bumper(
-                    {bumper_radius, x * bumper_radius * 2}, // coordinate
-                    bumper_radius,                     // raggio
-                    (MAXWELL ? gamma_cold(re) : COLD_TEMPERATURE)                   // temperatura fredda
+                    {bumper_radius, x * bumper_radius * 2},       // coordinate
+                    bumper_radius,                                // raggio
+                    (MAXWELL ? gamma_cold(re) : COLD_TEMPERATURE),// temperatura fredda
+                    MULTIPLICATIVE_BUMPERS
                 );
                 bumper hot_bumper(
                     {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
-                    bumper_radius,                            // raggio
-                    (MAXWELL ? gamma_hot(re) : HOT_TEMPERATURE)                           // temperatura calda
+                    bumper_radius,                                // raggio
+                    (MAXWELL ? gamma_hot(re) : HOT_TEMPERATURE),  // temperatura calda
+                    MULTIPLICATIVE_BUMPERS
                 );
                 my_engine.add(cold_bumper);
                 my_engine.add(hot_bumper);
