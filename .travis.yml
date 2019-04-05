@@ -238,9 +238,9 @@ matrix:
             - ubuntu-toolchain-r-test
             - llvm-toolchain-trusty-7
           packages:
-            - clang-7.0
+            - clang-7
       env:
-        - MATRIX_EVAL="brew update && brew install llvm && CC=clang-7.0 && CXX=clang++-7.0"
+        - MATRIX_EVAL="brew update && brew install llvm && CC=clang-7 && CXX=clang++-7"
         - CXX=clang++-7
         - LINKER_FLAGS="-stdlib=libc++ -lc++abi"
         - CXXFLAGS="-stdlib=libc++"
@@ -258,6 +258,7 @@ matrix:
     - name: ubuntu 14.04 - clang@7.0
     - name: macOS - clang@7.0
     - name: macOS - native clang (llvm backend)
+    - name: ubuntu 14.04 - gcc@5.0
 
 
 before_install:
@@ -276,15 +277,15 @@ install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$COMPILER_ID" == "gcc" ]]; then tar -xzf cmake-3.13.1-Linux-x86_64.tar.gz                                                     ;fi
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]] && [[ "$COMPILER_ID" == "gcc" ]]; then export PATH=$PWD/cmake-3.13.1-Linux-x86_64/bin:$PATH                                          ;fi
 
-  - mkdir -p build_debug && cd build_debug
+  - mkdir build_debug && cd build_debug
   - cmake .. -DCMAKE_BUILD_TYPE="Debug" -DVIEW=OFF
   - cd ..
-  - mkdir -p build_release && cd build_release
+  - mkdir build_release && cd build_release
   - cmake .. -DCMAKE_BUILD_TYPE="Release" -DVIEW=OFF
   - cd ..
 
 script:
   - cd build_debug && cmake --build . --target install -- -j8 && cd ..
   - cd build_release && cmake --build . --target install -- -j8 && cd ..
-  - cd build_debug && ./testing && cd ..
-  - cd build_release && ./testing && cd ..
+  - cd bin && ./testing && cd ..
+  - cd bin && ./testing && cd ..

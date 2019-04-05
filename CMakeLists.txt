@@ -161,10 +161,10 @@ add_dependencies(exec main)
 
 # testexec
 add_custom_target(Testing)
-add_executable(testing ${TEST_DIR}/test.cpp)
-target_link_libraries(testing ${linked_libs} ${nocslib})
-target_compile_definitions(testing PRIVATE __test__)
-add_dependencies(Testing testing)
+add_executable(Test ${TEST_DIR}/test.cpp)
+target_link_libraries(Test ${linked_libs} ${nocslib})
+target_compile_definitions(Test PRIVATE __test__)
+add_dependencies(Testing Test)
 
 #################################################################
 #                          INSTALLERS                           #
@@ -173,4 +173,4 @@ add_dependencies(Testing testing)
 install(TARGETS ${nocslib}    DESTINATION ${CMAKE_SOURCE_DIR})
 
 install(TARGETS main          DESTINATION ${OUT_DIR})
-install(TARGETS testing       DESTINATION ${OUT_DIR})
+install(TARGETS Test          DESTINATION ${OUT_DIR})
