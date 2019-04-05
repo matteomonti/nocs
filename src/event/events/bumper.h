@@ -3,7 +3,7 @@
 namespace events
 {
   class bumper;
-};
+}
 
 #if !defined(__forward__) && !defined(__nobb__event__events__bumper__h)
 #define __nobb__event__events__bumper__h
@@ -35,7 +35,7 @@ namespace events
     // Settings
 
     static constexpr double time_epsilon = 1.e-9;
-    
+
     // Friends
 
     friend class report <events :: bumper>;
@@ -89,6 +89,6 @@ namespace events
     static inline vec position(const :: molecule &, const size_t &, const int &);
     static inline vec position(const :: molecule &, const size_t &, const double &, const int &);
   };
-};
+}
 
 #endif

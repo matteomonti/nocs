@@ -106,7 +106,7 @@ size_t engine :: tag :: autoincrement = 1;
 
 // Constructors
 
-engine :: engine(const size_t & fineness) : _time(0), _grid(fineness), _tags(new hashtable <size_t, molecule *> [256]), reset(*this)
+engine :: engine(const size_t & fineness) : _grid(fineness), _tags(new hashtable <size_t, molecule *> [256]), _time(0), reset(*this)
 {
   this->_elasticity.all = 1.;
 
@@ -279,12 +279,12 @@ void engine :: refresh(molecule & molecule, const size_t & skip)
 
       if(x < 0)
         fold |= vec :: right;
-      else if(x >= this->_grid.fineness())
+      else if(x >= static_cast<ssize_t>(this->_grid.fineness()))
         fold |= vec :: left;
 
       if(y < 0)
         fold |= vec :: up;
-      else if(y >= this->_grid.fineness())
+      else if(y >= static_cast<ssize_t>(this->_grid.fineness()))
         fold |= vec :: down;
 
       x = (x + this->_grid.fineness()) % this->_grid.fineness();

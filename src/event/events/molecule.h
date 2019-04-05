@@ -3,7 +3,7 @@
 namespace events
 {
   class molecule;
-};
+}
 
 #if !defined(__forward__) && !defined(__nobb__event__events__molecule__h)
 #define __nobb__event__events__molecule__h
@@ -105,5 +105,5 @@ namespace events
     static inline vec position(const :: molecule &, const size_t &, const int & = vec :: direct);
     static inline vec position(const :: molecule &, const size_t &, const double &, const int & = vec :: direct);
   };
-};
+}
 #endif

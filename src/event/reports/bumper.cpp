@@ -23,7 +23,7 @@ const vec & report <events :: bumper> :: velocity :: after() const
   return this->_event._molecule.molecule->velocity();
 }
 
-const vec report <events :: bumper> :: velocity :: delta () const
+vec report <events :: bumper> :: velocity :: delta () const
 {
   return this->after() - this->before();
 }
@@ -43,12 +43,12 @@ const vec & report <events :: bumper> :: momentum :: before() const
   return this->_event.p;
 }
 
-const vec report <events :: bumper> :: momentum :: after() const
+vec report <events :: bumper> :: momentum :: after() const
 {
   return this->_event._molecule.molecule->velocity() * this->_event._molecule.molecule->mass();
 }
 
-const vec report <events :: bumper> :: momentum :: delta() const
+vec report <events :: bumper> :: momentum :: delta() const
 {
   return this->after() - this->before();
 }
@@ -73,7 +73,7 @@ const double & report <events :: bumper> :: angular_velocity :: after() const
   return this->_event._molecule.molecule->angular_velocity();
 }
 
-const double report <events :: bumper> :: angular_velocity :: delta() const
+double report <events :: bumper> :: angular_velocity :: delta() const
 {
   return this->after() - this->before();
 }
@@ -93,12 +93,12 @@ const double & report <events :: bumper> :: angular_momentum :: before() const
   return this->_event.l;
 }
 
-const double report <events :: bumper> :: angular_momentum :: after() const
+double report <events :: bumper> :: angular_momentum :: after() const
 {
   return this->_event._molecule.molecule->angular_velocity() * this->_event._molecule.molecule->inertia_moment();
 }
 
-const double report <events :: bumper> :: angular_momentum :: delta() const
+double report <events :: bumper> :: angular_momentum :: delta() const
 {
   return this->after() - this->before();
 }
@@ -113,17 +113,17 @@ report <events :: bumper> :: energy :: energy(const events :: bumper & event) : 
 
 // Getters
 
-const double report <events :: bumper> :: energy :: before() const
+double report <events :: bumper> :: energy :: before() const
 {
   return 0.5 * (~this->_event.v * this->_event._molecule.molecule->mass() + this->_event.av * this->_event.av * this->_event._molecule.molecule->inertia_moment());
 }
 
-const double report <events :: bumper> :: energy :: after() const
+double report <events :: bumper> :: energy :: after() const
 {
   return this->_event._molecule.molecule->energy();
 }
 
-const double report <events :: bumper> :: energy :: delta() const
+double report <events :: bumper> :: energy :: delta() const
 {
   return this->after() - this->before();
 }
@@ -150,7 +150,7 @@ const double & report <events :: bumper> :: bumper :: radius() const
 
 // Constructors
 
-report <events :: bumper> :: report(const events :: bumper & event) : _event(event), velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event), bumper(event)
+report <events :: bumper> :: report(const events :: bumper & event) : velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event), bumper(event), _event(event)
 {
 }
 

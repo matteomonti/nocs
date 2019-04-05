@@ -19,8 +19,8 @@ template <typename type, typename std :: enable_if <gss :: valid <type> :: value
     else
       a = c;
 
-      c = b - (b - a) / ratio;
-      d = a + (b - a) / ratio;
+    c = b - (b - a) / ratio;
+    d = a + (b - a) / ratio;
   }
 
   return (b + a) / 2.;
@@ -40,8 +40,8 @@ template <typename type, typename std :: enable_if <gss :: valid <type> :: value
     else
       a = c;
 
-      c = b - (b - a) / ratio;
-      d = a + (b - a) / ratio;
+    c = b - (b - a) / ratio;
+    d = a + (b - a) / ratio;
   }
 
   return (b + a) / 2.;

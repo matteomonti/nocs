@@ -59,6 +59,10 @@ protected:
 
 public:
 
+  // Destructor
+
+  virtual ~event() {};
+
   // Getters
 
   bool happens() const;

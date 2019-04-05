@@ -2,8 +2,9 @@
 #define __lockpick__
 
 // Libraries
-
+#if defined (__linux__) || defined (__apple__)
 #include <unistd.h>
+#endif
 
 #ifdef __graphics__
 #include <passe_par_tout.h>
@@ -88,6 +89,6 @@ namespace lockpick
 
     static void start();
   };
-};
+}
 
 #endif

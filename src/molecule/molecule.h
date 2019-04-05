@@ -96,7 +96,7 @@ public:
 	const double & time() const;
 	const int32_t & version() const;
 
-	const double energy() const;
+	double energy() const;
 
 	// Methods
 
