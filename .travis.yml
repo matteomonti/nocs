@@ -247,8 +247,10 @@ install:
 
   - mkdir -p build_debug && cd build_debug
   - cmake .. -DCMAKE_BUILD_TYPE="Debug" -DVIEW=OFF
+  - cd ..
   - mkdir -p build_release && cd build_release
   - cmake .. -DCMAKE_BUILD_TYPE="Release" -DVIEW=OFF
+  - cd ..
 
 script:
   - cd build_debug && cmake --build . --target install -- -j8 && cd ..
