@@ -59,7 +59,7 @@ SDEPDIR := ./dep/src
 TOBJDIR := ./obj/test
 TDEPDIR := ./dep/test
 
-TESTEXEC := test.out
+TESTEXEC := Test.out
 MAINEXEC := main.out
 
 

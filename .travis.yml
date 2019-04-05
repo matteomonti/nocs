@@ -287,5 +287,5 @@ install:
 script:
   - cd build_debug && cmake --build . --target install -- -j8 && cd ..
   - cd build_release && cmake --build . --target install -- -j8 && cd ..
-  - cd bin && ./testing && cd ..
-  - cd bin && ./testing && cd ..
+  - cd bin && ./Test && cd ..
+  - cd bin && ./Test && cd ..
