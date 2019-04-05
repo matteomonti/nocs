@@ -239,9 +239,9 @@ matrix:
             - llvm-toolchain-trusty-7
           packages:
             - clang-7
+            - llvm-7-dev
       env:
-        - MATRIX_EVAL="brew update && brew install llvm && CC=clang-7 && CXX=clang++-7"
-        - CXX=clang++-7
+        - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7"
         - LINKER_FLAGS="-stdlib=libc++ -lc++abi"
         - CXXFLAGS="-stdlib=libc++"
         - COMPILER_ID="clang"
@@ -287,5 +287,5 @@ install:
 script:
   - cd build_debug && cmake --build . --target install -- -j8 && cd ..
   - cd build_release && cmake --build . --target install -- -j8 && cd ..
-  - cd bin && ./Test && cd ..
-  - cd bin && ./Test && cd ..
+  - cd build_debug && ./Test && cd ..
+  - cd build_release && ./Test && cd ..
