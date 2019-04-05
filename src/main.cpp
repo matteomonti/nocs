@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <iomanip>
+#include <chrono>
+#include <thread>
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
@@ -99,6 +101,7 @@ int main()
         my_window.flush();
 
         usleep(1.e4);
+        std::this_thread::sleep_for(std::chrono::seconds(10000));
     }
 }
 

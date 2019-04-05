@@ -78,9 +78,11 @@ endif()
 if (GRAPHICS)
   find_package(OpenGL REQUIRED)
   find_package(GLUT REQUIRED)
-  set(linked_libs ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
+  find_package(X11 REQUIRED)
+  set(linked_libs ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${X11_LIBRARIES})
   include_directories(${OPENGL_INCLUDE_DIRS})
   include_directories(${GLUT_INCLUDE_DIR})
+  include_directories(${X11_INCLUDE_DIR})
   message (STATUS "Viewer enabled")
 else()
   message (STATUS "Viewer disabled")
@@ -142,6 +144,9 @@ message(STATUS ""                                                               
 
 add_library(${nocslib} SHARED ${SRC} ${HEADER})
 set_property(TARGET ${nocslib} PROPERTY POSITION_INDEPENDENT_CODE ON)
+if (GRAPHICS)
+  target_compile_definitions(${nocslib} PRIVATE __graphics__)
+endif()
 target_link_libraries(${nocslib} ${linked_libs})
 
 # mainexec
