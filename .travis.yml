@@ -182,9 +182,9 @@ matrix:
             - llvm-toolchain-trusty-7.0
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages:
-            - clang-7.0
+            - clang-7
             - libstdc++6-4.6-dev
-            - llvm-7.0-dev
+            - llvm-7-dev
             - libclang-7-dev
             - libc++-dev
             - libc++abi-dev
@@ -238,9 +238,9 @@ matrix:
             - llvm-toolchain-trusty-7.0
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages:
-            - clang-7.0
+            - clang-7
             - libstdc++6-4.6-dev
-            - llvm-7.0-dev
+            - llvm-7-dev
             - libclang-7-dev
             - libc++-dev
             - libc++abi-dev
