@@ -68,7 +68,9 @@ endif()
 include(CheckCXXCompilerFlag)
 CHECK_CXX_COMPILER_FLAG("-march=native" COMPILER_SUPPORTS_MARCH_NATIVE)
 if (COMPILER_SUPPORTS_MARCH_NATIVE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  if (NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -march=native")
+  endif()
 endif()
 
 #################################################################
@@ -105,6 +107,8 @@ file(GLOB_RECURSE EXE    "${SRC_DIR}/*.cpp")
 include_directories(${SRC_DIR})
 include_directories(${TEST_DIR})
 
+string(REPLACE " " ";" CMAKE_CXX_FLAGS_LIST ${CMAKE_CXX_FLAGS})
+
 #################################################################
 #                          SUMMARY                              #
 #################################################################
@@ -118,7 +122,7 @@ message(STATUS ""                                                               
 message(STATUS "   C++ :"                                                            )
 message(STATUS "      C++ Compiler : ${CMAKE_CXX_COMPILER}"                          )
 message(STATUS "      C++ flags    :"                                                )
-foreach(FLAG ${CMAKE_CXX_FLAGS})
+foreach(FLAG ${CMAKE_CXX_FLAGS_LIST})
   message(STATUS "                    * ${FLAG}"                                     )
 endforeach(FLAG)
 if (${CMAKE_BUILD_TYPE} MATCHES "Release")
