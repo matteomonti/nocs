@@ -83,7 +83,7 @@ matrix:
             - llvm-toolchain-trusty-3.9
           packages:
             - clang-3.9
-            - libstdc++-dev
+            - libstdc++-4.8-dev
             - llvm-3.9-dev
             - libclang-3.9-dev
             - libc++-dev
@@ -107,7 +107,7 @@ matrix:
             - llvm-toolchain-trusty-4.0
           packages:
             - clang-4.0
-            - libstdc++-dev
+            - libstdc++-4.8-dev
             - llvm-4.0-dev
             - libclang-4.0-dev
             - libc++-dev
@@ -131,7 +131,7 @@ matrix:
             - llvm-toolchain-trusty-5.0
           packages:
             - clang-5.0
-            - libstdc++-dev
+            - libstdc++-4.8-dev
             - llvm-5.0-dev
             - libclang-5.0-dev
             - libc++-dev
@@ -157,7 +157,7 @@ matrix:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages:
             - clang-6.0
-            - libstdc++-dev
+            - libstdc++6-4.4-dev
             - llvm-6.0
             - libclang-6.0-dev
             - libc++-dev
@@ -183,7 +183,7 @@ matrix:
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages:
             - clang-7.0
-            - libstdc++-dev
+            - libstdc++6-4.6-dev
             - llvm-7.0-dev
             - libclang-7-dev
             - libc++-dev
@@ -233,12 +233,18 @@ matrix:
       name: macOS - clang@7.0
       addons:
         apt:
+          update: true
           sources:
-            - ubuntu-toolchain-r-test
-            - llvm-toolchain-trusty-7
+            - llvm-toolchain-trusty-7.0
+            - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages:
-            - clang-7
-            - llvm-7-dev
+            - clang-7.0
+            - libstdc++6-4.6-dev
+            - llvm-7.0-dev
+            - libclang-7-dev
+            - libc++-dev
+            - libc++abi-dev
+
       env:
         - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7"
         - COMPILER_ID="clang"
