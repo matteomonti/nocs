@@ -6,7 +6,7 @@ set (NOCS_MINOR    0)
 set (NOCS_REVISION 0)
 set (NOCS_VERSION ${NOCS_MAJOR}.${NOCS_MINOR}.${NOCS_REVISION})
 
-project (NOCS LANGUAGES CXX VERSION ${NOCS_VERSION} DESCRIPTION "Nocs (Not Only Colliding Sphere) library")
+project (nocs LANGUAGES CXX VERSION ${NOCS_VERSION} DESCRIPTION "Nocs (Not Only Colliding Sphere) library")
 set (CMAKE_CXX_STANDARD 14)
 set (CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -80,11 +80,9 @@ endif()
 if (GRAPHICS)
   find_package(OpenGL REQUIRED)
   find_package(GLUT REQUIRED)
-  find_package(X11 REQUIRED)
-  set(linked_libs ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${X11_LIBRARIES})
+  set(linked_libs ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES})
   include_directories(${OPENGL_INCLUDE_DIRS})
   include_directories(${GLUT_INCLUDE_DIR})
-  include_directories(${X11_INCLUDE_DIR})
   message (STATUS "Viewer enabled")
 else()
   message (STATUS "Viewer disabled")
@@ -94,10 +92,12 @@ endif()
 #                         SETTING DIRECTORIES                   #
 #################################################################
 
-set(SRC_DIR    ${CMAKE_SOURCE_DIR}/src     CACHE PATH "Path where find cpp files"                 )
-set(TEST_DIR   ${CMAKE_SOURCE_DIR}/test    CACHE PATH "Path where find test files"                )
-set(OBJ_DIR    ${CMAKE_SOURCE_DIR}/obj     CACHE PATH "Path where obj will be installed"     FORCE)
-set(OUT_DIR    ${CMAKE_SOURCE_DIR}/bin     CACHE PATH "Path where outputs will be installed" FORCE)
+set(SRC_DIR    ${CMAKE_SOURCE_DIR}/src          CACHE PATH "Path where find cpp files"                        )
+set(TEST_DIR   ${CMAKE_SOURCE_DIR}/test         CACHE PATH "Path where find test files"                       )
+set(OBJ_DIR    ${CMAKE_SOURCE_DIR}/obj          CACHE PATH "Path where obj will be installed"            FORCE)
+set(OUT_DIR    ${CMAKE_SOURCE_DIR}/bin          CACHE PATH "Path where outputs will be installed"        FORCE)
+set(LIB_DIR    ${CMAKE_SOURCE_DIR}/lib          CACHE PATH "Path where lib will be installed"            FORCE)
+set(INST_DIR   ${CMAKE_SOURCE_DIR}/share/byron  CACHE PATH "Path where cmake configs will be installed"  FORCE)
 
 set(nocslib nocs)
 
@@ -174,7 +174,47 @@ add_dependencies(Testing Test)
 #                          INSTALLERS                           #
 #################################################################
 
-install(TARGETS ${nocslib}    DESTINATION ${CMAKE_SOURCE_DIR})
+install(TARGETS ${nocslib}    EXPORT nocsTargets
+                              RUNTIME DESTINATION ${OUT_DIR}
+                              LIBRARY DESTINATION ${LIB_DIR}
+                              ARCHIVE DESTINATION ${LIB_DIR}
+                              PUBLIC_HEADER DESTINATION ${LIB_DIR}/include
+                              COMPONENT dev
+                              )
 
 install(TARGETS main          DESTINATION ${OUT_DIR})
 install(TARGETS Test          DESTINATION ${OUT_DIR})
+
+#################################################################
+#                          EXPORT NOCS                          #
+#################################################################
+
+install (EXPORT nocsTargets
+         FILE nocsTargets.cmake
+         NAMESPACE nocs::
+         DESTINATION "${INST_DIR}"
+        )
+
+# Export the package for use from the build-tree (this registers the build-tree with a global CMake-registry)
+export (PACKAGE nocs)
+
+# Create the nocsConfig.cmake
+# First of all we compute the relative path between the cmake config file and the include path
+file (RELATIVE_PATH REL_INCLUDE_DIR "${INST_DIR}" "${LIB_DIR}/include")
+set (CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+configure_file (nocsConfig.cmake.in "${PROJECT_BINARY_DIR}/nocsConfig.cmake" @ONLY)
+set (CONF_INCLUDE_DIRS "\${nocs_CMAKE_DIR}/${REL_INCLUDE_DIR}")
+configure_file (nocsConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nocsConfig.cmake" @ONLY)
+
+# Create the nocsConfigVersion.cmake
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file ("${PROJECT_BINARY_DIR}/nocsConfigVersion.cmake"
+                                  COMPATIBILITY SameMajorVersion
+                                 )
+
+install (FILES
+         "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/nocsConfig.cmake"
+         "${PROJECT_BINARY_DIR}/nocsConfigVersion.cmake"
+         DESTINATION "${INST_DIR}"
+         )
+

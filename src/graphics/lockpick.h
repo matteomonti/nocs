@@ -2,39 +2,61 @@
 #define __lockpick__
 
 // Libraries
-#if defined (__linux__) || defined (__apple__)
-#include <unistd.h>
-#endif
 
 #ifdef __graphics__
-#include <passe_par_tout.h>
+
+#ifdef __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#include <GLUT/glut.h>
+#else
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 #endif
+#include <GL/freeglut.h>
+#endif // __graphics__
+
+#include <cmath>
+#include <cstring>
 
 namespace lockpick
 {
+
   struct vector
   {
-      // Members
+    // Members
 
-      double x;
-      double y;
+    double x;
+    double y;
 
-      // Constructors
+    // Constructors
 
-      vector();
-      vector(double x, double y);
+    vector();
+    vector(double x, double y);
+
+    // Destructor
+
+    ~vector() = default;
   };
 
   struct color
   {
     // Members
 
-    unsigned int red, green, blue;
+    unsigned char red;
+    unsigned char green;
+    unsigned char blue;
 
-    // Constructors
+    // Constructor
 
     color();
-    color(unsigned int red, unsigned int green, unsigned int blue);
+    color(unsigned char red, unsigned char green, unsigned char blue);
+
+
+    // Destructor
+
+    ~color() = default;
   };
 
   class window
@@ -45,6 +67,61 @@ namespace lockpick
 
   protected:
 
+    struct _glcircle
+    {
+      // Members
+
+      unsigned int subdivs;
+      double * buf;
+
+      // Constructors
+
+      _glcircle();
+      _glcircle(unsigned int subdivs);
+
+      // Destructor
+
+      ~_glcircle();
+
+      // Operators
+
+      _glcircle & operator=(_glcircle g);
+
+    };
+
+    class _circle
+    {
+      // Members
+
+      unsigned int _size;
+
+    protected:
+
+      // Static members
+
+      double _x;
+      double _y;
+      color _c;
+
+    public:
+
+      double _scale;
+
+      // Constructors
+
+      _circle();
+      _circle(vector center, double scale, color c, unsigned int size);
+      _circle(unsigned int size);
+
+      // Destructor
+
+      ~_circle() = default;
+
+      // Methods
+
+      void draw(vector center, double scale, color c);
+    };
+
     // Static members
 
     static bool __started;
@@ -54,6 +131,9 @@ namespace lockpick
     static int __default_height;
 
     static int __window_count;
+
+    _circle __ball;
+    _glcircle __glball;
 
   public:
 
@@ -67,12 +147,9 @@ namespace lockpick
 
     // Methods
 
-    void ellipse(vector center, vector axes, bool fill = false);
-    void arc(vector center, vector axes, double initial_ang, double amp, double incl = 360, bool fill = false);
-    void circle(vector center, double radius, bool fill = false, int c = 0);
     void line(vector from, vector to);
-    void text(char * c, vector x);
-    void colors(int n);
+    void circle(vector center, double radius, color c = {1, 0, 0});
+
 
     // Static methods
 
@@ -80,8 +157,8 @@ namespace lockpick
     static void set_default_size(int width, int height);
     static void wait_enter();
     static void wait_click();
-    void flush();
-    void clear();
+    static void flush();
+    static void clear();
 
   private:
 
@@ -89,6 +166,7 @@ namespace lockpick
 
     static void start();
   };
+
 }
 
 #endif
