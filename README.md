@@ -8,6 +8,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/matteomonti/nocs.svg?label=Stars&style=social)](https://github.com/matteomonti/nocs/stargazers)
 [![GitHub watchers](https://img.shields.io/github/watchers/matteomonti/nocs.svg?label=Watch&style=social)](https://github.com/matteomonti/nocs/watchers)
 
+# NOCS
 ### (Not Only Colliding Spheres)
 
 Exact 2D gas dynamics framework.

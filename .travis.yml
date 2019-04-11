@@ -85,7 +85,7 @@ matrix:
             - clang-3.9
             - libstdc++-4.8-dev
             - llvm-3.9-dev
-            - libclang-4.0-dev
+            - libclang-3.9-dev
             - libc++-dev
             - libc++abi-dev
       env:
@@ -236,7 +236,7 @@ matrix:
         apt:
           update: true
           sources:
-            - llvm-toolchain-trusty-7
+            - llvm-toolchain-xenial-7
             - sourceline: 'ppa:ubuntu-toolchain-r/test'
           packages:
             - clang-7
@@ -256,7 +256,6 @@ matrix:
 
   allow_failures:
     - name: ubuntu 14.04 - clang@3.9
-    - name: ubuntu 14.04 - clang@7.0
     - name: macOS - clang@7.0
 
 

@@ -100,7 +100,7 @@ int main()
     my_window.draw(my_engine);
     my_window.flush();
 
-    std::this_thread::sleep_for(std::chrono::seconds(10000));
+    std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 

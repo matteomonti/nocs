@@ -17,7 +17,7 @@ namespace events
     double time = molecule.time();
 
     bool close;
-    double beg;
+    double beg = 0.;
     double end;
 
     double a = ~v;
@@ -45,7 +45,7 @@ namespace events
 
       // Test 2: collision range
 
-      beg = newton :: quadratic(a, b, c, time);
+      double beg = newton :: quadratic(a, b, c, time);
 
       if(std :: isnan(beg))
       {
