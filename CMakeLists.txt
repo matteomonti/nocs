@@ -41,7 +41,6 @@ endif()
 
 if ( CMAKE_COMPILER_IS_GNUCXX )
   add_compile_options (-Wall -Wextra -Wno-unused-result -Wno-unknown-pragmas -Wfatal-errors -Wno-narrowing -Wpedantic)
-  string (REGEX REPLACE "-O3" "-Ofast" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
   string (REGEX REPLACE "-O0" "-Og" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
   set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG" )
   set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG" )
@@ -50,7 +49,6 @@ endif()
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang")
   set (CMAKE_CXX_FLAGS "-Wno-deprecated -Wno-writable-strings ${CMAKE_CXX_FLAGS}")
   string (REGEX REPLACE "-O0" "-Og" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
-  string (REGEX REPLACE "-O3" "-Ofast" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
   add_definitions (-D__apple__)
 endif()
 
@@ -77,6 +75,8 @@ endif()
 #                         PARSE OPTIONS                         #
 #################################################################
 
+find_package(Threads REQUIRED)
+list(APPEND linked_libs Threads::Threads )
 if (GRAPHICS)
   find_package(OpenGL REQUIRED)
   find_package(GLUT REQUIRED)
@@ -107,7 +107,9 @@ file(GLOB_RECURSE EXE    "${SRC_DIR}/*.cpp")
 include_directories(${SRC_DIR})
 include_directories(${TEST_DIR})
 
-string(REPLACE " " ";" CMAKE_CXX_FLAGS_LIST ${CMAKE_CXX_FLAGS})
+if (${CMAKE_CXX_FLAGS})
+  string(REPLACE " " ";" CMAKE_CXX_FLAGS_LIST ${CMAKE_CXX_FLAGS})
+endif()
 
 #################################################################
 #                          SUMMARY                              #

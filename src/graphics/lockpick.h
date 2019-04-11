@@ -5,6 +5,8 @@
 
 #ifdef __graphics__
 
+#define LIGHT
+
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -17,6 +19,7 @@
 #include <GL/freeglut.h>
 #endif // __graphics__
 
+#include <thread>
 #include <cmath>
 #include <cstring>
 
@@ -64,6 +67,7 @@ namespace lockpick
     // Members
 
     int _id;
+    std::thread _th;
 
   protected:
 
@@ -96,8 +100,6 @@ namespace lockpick
       unsigned int _size;
 
     protected:
-
-      // Static members
 
       double _x;
       double _y;
@@ -160,11 +162,13 @@ namespace lockpick
     static void flush();
     static void clear();
 
+    void start();
+
   private:
 
     // Static private methods
 
-    static void start();
+           void run();
   };
 
 }

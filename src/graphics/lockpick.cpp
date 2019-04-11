@@ -128,24 +128,6 @@ namespace lockpick
   {
 #ifdef __graphics__
     start();
-    ++__window_count;
-
-    if (title)
-    {
-      glutCreateWindow(title);
-      glutInitWindowPosition(position_x, position_y);
-      glClearColor(1.f, 1.f, 1.f, 1.f);
-    }
-
-    frame_width_percentage = (frame_width_percentage << 24) + (background.red << 16) + (background.green << 8) + background.blue;
-    frame_height_percentage = (frame_height_percentage << 24) + (width << 11) + height;
-
-    // MISS set the coordinate range
-    __ball = _circle(11);
-    __glball = _glcircle(20);
-
-    glutInitWindowSize( frame_width_percentage, frame_height_percentage );
-    _id = glutGetWindow() - 1;
 #endif
   }
 
@@ -154,6 +136,7 @@ namespace lockpick
   window :: ~window()
   {
 #ifdef __graphics__
+    _th.join();
     --__window_count;
     _id = glutGetWindow();
     glutLeaveMainLoop();
@@ -185,6 +168,7 @@ namespace lockpick
     glVertex3f(from.x, from.y, 0.);
     glVertex3f(to.x, to.y, 0.);
     glEnd();
+    glPopMatrix();
 #endif
   }
 
@@ -226,7 +210,7 @@ namespace lockpick
   void window :: flush()
   {
 #ifdef __graphics__
-    glutSwapBuffers();
+    //glutSwapBuffers();
     glFlush();
 #endif
   }
@@ -247,45 +231,56 @@ namespace lockpick
     if (!__started)
     {
       __started = true;
-      int myargc = 1;
-      char * myargv[1];
-      myargv[0] = strdup("nocs");
-      glutInit(&myargc, myargv);
-#if defined(LIGHT)
-      glEnable(GL_LIGHT0);                                    // Turn on a light with defaults set
-      glEnable(GL_LIGHTING);                                  // Turn on lighting
-      glEnable(GL_COLOR_MATERIAL);
-      glShadeModel(GL_SMOOTH);                                // Allow color
-#endif // LIGHT
-      glClearColor(0.0, 0.0, 0.0, 1);                         // window background in RGB
-      glViewport(0, 0, __default_width, __default_height);    // Make our viewport the whole window
-      glMatrixMode(GL_PROJECTION);                            // Select The Projection Matrix
-      glLoadIdentity();                                       // Reset The Projection Matrix
-      glMatrixMode(GL_MODELVIEW);                             // Select The Modelview Matrix
-      glLoadIdentity();                                       // Reset The Modelview Matrix
-      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // Clear The Screen And The Depth Buffer
-      glLoadIdentity();                                       // Reset The View
-      glEnable(GL_DEPTH_TEST);
-
-      glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-      // Create window
-      glutInitWindowSize( __default_width, __default_height );
-      glutInitWindowPosition(10, 10);
-      glutCreateWindow(__default_title);
-      glClearColor(1.f, 1.f, 1.f, 1.f);
-      glutDisplayFunc(flush);
-      //glutSpecialFunc(wait_enter);
-      //glutSpecialFunc(wait_click);
-      // Control OpenGL events
-      glutMainLoop();                                         // Enter the infinite event-processing loop
+      _th = std::thread(&window :: run, this);
     }
+#endif
+  }
+
+
+  void window :: run()
+  {
+#ifdef __graphics__
+    int myargc = 1;
+    char * myargv[1];
+    myargv[0] = strdup("nocs");
+    glutInit(&myargc, myargv);
+#if defined(LIGHT)
+    glEnable(GL_LIGHT0);                                    // Turn on a light with defaults set
+    glEnable(GL_LIGHTING);                                  // Turn on lighting
+    glEnable(GL_COLOR_MATERIAL);
+    glShadeModel(GL_SMOOTH);                                // Allow color
+#endif // LIGHT
+    glClearColor(0.0, 0.0, 0.0, 1);                         // window background in RGB
+    glViewport(0, 0, __default_width, __default_height);    // Make our viewport the whole window
+    glMatrixMode(GL_PROJECTION);                            // Select The Projection Matrix
+    glLoadIdentity();                                       // Reset The Projection Matrix
+    glMatrixMode(GL_MODELVIEW);                             // Select The Modelview Matrix
+    glLoadIdentity();                                       // Reset The Modelview Matrix
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // Clear The Screen And The Depth Buffer
+    glLoadIdentity();                                       // Reset The View
+    glEnable(GL_DEPTH_TEST);
+
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    // Create window
+    glutInitWindowSize( __default_width, __default_height );
+    glutInitWindowPosition(10, 10);
+    glutCreateWindow(__default_title);
+    glClearColor(1.f, 1.f, 1.f, 1.f);
+
+    // Function which display all the objects
+    glutDisplayFunc(flush);
+    //glutSpecialFunc(wait_enter);
+    //glutSpecialFunc(wait_click);
+
+    // Control OpenGL events
+    glutMainLoop();                                         // Enter the infinite event-processing loop
 #endif
   }
 
   // Static members
 
   bool window :: __started = false;
-  char * window :: __default_title = const_cast <char *> ("Lockpick");
+  char * window :: __default_title = const_cast <char *> ("nocs");
   int window :: __default_width = 750;
   int window :: __default_height = 750;
   int window :: __window_count = 0;
