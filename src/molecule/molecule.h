@@ -10,6 +10,7 @@ class molecule;
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <algorithm> // allow min in MSVC
 
 // Includes
 

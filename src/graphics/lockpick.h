@@ -23,6 +23,16 @@
 #include <cmath>
 #include <cstring>
 
+#ifdef _MSC_VER
+  #define __unused
+#else
+  #define __unused __attribute__((__unused__))
+#endif
+
+__unused static const char * __default_title = const_cast <char *> ("nocs");
+__unused static const int __default_width = 750;
+__unused static const int __default_height = 750;
+
 namespace lockpick
 {
 
@@ -127,11 +137,6 @@ namespace lockpick
     // Static members
 
     static bool __started;
-
-    static char * __default_title;
-    static int __default_width;
-    static int __default_height;
-
     static int __window_count;
 
     _circle __ball;
@@ -155,8 +160,6 @@ namespace lockpick
 
     // Static methods
 
-    static void set_default_title(const char * title);
-    static void set_default_size(int width, int height);
     static void wait_enter();
     static void wait_click();
     static void flush();
@@ -168,7 +171,7 @@ namespace lockpick
 
     // Static private methods
 
-           void run();
+    void run();
   };
 
 }

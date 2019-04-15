@@ -43,7 +43,7 @@ int main()
       molecule my_other_molecule // Same thing as before
       (
         {
-            {{0., 0.}, 0.01, 0.02}
+          {{0., 0.}, 0.01, 0.02}
         },
         {x, y},
         {3. * swap, 3. * swap},

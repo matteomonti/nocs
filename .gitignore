@@ -119,3 +119,4 @@ nbproject/
 # End of https://www.gitignore.io/api/xcode,c++,linux,osx,windows
 
 [Ss]hare/
+[Bb]uild*/

@@ -71,7 +71,53 @@ matrix:
 
 # linux + clang
 
+    - os: linux
+      compiler: clang
+      name: ubuntu 14.04 - clang@3.6
+      addons:
+        apt:
+          update: true
+          packages:
+            - clang-3.6
+            - libstdc++-4.8-dev
+            - llvm-3.9-dev
+            - libclang-3.9-dev
+            - libc++-dev
+            - libc++abi-dev
+      env:
+        - MATRIX_EVAL="CC=clang-3.6 && CXX=clang++-3.6"
+        - CMAKE_C_COMPILER=${CC}
+        - CMAKE_CXX_COMPILER=${CXX}
+        - CMAKE_LINKER=${CXX}
+        - COMPILER_ID="clang"
+        - UNIT_TESTS=true
+        - LLVM_VERSION=3.9.0
+        - LINKER_FLAGS="-stdlib=libstdc++ -lc++abi"
 
+    - os: linux
+      compiler: clang
+      name: ubuntu 14.04 - clang@3.8
+      addons:
+        apt:
+          update: true
+          sources:
+            - llvm-toolchain-precise-3.8
+          packages:
+            - clang-3.8
+            - libstdc++-4.8-dev
+            - llvm-3.9-dev
+            - libclang-3.9-dev
+            - libc++-dev
+            - libc++abi-dev
+      env:
+        - MATRIX_EVAL="CC=clang-3.8 && CXX=clang++-3.8"
+        - CMAKE_C_COMPILER=${CC}
+        - CMAKE_CXX_COMPILER=${CXX}
+        - CMAKE_LINKER=${CXX}
+        - COMPILER_ID="clang"
+        - UNIT_TESTS=true
+        - LLVM_VERSION=3.9.0
+        - LINKER_FLAGS="-stdlib=libstdc++ -lc++abi"
 
     - os: linux
       compiler: clang
@@ -96,7 +142,7 @@ matrix:
         - COMPILER_ID="clang"
         - UNIT_TESTS=true
         - LLVM_VERSION=3.9.0
-        - LINKER_FLAGS="-stdlib=libc++ -lc++abi"
+        - LINKER_FLAGS="-stdlib=libstdc++ -lc++abi"
 
     - os: linux
       compiler: clang
@@ -255,6 +301,8 @@ matrix:
         - UNIT_TESTS=true
 
   allow_failures:
+    - name: ubuntu 14.04 - clang@3.6
+    - name: ubuntu 14.04 - clang@3.8
     - name: ubuntu 14.04 - clang@3.9
     - name: macOS - clang@7.0
 

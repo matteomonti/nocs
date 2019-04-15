@@ -11,6 +11,7 @@ namespace events
 // Libraries
 
 #include <cmath>
+#include <algorithm> // allow min in MSVC
 
 // Forward includes
 

@@ -1,5 +1,8 @@
 #include "lockpick.h"
 
+bool __enter__ = false;
+bool __click__ = false;
+
 namespace lockpick
 {
   // vector
@@ -99,7 +102,7 @@ namespace lockpick
 
   // Members
 
-  void window :: _circle :: draw(__attribute__((unused)) vector center, __attribute__((unused)) double scale, __attribute__((unused)) color c)
+  void window :: _circle :: draw(__unused vector center, __unused double scale, __unused color c)
   {
 #ifdef __graphics__
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
@@ -112,8 +115,8 @@ namespace lockpick
     glClear(GL_COLOR_BUFFER_BIT);
 
     glPushMatrix();
-    glTranslatef( center.x, center.y, 0 );
-    glScalef( scale, scale, 0 );
+    glTranslated( GLdouble(center.x), GLdouble(center.y), GLdouble(0.) );
+    glScaled( GLdouble(scale), GLdouble(scale), GLdouble(0.) );
     glColor3ub( c.red, c.green, c.blue );
     glDrawArrays( GL_TRIANGLE_FAN, 0, _size );
     glPopMatrix();
@@ -124,120 +127,7 @@ namespace lockpick
 
   // Constructors
 
-  window :: window(__attribute__((unused)) const char * title, __attribute__((unused)) int width, __attribute__((unused)) int height, __attribute__((unused)) int position_x, __attribute__((unused)) int position_y, __attribute__((unused)) color background, __attribute__((unused)) int frame_width_percentage, __attribute__((unused)) int frame_height_percentage)
-  {
-#ifdef __graphics__
-    start();
-#endif
-  }
-
-  // Destructor
-
-  window :: ~window()
-  {
-#ifdef __graphics__
-    _th.join();
-    --__window_count;
-    _id = glutGetWindow();
-    glutLeaveMainLoop();
-
-    if (__window_count == 0)
-    {
-      glutDestroyWindow(_id);
-      __started = false;
-    }
-#endif
-  }
-
-  // Methods
-
-  void window :: line(__attribute__((unused)) vector from, __attribute__((unused)) vector to)
-  {
-#ifdef __graphics__
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-    glMatrixMode(GL_MODELVIEW);                         // To operate on model-view matrix
-                                                        // Clear window and null buffer Z
-                                                        // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                                                        // Reset transformation
-    glLoadIdentity();
-
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glColor3f(1.0, 0.0, 0.0);
-    glBegin(GL_POLYGON);
-    glVertex3f(from.x, from.y, 0.);
-    glVertex3f(to.x, to.y, 0.);
-    glEnd();
-    glPopMatrix();
-#endif
-  }
-
-  void window :: circle(__attribute__((unused)) vector center, __attribute__((unused)) double radius, __attribute__((unused)) color c)
-  {
-#ifdef __graphics__
-    __ball.draw(center, radius, c);
-#endif
-  }
-
-
-  // Static methods
-
-  void window :: set_default_title(const char * title)
-  {
-    __default_title = const_cast <char *> (title);
-  }
-
-  void window :: set_default_size(int width, int height)
-  {
-    __default_width = width;
-    __default_height = height;
-  }
-
-  void window :: wait_enter()
-  {
-  #ifdef __graphics__
-
-  #endif
-  }
-
-  void window :: wait_click()
-  {
-  #ifdef __graphics__
-
-  #endif
-  }
-
-  void window :: flush()
-  {
-#ifdef __graphics__
-    //glutSwapBuffers();
-    glFlush();
-#endif
-  }
-
-  void window :: clear()
-  {
-#ifdef __graphics__
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clean the screen and the depth buffer
-    glLoadIdentity();                                   // Reset the projection matrix
-#endif
-  }
-
-  // Static private methods
-
-  void window :: start()
-  {
-#ifdef __graphics__
-    if (!__started)
-    {
-      __started = true;
-      _th = std::thread(&window :: run, this);
-    }
-#endif
-  }
-
-
-  void window :: run()
+  window :: window(__unused const char * title, __unused int width, __unused int height, __unused int position_x, __unused int position_y, __unused color background, __unused int frame_width_percentage, __unused int frame_height_percentage)
   {
 #ifdef __graphics__
     int myargc = 1;
@@ -269,20 +159,149 @@ namespace lockpick
 
     // Function which display all the objects
     glutDisplayFunc(flush);
-    //glutSpecialFunc(wait_enter);
-    //glutSpecialFunc(wait_click);
+    glutKeyboardFunc([](unsigned char key, __unused int x, __unused int y)
+    {
+      switch (key)
+      {
+        case 32: __enter__ = true;
+        break;
+        default: __enter__ = false;
+        break;
+      }
+    });
+    glutMouseFunc([](int button, __unused int state, __unused int x, __unused int y)
+    {
+      switch (button)
+      {
+        case GLUT_LEFT_BUTTON: __click__ = true;
+        break;
+        default: __click__ = false;
+        break;
+      }
+    });
 
-    // Control OpenGL events
-    glutMainLoop();                                         // Enter the infinite event-processing loop
+    // Set range coordinates
+    gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
+
+    start();
 #endif
   }
+
+  // Destructor
+
+  window :: ~window()
+  {
+#ifdef __graphics__
+    _th.join();
+    --__window_count;
+    _id = glutGetWindow();
+    glutLeaveMainLoop();
+
+    if (__window_count == 0)
+    {
+      glutDestroyWindow(_id);
+      __started = false;
+    }
+#endif
+  }
+
+  // Methods
+
+  void window :: line(__unused vector from, __unused vector to)
+  {
+#ifdef __graphics__
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+    glMatrixMode(GL_MODELVIEW);                         // To operate on model-view matrix
+                                                        // Clear window and null buffer Z
+                                                        // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+                                                        // Reset transformation
+    glLoadIdentity();
+
+    glClear(GL_COLOR_BUFFER_BIT);
+    glColor3d(1.0, 0.0, 0.0);
+    glBegin(GL_LINE_STRIP);
+    glVertex3d(GLdouble(from.x), GLdouble(from.y), GLdouble(0.));
+    glVertex3d(GLdouble(to.x), GLdouble(to.y), GLdouble(0.));
+    glEnd();
+    glPopMatrix();
+#endif
+  }
+
+  void window :: circle(__unused vector center, __unused double radius, __unused color c)
+  {
+#ifdef __graphics__
+    __ball.draw(center, radius, c);
+#endif
+  }
+
+
+  // Static methods
+
+  void window :: wait_enter()
+  {
+  #ifdef __graphics__
+    __enter__ = false;
+    while (true)
+    {
+      if (__enter__) break;
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+  #endif
+  }
+
+  void window :: wait_click()
+  {
+  #ifdef __graphics__
+    __click__ = false;
+    while (true)
+    {
+      if (__click__) break;
+      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+  #endif
+  }
+
+  void window :: flush()
+  {
+#ifdef __graphics__
+    glutSwapBuffers();
+    glFlush();
+#endif
+  }
+
+  void window :: clear()
+  {
+#ifdef __graphics__
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clean the screen and the depth buffer
+    glLoadIdentity();                                   // Reset the projection matrix
+#endif
+  }
+
+  // Static private methods
+
+  void window :: start()
+  {
+#ifdef __graphics__
+    if (!__started)
+    {
+      __started = true;
+      _th = std::thread(&window :: run, this);
+    }
+#endif
+  }
+
+  void window :: run()
+  {
+#ifdef __graphics__
+    // Control OpenGL events
+    glutMainLoop();                                    // Enter the infinite event-processing loop
+#endif
+  }
+
 
   // Static members
 
   bool window :: __started = false;
-  char * window :: __default_title = const_cast <char *> ("nocs");
-  int window :: __default_width = 750;
-  int window :: __default_height = 750;
   int window :: __window_count = 0;
 
 }

@@ -13,6 +13,7 @@ namespace events
 #include <iostream>
 #include <cmath>
 #include <math.h>
+#include <algorithm> // allow min in MSVC
 
 // Forward includes
 
