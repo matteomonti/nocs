@@ -22,6 +22,7 @@
 #include <thread>
 #include <cmath>
 #include <cstring>
+#include <iostream>
 
 #ifdef _MSC_VER
   #define __unused
@@ -32,6 +33,7 @@
 __unused static const char * __default_title = const_cast <char *> ("nocs");
 __unused static const int __default_width = 750;
 __unused static const int __default_height = 750;
+__unused static const int __triangle_amount = 20;
 
 
 namespace lockpick
@@ -82,66 +84,10 @@ namespace lockpick
 
   protected:
 
-    struct _glcircle
-    {
-      // Members
-
-      unsigned int subdivs;
-      double * buf;
-
-      // Constructors
-
-      _glcircle();
-      _glcircle(unsigned int subdivs);
-
-      // Destructor
-
-      ~_glcircle();
-
-      // Operators
-
-      _glcircle & operator=(_glcircle g);
-
-    };
-
-    class _circle
-    {
-      // Members
-
-      unsigned int _size;
-
-    protected:
-
-      double _x;
-      double _y;
-      color _c;
-
-    public:
-
-      double _scale;
-
-      // Constructors
-
-      _circle();
-      _circle(vector center, double scale, color c, unsigned int size);
-      _circle(unsigned int size);
-
-      // Destructor
-
-      ~_circle() = default;
-
-      // Methods
-
-      void draw(vector center, double scale, color c);
-    };
-
     // Static members
 
     static bool __started;
     static int __window_count;
-
-    _circle __ball;
-    _glcircle __glball;
 
   public:
 
@@ -156,8 +102,7 @@ namespace lockpick
     // Methods
 
     void line(vector from, vector to);
-    void circle(vector center, double radius, color c = {1, 0, 0});
-
+    void circle(vector center, double radius, color c = {0, 0, 1});
 
     // Static methods
 

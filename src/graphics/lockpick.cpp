@@ -36,93 +36,6 @@ namespace lockpick
     this->blue = blue;
   }
 
-  // glcircle
-
-  // Constructors
-
-  window :: _glcircle :: _glcircle() : buf(nullptr)
-  {
-  }
-
-  window :: _glcircle :: _glcircle(unsigned int subdivs) : subdivs(subdivs + 2)
-  {
-    this->buf = new double[this->subdivs];
-    this->buf[0] = 0.;
-    this->buf[1] = 0.;
-    for (unsigned int i = 0; i <= subdivs; i++)
-    {
-      double angle = i * ((2. * M_PI) / subdivs);
-      this->buf[i + 2] = std :: cos(angle);
-      this->buf[i + 3] = std :: sin(angle);
-    }
-  }
-
-  // Destructor
-
-  window :: _glcircle :: ~_glcircle()
-  {
-    delete[] this->buf;
-  }
-
-  // Operators
-
-  window :: _glcircle & window :: _glcircle :: operator=(window :: _glcircle g)
-  {
-    this->subdivs = g.subdivs;
-    this->buf = new double[this->subdivs];
-    std :: memcpy(this->buf, g.buf, sizeof(double)*this->subdivs);
-    return *this;
-  }
-
-
-  // circle
-
-  // Constructors
-
-  window :: _circle :: _circle()
-  {
-    _size = 0.;
-    _x = 0.;
-    _y = 0.;
-    _scale = 0.;
-  }
-
-  window :: _circle :: _circle(vector pos, double scale, color c, unsigned int size) : _size(size), _c(c), _scale(scale)
-  {
-    _x = pos.x;
-    _y = pos.y;
-  }
-
-  window :: _circle :: _circle(unsigned int size) : _size(size)
-  {
-    _x = 0.;
-    _y = 0.;
-    _scale = 0.;
-  }
-
-  // Members
-
-  void window :: _circle :: draw(__unused vector center, __unused double scale, __unused color c)
-  {
-#ifdef __graphics__
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-    glMatrixMode(GL_MODELVIEW);                         // To operate on model-view matrix
-                                                        // Clear window and null buffer Z
-                                                        // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                                                        // Reset transformation
-    glLoadIdentity();
-
-    //glClear(GL_COLOR_BUFFER_BIT);
-
-    glPushMatrix();
-    glTranslated( GLdouble(center.x), GLdouble(center.y), GLdouble(0.) );
-    glScaled( GLdouble(scale), GLdouble(scale), GLdouble(0.) );
-    glColor3ub( c.red, c.green, c.blue );
-    glDrawArrays( GL_TRIANGLE_FAN, 0, _size );
-    glPopMatrix();
-#endif
-  }
-
   // window
 
   // Constructors
@@ -138,7 +51,7 @@ namespace lockpick
     glutInitWindowSize(600, 600);
     glutCreateWindow(__default_title);
     glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
     glutDisplayFunc(dummy_flush);
@@ -193,19 +106,14 @@ namespace lockpick
   void window :: line(__unused vector from, __unused vector to)
   {
 #ifdef __graphics__
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-    glMatrixMode(GL_MODELVIEW);                         // To operate on model-view matrix
-                                                        // Clear window and null buffer Z
-                                                        // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-                                                        // Reset transformation
-    //glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
 
-    //glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_LINE_STRIP);
     glColor3d(1.0, 0.0, 0.0);
     glVertex3d(GLdouble(from.x), GLdouble(from.y), GLdouble(0.));
     glVertex3d(GLdouble(to.x), GLdouble(to.y), GLdouble(0.));
     glEnd();
+    
     glPopMatrix();
 #endif
   }
@@ -213,22 +121,20 @@ namespace lockpick
   void window :: circle(__unused vector center, __unused double radius, __unused color c)
   {
 #ifdef __graphics__
-    int i;
-    int triangleAmount = 20; //# of triangles used to draw circle
-
-    //GLfloat radius = 0.8f; //radius
-    GLfloat twicePi = 2.0f * M_PI;
+    glMatrixMode(GL_MODELVIEW);
+    GLfloat twice_pi = 2.0f * M_PI;
 
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(center.x, center.y); // center of circle
-    for (i = 0; i <= triangleAmount; i++)
+    for (int i = 0; i <= __triangle_amount; i++)
     {
+      glColor3f(c.red, c.green, c.blue);
       glVertex2f(
-          center.x + (radius * cos(i * twicePi / triangleAmount)),
-          center.y + (radius * sin(i * twicePi / triangleAmount)));
+          center.x + (radius * cos(i * twice_pi / __triangle_amount)),
+          center.y + (radius * sin(i * twice_pi / __triangle_amount)));
     }
     glEnd();
-    
+    glPopMatrix();
 #endif
   }
 
@@ -262,7 +168,11 @@ namespace lockpick
   void window :: flush()
   {
 #ifdef __graphics__
+
+    std::cout << "before flush" << std::endl;
     glutSwapBuffers();
+
+    std::cout << "after flush" << std::endl;
 #endif
   }
 
@@ -272,9 +182,11 @@ namespace lockpick
   void window :: clear()
   {
 #ifdef __graphics__
-    glClearColor(1, 1, 1, 1);
-    glClear(GL_COLOR_BUFFER_BIT); // Clean the screen and the depth buffer
-    //glLoadIdentity();                                   // Reset the projection matrix
+    std::cout << "before clear" << std::endl;
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clean the screen and the depth buffer
+    std::cout << "during clear" << std::endl;
+    glLoadIdentity(); // Reset the projection matrix
+    std::cout << "after clear" << std::endl;
 #endif
   }
 
