@@ -6,13 +6,13 @@
 #include <thread>
 
 #include "engine/engine.hpp"
-#include "graphics/window.h"
+#include "graphics/lockpick.h"
 
 int main()
 {
   enum tags {fatty, ninja};
 
-  window my_window; // Just a window
+  graphics::window my_window; // Just a window
 
   engine my_engine(6); // 6x6 zones
 
@@ -64,7 +64,7 @@ int main()
 
   my_window.draw(my_engine); // Draw the content of the engine on the window
   my_window.flush(); // You need this to render on screen, draw is not sufficient
-  my_window.wait_click(); // Guess what
+  //my_window.wait_click(); // Guess what
 
   my_engine.on <events :: molecule> (fatty, ninja, [&](const report <events :: molecule> my_report)
   {
@@ -99,8 +99,6 @@ int main()
     my_window.clear(); // Remove what was drawn before
     my_window.draw(my_engine);
     my_window.flush();
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(1));
   }
 }
 
