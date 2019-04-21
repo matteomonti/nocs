@@ -105,14 +105,14 @@ namespace lockpick
   void window :: _circle :: draw(__unused vector center, __unused double scale, __unused color c)
   {
 #ifdef __graphics__
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glMatrixMode(GL_MODELVIEW);                         // To operate on model-view matrix
                                                         // Clear window and null buffer Z
                                                         // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                                                         // Reset transformation
     glLoadIdentity();
 
-    glClear(GL_COLOR_BUFFER_BIT);
+    //glClear(GL_COLOR_BUFFER_BIT);
 
     glPushMatrix();
     glTranslated( GLdouble(center.x), GLdouble(center.y), GLdouble(0.) );
@@ -134,55 +134,38 @@ namespace lockpick
     char * myargv[1];
     myargv[0] = strdup("nocs");
     glutInit(&myargc, myargv);
-#if defined(LIGHT)
-    glEnable(GL_LIGHT0);                                    // Turn on a light with defaults set
-    glEnable(GL_LIGHTING);                                  // Turn on lighting
-    glEnable(GL_COLOR_MATERIAL);
-    glShadeModel(GL_SMOOTH);                                // Allow color
-#endif // LIGHT
-    glClearColor(0.0, 0.0, 0.0, 1);                         // window background in RGB
-    glViewport(0, 0, __default_width, __default_height);    // Make our viewport the whole window
-    glMatrixMode(GL_PROJECTION);                            // Select The Projection Matrix
-    glLoadIdentity();                                       // Reset The Projection Matrix
-    glMatrixMode(GL_MODELVIEW);                             // Select The Modelview Matrix
-    glLoadIdentity();                                       // Reset The Modelview Matrix
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);     // Clear The Screen And The Depth Buffer
-    glLoadIdentity();                                       // Reset The View
-    glEnable(GL_DEPTH_TEST);
-
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    // Create window
-    glutInitWindowSize( __default_width, __default_height );
-    glutInitWindowPosition(10, 10);
+    glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE);
+    glutInitWindowSize(600, 600);
     glutCreateWindow(__default_title);
-    glClearColor(1.f, 1.f, 1.f, 1.f);
-
-    // Function which display all the objects
-    glutDisplayFunc(flush);
-    glutKeyboardFunc([](unsigned char key, __unused int x, __unused int y)
-    {
+    glClearColor(1, 1, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION);
+    gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
+    glutDisplayFunc(dummy_flush);
+    glutKeyboardFunc([](unsigned char key, __unused int x, __unused int y) {
       switch (key)
       {
-        case 32: __enter__ = true;
+      case 32:
+        __enter__ = true;
         break;
-        default: __enter__ = false;
+      default:
+        __enter__ = false;
         break;
       }
     });
-    glutMouseFunc([](int button, __unused int state, __unused int x, __unused int y)
-    {
+    glutMouseFunc([](int button, __unused int state, __unused int x, __unused int y) {
       switch (button)
       {
-        case GLUT_LEFT_BUTTON: __click__ = true;
+      case GLUT_LEFT_BUTTON:
+        __click__ = true;
         break;
-        default: __click__ = false;
+      default:
+        __click__ = false;
         break;
       }
     });
-
     // Set range coordinates
-    gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
-
+    
     start();
 #endif
   }
@@ -210,16 +193,16 @@ namespace lockpick
   void window :: line(__unused vector from, __unused vector to)
   {
 #ifdef __graphics__
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glMatrixMode(GL_MODELVIEW);                         // To operate on model-view matrix
                                                         // Clear window and null buffer Z
                                                         // glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                                                         // Reset transformation
-    glLoadIdentity();
+    //glLoadIdentity();
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    glColor3d(1.0, 0.0, 0.0);
+    //glClear(GL_COLOR_BUFFER_BIT);
     glBegin(GL_LINE_STRIP);
+    glColor3d(1.0, 0.0, 0.0);
     glVertex3d(GLdouble(from.x), GLdouble(from.y), GLdouble(0.));
     glVertex3d(GLdouble(to.x), GLdouble(to.y), GLdouble(0.));
     glEnd();
@@ -230,7 +213,22 @@ namespace lockpick
   void window :: circle(__unused vector center, __unused double radius, __unused color c)
   {
 #ifdef __graphics__
-    __ball.draw(center, radius, c);
+    int i;
+    int triangleAmount = 20; //# of triangles used to draw circle
+
+    //GLfloat radius = 0.8f; //radius
+    GLfloat twicePi = 2.0f * M_PI;
+
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(center.x, center.y); // center of circle
+    for (i = 0; i <= triangleAmount; i++)
+    {
+      glVertex2f(
+          center.x + (radius * cos(i * twicePi / triangleAmount)),
+          center.y + (radius * sin(i * twicePi / triangleAmount)));
+    }
+    glEnd();
+    
 #endif
   }
 
@@ -265,15 +263,18 @@ namespace lockpick
   {
 #ifdef __graphics__
     glutSwapBuffers();
-    glFlush();
 #endif
   }
+
+  void window :: dummy_flush()
+  {}
 
   void window :: clear()
   {
 #ifdef __graphics__
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clean the screen and the depth buffer
-    glLoadIdentity();                                   // Reset the projection matrix
+    glClearColor(1, 1, 1, 1);
+    glClear(GL_COLOR_BUFFER_BIT); // Clean the screen and the depth buffer
+    //glLoadIdentity();                                   // Reset the projection matrix
 #endif
   }
 

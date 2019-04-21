@@ -33,6 +33,7 @@ __unused static const char * __default_title = const_cast <char *> ("nocs");
 __unused static const int __default_width = 750;
 __unused static const int __default_height = 750;
 
+
 namespace lockpick
 {
 
@@ -163,6 +164,7 @@ namespace lockpick
     static void wait_enter();
     static void wait_click();
     static void flush();
+    static void dummy_flush();
     static void clear();
 
     void start();
