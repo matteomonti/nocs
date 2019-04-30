@@ -35,12 +35,16 @@
 #include "elements/bumper.h"
 
 #ifdef _MSC_VER
+  #ifndef __unused
   #define __unused
+  #endif
 #else
+  #ifndef __unused
   #define __unused __attribute__((__unused__))
+  #endif
 #endif
 
-__unused std::mutex mtx; // mutex for critical section
+__unused std :: mutex mtx; // mutex for critical section
 
 __unused const char * __default_title = const_cast <char *> ("nocs");
 __unused const int __default_width = 750;
@@ -120,18 +124,18 @@ namespace graphics
     ~line() = default;
   };
 
-  __unused std::vector<sphere> sphere_buffer;
-  __unused std::vector<line> line_buffer;
-  __unused std::atomic<bool> request_drawing(false);
-  __unused std::atomic<bool> request_wait_click(false);
-  __unused std::atomic<bool> request_wait_enter(false);
+  __unused std :: vector <sphere> sphere_buffer;
+  __unused std :: vector <line> line_buffer;
+  __unused std :: atomic <bool> request_drawing(false);
+  __unused std :: atomic <bool> request_wait_click(false);
+  __unused std :: atomic <bool> request_wait_enter(false);
 
   class window
   {
     // Members
 
     int _id;
-    std::thread _th;
+    std :: thread _th;
 
   protected:
 
@@ -168,8 +172,8 @@ namespace graphics
     static void timer(int);
     static void thread_wait_enter();
     static void thread_wait_click();
-    static void draw_line(line);
-    static void draw_circle(sphere);
+    static void draw_line(__unused line);
+    static void draw_circle(__unused sphere);
 
     static void list_sphere(const molecule &);
     static void list_sphere(const bumper &);

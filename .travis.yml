@@ -22,7 +22,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=g++-5 && CXX=g++-5"
         - COMPILER_ID="gcc"
-        - UNIT_TESTS=true
 
     - os: linux
       compiler: gcc
@@ -37,7 +36,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=g++-6 && CXX=g++-6"
         - COMPILER_ID="gcc"
-        - UNIT_TESTS=true
 
     - os: linux
       compiler: gcc
@@ -52,7 +50,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=g++-7 && CXX=g++-7"
         - COMPILER_ID="gcc"
-        - UNIT_TESTS=true
 
     - os: linux
       compiler: gcc
@@ -67,7 +64,6 @@ matrix:
       env:
         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8"
         - COMPILER_ID="gcc"
-        - UNIT_TESTS=true
 
 # linux + clang
 
@@ -90,7 +86,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=3.9.0
         - LINKER_FLAGS="-stdlib=libstdc++ -lc++abi"
 
@@ -115,7 +110,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=3.9.0
         - LINKER_FLAGS="-stdlib=libstdc++ -lc++abi"
 
@@ -140,7 +134,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=3.9.0
         - LINKER_FLAGS="-stdlib=libstdc++ -lc++abi"
 
@@ -165,7 +158,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=4.0.0
 
     - os: linux
@@ -190,7 +182,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=5.0.0
 
     - os: linux
@@ -216,7 +207,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=6.0.0
 
     - os: linux
@@ -242,7 +232,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_LINKER=${CXX}
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
         - LLVM_VERSION=7.0.0
 
 # osx + gcc
@@ -262,7 +251,6 @@ matrix:
       env:
         - MATRIX_EVAL="brew update && brew install gcc@8 gcc && CC=gcc-8 && CXX=g++-8"
         - COMPILER_ID="gcc"
-        - UNIT_TESTS=true
 
 # osx + clang
     - os: osx
@@ -272,7 +260,6 @@ matrix:
       env:
         - MATRIX_EVAL=""
         - COMPILER_ID="clang"
-        - UNIT_TESTS=true
 
     - os: osx
       osx_image: xcode10.1
@@ -298,7 +285,6 @@ matrix:
         - CMAKE_CXX_COMPILER=${CXX}
         - CMAKE_C_COMPILER=${CC}
         - CMAKE_LINKER=${CXX}
-        - UNIT_TESTS=true
 
   allow_failures:
     - name: ubuntu 14.04 - clang@3.6

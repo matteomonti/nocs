@@ -25,9 +25,11 @@ template <typename type> class set
     };
 
     template <typename vtype> static uint8_t sfinae(...);
-    //template <typename vtype> static uint32_t sfinae(helper <decltype((* (const typename std :: remove_reference <vtype> :: type *) nullptr)((const type) {}))> *);
+#ifdef __clang__
+    template <typename vtype> static uint32_t sfinae(helper <decltype((* (const typename std :: remove_reference <vtype> :: type *) nullptr)((const type) {}))> *);
+#else
     template <typename vtype> static uint32_t sfinae(helper <void> *);
-
+#endif
     static constexpr bool value = sizeof(sfinae <ctype> (0)) == sizeof(uint32_t);
   };
 

@@ -38,7 +38,7 @@ namespace graphics
 
   // sphere
 
-  sphere ::sphere(vector center, double radius, color c): center(center), radius(radius), c(c) 
+  sphere :: sphere(vector center, double radius, color c): center(center), radius(radius), c(c)
   {}
 
   // line
@@ -50,12 +50,12 @@ namespace graphics
 
   // Constructors
 
-  window ::window()
+  window :: window()
   {
 #ifdef __graphics__
     if (!__started)
     {
-      _th = std::thread(window::start);
+      _th = std :: thread(window :: start);
     }
 #endif
   }
@@ -80,42 +80,42 @@ namespace graphics
 
   // Static methods
 
-  void window ::draw(const engine &engine)
+  void window :: draw(const engine &engine)
   {
     mtx.lock();
     line_buffer.clear();
     sphere_buffer.clear();
-    window::grid(engine);
+    window :: grid(engine);
     engine.each<molecule>([&](const molecule &molecule) {
-      window::list_sphere(molecule);
+      window :: list_sphere(molecule);
     });
 
     engine.each<bumper>([&](const bumper &bumper) {
-      window::list_sphere(bumper);
+      window :: list_sphere(bumper);
     });
     mtx.unlock();
   }
 
-  void window ::draw(const engine &engine, const uint8_t &tag)
+  void window :: draw(const engine &engine, const uint8_t &tag)
   {
     mtx.lock();
     line_buffer.clear();
     sphere_buffer.clear();
-    window::grid(engine);
+    window :: grid(engine);
     engine.each<molecule>(tag, [&](const molecule &molecule) {
-      window::list_sphere(molecule);
+      window :: list_sphere(molecule);
     });
     mtx.unlock();
   }
 
-  void window ::wait_enter()
+  void window :: wait_enter()
   {
 #ifdef __graphics__
     request_wait_enter = true;
 #endif
   }
 
-  void window ::wait_click()
+  void window :: wait_click()
   {
 #ifdef __graphics__
     request_wait_click = true;
@@ -126,7 +126,7 @@ namespace graphics
   {
 #ifdef __graphics__
     request_drawing = true;
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std :: this_thread :: sleep_for(std :: chrono :: milliseconds(100));
 #endif
   }
 
@@ -151,7 +151,7 @@ namespace graphics
     glLoadIdentity();
     gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
     glutDisplayFunc(window :: render);
-    glutTimerFunc(0, window::timer, 0);
+    glutTimerFunc(0, window :: timer, 0);
     glutKeyboardFunc([](unsigned char key, __unused int x, __unused int y) {
       switch (key)
       {
@@ -186,14 +186,14 @@ namespace graphics
     if (request_wait_click)
     {
       mtx.lock();
-      window::wait_click();
+      window :: wait_click();
       mtx.unlock();
       request_wait_click = false;
     }
     if (request_wait_enter)
     {
       mtx.lock();
-      window::wait_enter();
+      window :: wait_enter();
       mtx.unlock();
       request_wait_enter = false;
     }
@@ -202,7 +202,7 @@ namespace graphics
       mtx.lock();
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clean the screen and the depth buffer
       glLoadIdentity(); // Reset the projection matrix
-      
+
       for (auto it = line_buffer.begin(); it != line_buffer.end(); it++)
       {
         draw_line(*it);
@@ -217,7 +217,7 @@ namespace graphics
       request_drawing = false;
       mtx.unlock();
     }
-    
+
 #endif
   }
 
@@ -225,11 +225,11 @@ namespace graphics
   {
 #ifdef __graphics__
     glutPostRedisplay();
-    glutTimerFunc(16, window::timer, 0);
+    glutTimerFunc(16, window :: timer, 0);
 #endif
   }
 
-  void window ::thread_wait_enter()
+  void window :: thread_wait_enter()
   {
 #ifdef __graphics__
     __enter__ = false;
@@ -237,12 +237,12 @@ namespace graphics
     {
       if (__enter__)
         break;
-      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+      std :: this_thread :: sleep_for(std :: chrono :: milliseconds(50));
     }
 #endif
   }
 
-  void window ::thread_wait_click()
+  void window :: thread_wait_click()
   {
 #ifdef __graphics__
     __click__ = false;
@@ -250,12 +250,12 @@ namespace graphics
     {
       if (__click__)
         break;
-      std::this_thread::sleep_for(std::chrono::milliseconds(50));
+      std :: this_thread :: sleep_for(std :: chrono :: milliseconds(50));
     }
 #endif
   }
 
-  void window :: draw_line(line l)
+  void window :: draw_line(__unused line l)
   {
 #ifdef __graphics__
     glMatrixMode(GL_PROJECTION);
@@ -270,7 +270,7 @@ namespace graphics
 #endif
   }
 
-  void window :: draw_circle(sphere c)
+  void window :: draw_circle(__unused sphere c)
   {
 #ifdef __graphics__
     glMatrixMode(GL_PROJECTION);
@@ -284,8 +284,8 @@ namespace graphics
     {
       glColor3f(c.c.red, c.c.green, c.c.blue);
       glVertex2f(
-          c.center.x + (c.radius * cos(i * twice_pi / __triangle_amount)),
-          c.center.y + (c.radius * sin(i * twice_pi / __triangle_amount)));
+          c.center.x + (c.radius * std :: cos(i * twice_pi / __triangle_amount)),
+          c.center.y + (c.radius * std :: sin(i * twice_pi / __triangle_amount)));
     }
     glEnd();
 #endif
@@ -296,7 +296,7 @@ namespace graphics
   bool window :: __started = false;
   int window :: __window_count = 0;
 
-  void window ::list_sphere(const molecule &molecule)
+  void window :: list_sphere(const molecule &molecule)
   {
     for (size_t i = 0; i < molecule.size(); i++)
     {
@@ -308,14 +308,14 @@ namespace graphics
     }
   }
 
-  void window ::list_sphere(const bumper &bumper)
+  void window :: list_sphere(const bumper &bumper)
   {
     for (double dx : {1., 0., -1.})
       for (double dy : {1., 0., -1.})
         sphere_buffer.push_back(sphere({dx + bumper.position().x, dy + bumper.position().y}, bumper.radius()));
   }
 
-  void window ::grid(const engine &engine)
+  void window :: grid(const engine &engine)
   {
     double step = 1. / engine.fineness();
     for (size_t i = 1; i < engine.fineness(); i++)
