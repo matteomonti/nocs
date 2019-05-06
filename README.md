@@ -54,7 +54,8 @@ Therefore, if you have elements that are at least smaller than a circle of diame
 
 ### Building your first molecules and giving them a nice tag
 
-```c++
+```cpp
+{% raw %}
 int main()
 {
   engine my_engine(6); // 6x6 zones engine
