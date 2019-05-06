@@ -2,36 +2,36 @@
 
 * callback
   * callbacks
-    * [bumper](./docs/callback/callbacks/bumper.md)
-    * [molecule](./docs/callback/callbacks/molecule.md)
-  * [dispatcher](./docs/callback/callbacks/dispatcher.md)
+    * [bumper](./docs/reference/callback/callbacks/bumper.md)
+    * [molecule](./docs/reference/callback/callbacks/molecule.md)
+  * [dispatcher](./docs/reference/callback/callbacks/dispatcher.md)
 * data
-  * [hashtable](./docs/data/hashtable.md)
-  * [heap](./docs/data/heap.md)
-  * [set](./docs/data/set.md)
+  * [hashtable](./docs/reference/data/hashtable.md)
+  * [heap](./docs/reference/data/heap.md)
+  * [set](./docs/reference/data/set.md)
 * elements
-  * [bumper](./docs/elements/bumper.md)
+  * [bumper](./docs/reference/elements/bumper.md)
 * engine
-  * [engine](./docs/engine/engine.md)
-  * [grid](./docs/engine/grid.md)
-  * [resetter](./docs/engine/resetter.md)
+  * [engine](./docs/reference/engine/engine.md)
+  * [grid](./docs/reference/engine/grid.md)
+  * [resetter](./docs/reference/engine/resetter.md)
 * event
   * events
-    * [bumper](./docs/event/events/bumper.md)
-    * [grid](./docs/event/events/grid.md)
-    * [molecule](./docs/event/events/molecule.md)
+    * [bumper](./docs/reference/event/events/bumper.md)
+    * [grid](./docs/reference/event/events/grid.md)
+    * [molecule](./docs/reference/event/events/molecule.md)
   * reports
-    * [bumper](./docs/event/reports/bumper.md)
-    * [molecule](./docs/event/reports/molecule.md)
-  * [event](./docs/event/event.md)
+    * [bumper](./docs/reference/event/reports/bumper.md)
+    * [molecule](./docs/reference/event/reports/molecule.md)
+  * [event](./docs/reference/event/event.md)
 * geometry
-  * [vec](./docs/geometry/vec.md)
+  * [vec](./docs/reference/geometry/vec.md)
 * graphics
-  * [lockpick](./docs/graphics/lockpick.md)
+  * [lockpick](./docs/reference/graphics/lockpick.md)
 * math
-  * [gss](./docs/math/gss.md)
-  * [newton](./docs/math/newton.md)
-  * [secant](./docs/math/secant.md)
+  * [gss](./docs/reference/math/gss.md)
+  * [newton](./docs/reference/math/newton.md)
+  * [secant](./docs/reference/math/secant.md)
 * molecule
-  * [atom](./docs/molecule/atom.md)
-  * [molecule](./docs/molecule/molecule.md)
+  * [atom](./docs/reference/molecule/atom.md)
+  * [molecule](./docs/reference/molecule/molecule.md)
