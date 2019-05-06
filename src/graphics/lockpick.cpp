@@ -108,17 +108,10 @@ namespace graphics
     mtx.unlock();
   }
 
-  void window :: wait_enter()
-  {
-#ifdef __graphics__
-    request_wait_enter = true;
-#endif
-  }
-
   void window :: wait_click()
   {
 #ifdef __graphics__
-    request_wait_click = true;
+    window :: thread_wait_click();
 #endif
   }
 
@@ -126,7 +119,6 @@ namespace graphics
   {
 #ifdef __graphics__
     request_drawing = true;
-    std :: this_thread :: sleep_for(std :: chrono :: milliseconds(100));
 #endif
   }
 
@@ -152,17 +144,6 @@ namespace graphics
     gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
     glutDisplayFunc(window :: render);
     glutTimerFunc(0, window :: timer, 0);
-    glutKeyboardFunc([](unsigned char key, __unused int x, __unused int y) {
-      switch (key)
-      {
-      case 32:
-        __enter__ = true;
-        break;
-      default:
-        __enter__ = false;
-        break;
-      }
-    });
     glutMouseFunc([](int button, __unused int state, __unused int x, __unused int y) {
       switch (button)
       {
@@ -183,20 +164,6 @@ namespace graphics
   void window :: render()
   {
 #ifdef __graphics__
-    if (request_wait_click)
-    {
-      mtx.lock();
-      window :: wait_click();
-      mtx.unlock();
-      request_wait_click = false;
-    }
-    if (request_wait_enter)
-    {
-      mtx.lock();
-      window :: wait_enter();
-      mtx.unlock();
-      request_wait_enter = false;
-    }
     if (request_drawing)
     {
       mtx.lock();
@@ -225,20 +192,7 @@ namespace graphics
   {
 #ifdef __graphics__
     glutPostRedisplay();
-    glutTimerFunc(16, window :: timer, 0);
-#endif
-  }
-
-  void window :: thread_wait_enter()
-  {
-#ifdef __graphics__
-    __enter__ = false;
-    while (true)
-    {
-      if (__enter__)
-        break;
-      std :: this_thread :: sleep_for(std :: chrono :: milliseconds(50));
-    }
+    glutTimerFunc(1, window :: timer, 0);
 #endif
   }
 
@@ -276,7 +230,7 @@ namespace graphics
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluOrtho2D(0.f, 1.f, 0.f, 1.f); // xmin, xmax, ymin, ymax
-    double twice_pi = 2.0f * M_PI;
+    
 
     glBegin(GL_TRIANGLE_FAN);
     glVertex2f(c.center.x, c.center.y); // center of circle
@@ -284,8 +238,8 @@ namespace graphics
     {
       glColor3f(c.c.red, c.c.green, c.c.blue);
       glVertex2f(
-          c.center.x + (c.radius * std :: cos(i * twice_pi / __triangle_amount)),
-          c.center.y + (c.radius * std :: sin(i * twice_pi / __triangle_amount)));
+          c.center.x + (c.radius * std :: cos(i * __twice_pi / __triangle_amount)),
+          c.center.y + (c.radius * std :: sin(i * __twice_pi / __triangle_amount)));
     }
     glEnd();
 #endif

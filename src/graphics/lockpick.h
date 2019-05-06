@@ -47,9 +47,10 @@
 __unused std :: mutex mtx; // mutex for critical section
 
 __unused const char * __default_title = const_cast <char *> ("nocs");
-__unused const int __default_width = 750;
-__unused const int __default_height = 750;
-__unused const int __triangle_amount = 20;
+__unused constexpr int __default_width = 750;
+__unused constexpr int __default_height = 750;
+__unused constexpr int __triangle_amount = 40;
+__unused constexpr double __twice_pi = 2.0f * M_PI;
 
 namespace graphics
 {
@@ -127,8 +128,6 @@ namespace graphics
   __unused std :: vector <sphere> sphere_buffer;
   __unused std :: vector <line> line_buffer;
   __unused std :: atomic <bool> request_drawing(false);
-  __unused std :: atomic <bool> request_wait_click(false);
-  __unused std :: atomic <bool> request_wait_enter(false);
 
   class window
   {
@@ -158,7 +157,6 @@ namespace graphics
 
     static void draw(const engine &);
     static void draw(const engine &, const uint8_t &);
-    static void wait_enter();
     static void wait_click();
     static void flush();
     static void clear();
@@ -170,7 +168,6 @@ namespace graphics
     static void start();
     static void render();
     static void timer(int);
-    static void thread_wait_enter();
     static void thread_wait_click();
     static void draw_line(__unused line);
     static void draw_circle(__unused sphere);

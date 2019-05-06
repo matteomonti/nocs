@@ -64,7 +64,7 @@ int main()
 
   my_window.draw(my_engine); // Draw the content of the engine on the window
   my_window.flush(); // You need this to render on screen, draw is not sufficient
-  //my_window.wait_click(); // Guess what
+  my_window.wait_click(); // Guess what
 
   my_engine.on <events :: molecule> (fatty, ninja, [&](const report <events :: molecule> my_report)
   {
@@ -91,7 +91,6 @@ int main()
     {
       ninja_total_energy += current_molecule.energy();
     });
-
     std :: cout << std :: setw(10) << fatty_total_energy << std :: setw(10) << ninja_total_energy << std :: endl;
 
     my_engine.reset.energy.tag(ninja, 1.);
