@@ -263,7 +263,7 @@ namespace graphics
   {
     for (double dx : {1., 0., -1.})
       for (double dy : {1., 0., -1.})
-        sphere_buffer.push_back(sphere({dx + bumper.position().x, dy + bumper.position().y}, bumper.radius()));
+        sphere_buffer.push_back(sphere({dx + bumper.position().x, dy + bumper.position().y}, bumper.radius(), {1, 0, 0}));
   }
 
   void window :: grid(const engine &engine)
