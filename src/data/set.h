@@ -25,8 +25,11 @@ template <typename type> class set
     };
 
     template <typename vtype> static uint8_t sfinae(...);
+#ifdef __clang__
     template <typename vtype> static uint32_t sfinae(helper <decltype((* (const typename std :: remove_reference <vtype> :: type *) nullptr)((const type) {}))> *);
-
+#else
+    template <typename vtype> static uint32_t sfinae(helper <void> *);
+#endif
     static constexpr bool value = sizeof(sfinae <ctype> (0)) == sizeof(uint32_t);
   };
 
@@ -51,10 +54,9 @@ public:
   void add(const type &);
   void remove(const type &);
 
-#ifdef __apple__
+#ifdef __clang__
   template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda &) const;
-#endif
-#ifndef __apple__
+#else
   template <typename lambda, typename std :: enable_if <valid <lambda> :: value> :: type * = nullptr> void each(const lambda &callback) const
   {
     for (size_t i = 0; i < this->_size; i++)

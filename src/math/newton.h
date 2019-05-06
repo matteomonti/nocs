@@ -8,7 +8,7 @@
 
 // Macros
 
-#define NaN (0./0.)
+//#define NaN (0./0.)
 
 namespace newton
 {
@@ -16,6 +16,6 @@ namespace newton
   constexpr unsigned int rounds = 128;
 
   double quadratic(const double &, const double &, const double &, double = 0);
-};
+}
 
 #endif

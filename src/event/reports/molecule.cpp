@@ -26,7 +26,7 @@ const vec & report <events :: molecule> :: alpha :: velocity :: after() const
   return this->_event._alpha.molecule->velocity();
 }
 
-const vec report <events :: molecule> :: alpha :: velocity :: delta() const
+vec report <events :: molecule> :: alpha :: velocity :: delta() const
 {
   return this->after() - this->before();
 }
@@ -45,12 +45,12 @@ const vec & report <events :: molecule> :: alpha :: momentum :: before() const
   return this->_event.p1;
 }
 
-const vec report <events :: molecule> :: alpha :: momentum :: after() const
+vec report <events :: molecule> :: alpha :: momentum :: after() const
 {
   return this->_event._alpha.molecule->velocity() * this->_event._alpha.molecule->mass();
 }
 
-const vec report <events :: molecule> :: alpha :: momentum :: delta() const
+vec report <events :: molecule> :: alpha :: momentum :: delta() const
 {
   return this->after() - this->before();
 }
@@ -74,7 +74,7 @@ const double & report <events :: molecule> :: alpha :: angular_velocity :: after
   return this->_event._alpha.molecule->angular_velocity();
 }
 
-const double report <events :: molecule> :: alpha :: angular_velocity :: delta() const
+double report <events :: molecule> :: alpha :: angular_velocity :: delta() const
 {
   return this->after() - this->before();
 }
@@ -93,12 +93,12 @@ const double & report <events :: molecule> :: alpha :: angular_momentum :: befor
   return this->_event.l1;
 }
 
-const double report <events :: molecule> :: alpha :: angular_momentum :: after() const
+double report <events :: molecule> :: alpha :: angular_momentum :: after() const
 {
   return this->_event._alpha.molecule->angular_velocity() * this->_event._alpha.molecule->mass();
 }
 
-const double report <events :: molecule> :: alpha :: angular_momentum :: delta() const
+double report <events :: molecule> :: alpha :: angular_momentum :: delta() const
 {
   return this->after() - this->before();
 }
@@ -112,24 +112,24 @@ report <events :: molecule> :: alpha :: energy :: energy(const events :: molecul
 
 // Getters
 
-const double report <events :: molecule> :: alpha :: energy :: before() const
+double report <events :: molecule> :: alpha :: energy :: before() const
 {
   return 0.5 * ( (~this->_event.v1) * this->_event._alpha.molecule->mass() + this->_event.av1 * this->_event.av1 * this->_event._alpha.molecule->inertia_moment());
 }
 
-const double report <events :: molecule> :: alpha :: energy :: after() const
+double report <events :: molecule> :: alpha :: energy :: after() const
 {
   return this->_event._alpha.molecule->energy();
 }
 
-const double report <events :: molecule> :: alpha :: energy :: delta() const
+double report <events :: molecule> :: alpha :: energy :: delta() const
 {
   return this->after() - this->before();
 }
 
 // Constructors
 
-report <events :: molecule> :: alpha :: alpha(const events :: molecule & event) : _event(event), velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event)
+report <events :: molecule> :: alpha :: alpha(const events :: molecule & event) : velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event), _event(event)
 {}
 
 // Getters
@@ -182,7 +182,7 @@ const vec & report <events :: molecule> :: beta :: velocity :: after() const
   return this->_event._beta.molecule->velocity();
 }
 
-const vec report <events :: molecule> :: beta :: velocity :: delta() const
+vec report <events :: molecule> :: beta :: velocity :: delta() const
 {
   return this->after() - this->before();
 }
@@ -201,12 +201,12 @@ const vec & report <events :: molecule> :: beta :: momentum :: before() const
   return this->_event.p2;
 }
 
-const vec report <events :: molecule> :: beta :: momentum :: after() const
+vec report <events :: molecule> :: beta :: momentum :: after() const
 {
   return this->_event._beta.molecule->velocity() * this->_event._beta.molecule->mass();
 }
 
-const vec report <events :: molecule> :: beta :: momentum :: delta() const
+vec report <events :: molecule> :: beta :: momentum :: delta() const
 {
   return this->after() - this->before();
 }
@@ -230,7 +230,7 @@ const double & report <events :: molecule> :: beta :: angular_velocity :: after(
   return this->_event._beta.molecule->angular_velocity();
 }
 
-const double report <events :: molecule> :: beta :: angular_velocity :: delta() const
+double report <events :: molecule> :: beta :: angular_velocity :: delta() const
 {
   return this->after() - this->before();
 }
@@ -249,12 +249,12 @@ const double & report <events :: molecule> :: beta :: angular_momentum :: before
   return this->_event.l2;
 }
 
-const double report <events :: molecule> :: beta :: angular_momentum :: after() const
+double report <events :: molecule> :: beta :: angular_momentum :: after() const
 {
   return this->_event._beta.molecule->angular_velocity() * this->_event._beta.molecule->mass();
 }
 
-const double report <events :: molecule> :: beta :: angular_momentum :: delta() const
+double report <events :: molecule> :: beta :: angular_momentum :: delta() const
 {
   return this->after() - this->before();
 }
@@ -268,24 +268,24 @@ report <events :: molecule> :: beta :: energy :: energy(const events :: molecule
 
 // Getters
 
-const double report <events :: molecule> :: beta :: energy :: before() const
+double report <events :: molecule> :: beta :: energy :: before() const
 {
   return 0.5 * ((~this->_event.v2) * this->_event._beta.molecule->mass() + this->_event.av2 * this->_event.av2 * this->_event._beta.molecule->inertia_moment());
 }
 
-const double report <events :: molecule> :: beta :: energy :: after() const
+double report <events :: molecule> :: beta :: energy :: after() const
 {
   return this->_event._beta.molecule->energy();
 }
 
-const double report <events :: molecule> :: beta :: energy :: delta() const
+double report <events :: molecule> :: beta :: energy :: delta() const
 {
   return this->after() - this->before();
 }
 
 // Constructors
 
-report <events :: molecule> :: beta :: beta(const events :: molecule & event) : _event(event), velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event)
+report <events :: molecule> :: beta :: beta(const events :: molecule & event) : velocity(event), momentum(event), angular_velocity(event), angular_momentum(event), energy(event), _event(event)
 {}
 
 // Getters
@@ -317,7 +317,7 @@ const double & report <events :: molecule> :: beta :: mass() const
 
 // Constructors
 
-report <events :: molecule> :: report(const events :: molecule & event) : _event(event), alpha(event), beta(event)
+report <events :: molecule> :: report(const events :: molecule & event) : alpha(event), beta(event), _event(event)
 {}
 
 // Getters

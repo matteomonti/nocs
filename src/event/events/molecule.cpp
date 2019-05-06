@@ -24,7 +24,7 @@ namespace events
     double time = std :: max(alpha.time(), beta.time());
 
     bool close;
-    double beg;
+    double beg = 0.;
     double end;
 
     double a = ~(va - vb);
@@ -127,7 +127,7 @@ namespace events
 
   bool molecule :: current()
   {
-    return this->_alpha.version == this->_alpha.molecule->version() && this->_beta.version == this->_beta.molecule->version();
+    return static_cast<int32_t>(this->_alpha.version) == this->_alpha.molecule->version() && static_cast<int32_t>(this->_beta.version) == this->_beta.molecule->version();
   }
 
   bool molecule :: resolve()
@@ -216,11 +216,11 @@ namespace events
     double binmin = gss :: min(distsquared, beg, end);
 
     if(distsquared(binmin) > 0)
-      return NaN;
+      return NAN;
 
     double binmax = gss :: max(distsquared, beg, binmin);
     double zero = secant :: compute(distsquared, binmax, binmin);
 
-    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NaN;
+    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NAN;
   }
-};
+}
