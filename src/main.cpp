@@ -95,7 +95,6 @@ int main()
 
     my_engine.reset.energy.tag(ninja, 1.);
 
-    my_window.clear(); // Remove what was drawn before
     my_window.draw(my_engine);
     my_window.flush();
   }

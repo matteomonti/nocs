@@ -159,8 +159,7 @@ namespace graphics
     static void draw(const engine &, const uint8_t &);
     static void wait_click();
     static void flush();
-    static void clear();
-
+    
   private:
 
     // Static private methods

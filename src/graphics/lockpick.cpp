@@ -122,9 +122,6 @@ namespace graphics
 #endif
   }
 
-  void window :: clear()
-  {}
-
   // Static private methods
 
   void window :: start()
