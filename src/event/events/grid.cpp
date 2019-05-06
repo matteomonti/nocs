@@ -7,7 +7,7 @@ namespace events
 
   grid :: grid (:: molecule & molecule, :: grid & grid)
   {
-    double time = molecule.time();
+    //double time = molecule.time();
     double step = 1. / grid.fineness();
 
     double time_x = (step * (molecule.mark.x() + (size_t)(molecule.velocity().x >= 0)) - molecule.position().x) / molecule.velocity().x;
@@ -38,7 +38,7 @@ namespace events
 
   bool grid :: current()
   {
-    return this->_molecule.version == this->_molecule.molecule->version();
+    return static_cast<int32_t>(this->_molecule.version) == this->_molecule.molecule->version();
   }
 
   bool grid :: resolve()
@@ -72,4 +72,4 @@ namespace events
     out << "Event grid at time: " << this->_time;
     return out;
   }
-};
+}

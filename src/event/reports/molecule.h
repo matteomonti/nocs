@@ -47,7 +47,7 @@ public:
 
       const vec & before() const;
       const vec & after() const;
-      const vec delta() const;
+            vec delta() const;
 
     } velocity;
 
@@ -66,8 +66,8 @@ public:
       // Getters
 
       const vec & before() const;
-      const vec after() const;
-      const vec delta() const;
+            vec after() const;
+            vec delta() const;
 
     } momentum;
 
@@ -87,7 +87,7 @@ public:
 
       const double & before() const;
       const double & after() const;
-      const double delta() const;
+            double delta() const;
 
     } angular_velocity;
 
@@ -106,8 +106,8 @@ public:
       // Getters
 
       const double & before() const;
-      const double after() const;
-      const double delta() const;
+            double after() const;
+            double delta() const;
 
     } angular_momentum;
 
@@ -125,9 +125,9 @@ public:
 
       // Getters
 
-      const double before() const;
-      const double after() const;
-      const double delta() const;
+      double before() const;
+      double after() const;
+      double delta() const;
 
     } energy;
 
@@ -175,7 +175,7 @@ public:
 
       const vec & before() const;
       const vec & after() const;
-      const vec delta() const;
+            vec delta() const;
 
     } velocity;
 
@@ -194,8 +194,8 @@ public:
       // Getters
 
       const vec & before() const;
-      const vec after() const;
-      const vec delta() const;
+            vec after() const;
+            vec delta() const;
 
     } momentum;
 
@@ -215,7 +215,7 @@ public:
 
       const double & before() const;
       const double & after() const;
-      const double delta() const;
+            double delta() const;
 
     } angular_velocity;
 
@@ -234,8 +234,8 @@ public:
       // Getters
 
       const double & before() const;
-      const double after() const;
-      const double delta() const;
+            double after() const;
+            double delta() const;
 
     } angular_momentum;
 
@@ -253,9 +253,9 @@ public:
 
       // Getters
 
-      const double before() const;
-      const double after() const;
-      const double delta() const;
+      double before() const;
+      double after() const;
+      double delta() const;
 
     } energy;
 

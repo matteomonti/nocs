@@ -1,0 +1,36 @@
+# Config file for the nocs package
+# It defines the following variables
+#  nocs_INCLUDE_DIRS - include directories for nocs
+#  nocs_LIBRARIES    - libraries to link against
+
+# Compute paths
+get_filename_component(nocs_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+set(nocs_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+list(APPEND CMAKE_MODULE_PATH "${nocs_CMAKE_DIR}")
+
+include(CMakeFindDependencyMacro)
+
+if(@ENABLE_OPENCV@)
+  find_dependency(OpenCV REQUIRED)
+endif()
+
+if(@ENABLE_CUDA@)
+  find_dependency(CUDNN)
+endif()
+
+set(CMAKE_THREAD_PREFER_PTHREAD ON)
+find_dependency(Threads)
+
+if(MSVC)
+  find_dependency(PThreads_windows)
+endif()
+
+if("${CMAKE_VERSION}" VERSION_GREATER "3.9.0")
+  find_dependency(OpenMP)
+endif()
+
+# Our library dependencies (contains definitions for IMPORTED targets)
+include("${nocs_CMAKE_DIR}/nocsTargets.cmake")
+
+# These are IMPORTED targets created by nocsTargets.cmake
+set(nocs_LIBRARIES byronlib)

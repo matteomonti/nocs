@@ -1,5 +1,10 @@
 // Forward declarations
 
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#endif
+
 class engine;
 
 #if !defined(__forward__) && !defined(__nobb__engine__engine__h)

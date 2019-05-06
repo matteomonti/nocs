@@ -3,7 +3,7 @@
 namespace events
 {
   class grid;
-};
+}
 
 #if !defined(__forward__) && !defined(__nobb__event__events__grid__h)
 #define __nobb__event__events__grid__h
@@ -11,6 +11,7 @@ namespace events
 // Libraries
 
 #include <cmath>
+#include <algorithm> // allow min in MSVC
 
 // Forward includes
 
@@ -61,6 +62,6 @@ namespace events
 
     std :: ostream & print(std :: ostream &) const;
   };
-};
+}
 
 #endif

@@ -49,7 +49,7 @@ template <typename type> void set <type> :: remove(const type & item)
   this->_size = write;
 }
 
-#ifdef __apple__
+#ifdef __clang__
 template <typename type> template <typename lambda, typename std :: enable_if <set <type> :: template valid <lambda> :: value> :: type *> void set <type> :: each(const lambda & callback) const
 {
   for(size_t i = 0; i < this->_size; i++)
