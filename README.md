@@ -22,6 +22,7 @@ For documentation, visit [here](https://github.com/matteomonti/nocs/blob/master/
 ### Libraries to be included
 
 ```cpp
+{% raw %}
 #include "engine/engine.hpp"  /* This library contains the main core of the
                                  simulation and all the components necessary */
 
@@ -29,17 +30,20 @@ For documentation, visit [here](https://github.com/matteomonti/nocs/blob/master/
                                  graphical representations of the simulation
                                  and it's therefore optional for the actual
                                  execution of a simulation */
+{% endraw %}
 ```
 
 ### Declaring the fundamental thing
 
 ```cpp
+{% raw %}
 int main()
 {
   engine my_engine(6); /* This declares an engine with a 6x6 grid subdivision.
                           my_engine will then be the framework for the entire
                           simulation */
 }
+{% endraw %}
 ```
 
 #### How to deal with the grid
@@ -112,11 +116,13 @@ int main()
               my_engine.tag(my_other_molecule_id, light);
           }
 }
+{% endraw %}
 ```
 
 ### Bulding a bumper and placing it inside the engine
 
 ```cpp
+{% raw %}
 int main()
 {
   //[...]
@@ -128,11 +134,13 @@ int main()
 
   my_engine.add(my_bumper);
 }
+{% endraw %}
 ```
 
 ### Changing the elasticity of the collision between two molecules
 
 ```cpp
+{% raw %}
 int main()
 {
   //[...]
@@ -146,11 +154,13 @@ int main()
   my_engine.elasticity(1.0); // Now every collision is just normal
                              // and fully elastic
 }
+{% endraw %}
 ```
 
 ### Executing the simulation
 
 ```cpp
+{% raw %}
 int main()
 {
   //[...]
@@ -159,6 +169,7 @@ int main()
     my_engine.run(time); // Run UNTIL time...
 
 }
+{% endraw %}
 ```
 
 **REMARK: remember that this simulation is event-based, therefore you have to specify at what times you want to gather pictures of the simulation space. But remember then that a smaller delta time implies more integrations, which implies more numerical errors.**
@@ -168,6 +179,7 @@ int main()
 If you want to gather only the data about a particular kind of event involving only a particular kind of molecules, you can use this subscription system to build lambda functions that will set off only when the molecules with the given tags are involved in an event.
 
 ```cpp
+{% raw %}
 //#[...]
 #include <iostream>
 
@@ -234,11 +246,13 @@ int main()
   my_engine.unsubscribe(id_of_subscription) // Now I want to unsubscribe from
                       // the first subscription because I don't need it anymore
 }
+{% endraw %}
 ```
 
 ### Gathering informations about specific groups of molecules
 
 ```cpp
+{% raw %}
 int main()
 {
   //[...]
@@ -276,6 +290,7 @@ int main()
     }
   );
 }
+{% endraw %}
 ```
 
 ### Resetting the energy of one or more molecules
@@ -283,6 +298,7 @@ int main()
 If you want to alter the energy of a molecule and at the same time maintaining all the proportion in the energy distribution (translational and rotational) you can use these methods:
 
 ```cpp
+{% raw %}
 int main()
 {
   //[...]
@@ -296,11 +312,13 @@ int main()
   my_engine.reset.energy.all(1.0)
   // Now every molecule has 1 unit of energy as energy
 }
+{% endraw %}
 ```
 
 ### And now, some grpahics
 
 ```cpp
+{% raw %}
 
 int main()
 {
@@ -346,4 +364,5 @@ int main()
   my_window.wait_click();
 }
 
+{% endraw %}
 ```
