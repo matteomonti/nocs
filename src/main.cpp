@@ -63,7 +63,6 @@ int main()
   my_engine.elasticity(fatty, fatty, 0.8);
 
   my_window.draw(my_engine); // Draw the content of the engine on the window
-  my_window.flush(); // You need this to render on screen, draw is not sufficient
   my_window.wait_click(); // Guess what
 
   my_engine.on <events :: molecule> (fatty, ninja, [&](const report <events :: molecule> my_report)
@@ -96,7 +95,6 @@ int main()
     my_engine.reset.energy.tag(ninja, 1.);
 
     my_window.draw(my_engine);
-    my_window.flush();
   }
 }
 

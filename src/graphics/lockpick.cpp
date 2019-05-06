@@ -93,6 +93,7 @@ namespace graphics
     engine.each<bumper>([&](const bumper &bumper) {
       window :: list_sphere(bumper);
     });
+    request_drawing = true;
     mtx.unlock();
   }
 
@@ -105,6 +106,7 @@ namespace graphics
     engine.each<molecule>(tag, [&](const molecule &molecule) {
       window :: list_sphere(molecule);
     });
+    request_drawing = true;
     mtx.unlock();
   }
 
@@ -112,13 +114,6 @@ namespace graphics
   {
 #ifdef __graphics__
     window :: thread_wait_click();
-#endif
-  }
-
-  void window :: flush()
-  {
-#ifdef __graphics__
-    request_drawing = true;
 #endif
   }
 
