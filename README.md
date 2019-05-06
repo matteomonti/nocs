@@ -9,7 +9,8 @@
 [![GitHub watchers](https://img.shields.io/github/watchers/matteomonti/nocs.svg?label=Watch&style=social)](https://github.com/matteomonti/nocs/watchers)
 
 # NOCS
-### (Not Only Colliding Spheres)
+
+## (Not Only Colliding Spheres)
 
 Exact 2D gas dynamics framework.
 For documentation, visit [here](https://github.com/matteomonti/nocs/blob/master/docs/README.md).
@@ -29,6 +30,7 @@ For documentation, visit [here](https://github.com/matteomonti/nocs/blob/master/
                                  and it's therefore optional for the actual
                                  execution of a simulation */
 ```
+
 ### Declaring the fundamental thing
 
 ```cpp
@@ -158,6 +160,7 @@ int main()
 
 }
 ```
+
 **REMARK: remember that this simulation is event-based, therefore you have to specify at what times you want to gather pictures of the simulation space. But remember then that a smaller delta time implies more integrations, which implies more numerical errors.**
 
 ### Subscribing to an event
@@ -294,6 +297,7 @@ int main()
   // Now every molecule has 1 unit of energy as energy
 }
 ```
+
 ### And now, some grpahics
 
 ```cpp
