@@ -1,21 +1,32 @@
-| **Author**   | **Project** | **Documentation**                                                                   | **Build Status**              |
-|:------------:|:-----------:|:-----------------------------------------------------------------------------------:|:-----------------------------:|
-|   [**M. Monti**](https://github.com/matteomonti)   |  **nocs**  | [![docs](https://img.shields.io/readthedocs/:packageName/:version.svg?style=plastic)](https://github.com/matteomonti/nocs/blob/master/docs/README.md) | **Linux / MacOS** : [![travis](https://travis-ci.com/Nico-Curti/nocs.svg?branch=master)](https://travis-ci.com/Nico-Curti/nocs) |
+# NOCS
 
+## (Not Only Colliding Spheres)
+
+[![docs](https://img.shields.io/readthedocs/:packageName/:version.svg?style=plastic)](https://carlidel.github.io/nocs)
 [![GitHub pull-requests](https://img.shields.io/github/issues-pr/matteomonti/nocs.svg?style=plastic)](https://github.com/matteomonti/nocs/pulls)
 [![GitHub issues](https://img.shields.io/github/issues/matteomonti/nocs.svg?style=plastic)](https://github.com/matteomonti/nocs/issues)
 
 [![GitHub stars](https://img.shields.io/github/stars/matteomonti/nocs.svg?label=Stars&style=social)](https://github.com/matteomonti/nocs/stargazers)
 [![GitHub watchers](https://img.shields.io/github/watchers/matteomonti/nocs.svg?label=Watch&style=social)](https://github.com/matteomonti/nocs/watchers)
 
-# NOCS
-
-## (Not Only Colliding Spheres)
-
 Exact 2D gas dynamics framework.
+
+|List of authors||
+|:-:|:-:|
+| **Author** | [**M. Monti**](https://github.com/matteomonti) |
+| **Contributor** | [**C.E. Montanari**](https://github.com/carlidel) |
+| **Contributor** | [**N. Curti**](https://github.com/Nico-Curti) |
+
+| **Build Status**              |
+|:-----------------------------:|
+| **Linux / MacOS** : [![travis](https://travis-ci.com/Nico-Curti/nocs.svg?branch=master)](https://travis-ci.com/Nico-Curti/nocs) |
+|**Windows** : in development|
+
+# Table of Contents
 
 - [NOCS](#nocs)
   - [(Not Only Colliding Spheres)](#not-only-colliding-spheres)
+- [Table of Contents](#table-of-contents)
 - [What is NOCS](#what-is-nocs)
   - [The elements of NOCS](#the-elements-of-nocs)
   - [The features of NOCS](#the-features-of-nocs)
