@@ -39,7 +39,7 @@ Each page contains an overview of the piece of code and the fundamental document
 * **geometry**
   * [vec](./docs/reference/geometry/vec.md)
 * **graphics**
-  * [lockpick](./docs/reference/graphics/lockpick.md)
+  * [window](./docs/reference/graphics/window.md)
 * **math**
   * [gss](./docs/reference/math/gss.md)
   * [newton](./docs/reference/math/newton.md)
