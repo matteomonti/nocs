@@ -14,9 +14,41 @@
 
 Exact 2D gas dynamics framework.
 
+- [NOCS](#nocs)
+  - [(Not Only Colliding Spheres)](#not-only-colliding-spheres)
+- [What is NOCS](#what-is-nocs)
+  - [The elements of NOCS](#the-elements-of-nocs)
+  - [The features of NOCS](#the-features-of-nocs)
+  - [Works about NOCS](#works-about-nocs)
+- [Compiling the project](#compiling-the-project)
+  - [Dependencies](#dependencies)
+  - [Compiling commands](#compiling-commands)
+    - [Compile everything from source](#compile-everything-from-source)
+- [Getting started with NOCS](#getting-started-with-nocs)
+  - [Basic commands](#basic-commands)
+    - [Libraries to be included](#libraries-to-be-included)
+    - [Declaring the fundamental thing](#declaring-the-fundamental-thing)
+      - [How to deal with the grid](#how-to-deal-with-the-grid)
+    - [Building your first molecules and giving them a nice tag](#building-your-first-molecules-and-giving-them-a-nice-tag)
+    - [Bulding a bumper and placing it inside the engine](#bulding-a-bumper-and-placing-it-inside-the-engine)
+    - [Changing the elasticity of the collision between two molecules](#changing-the-elasticity-of-the-collision-between-two-molecules)
+    - [Executing the simulation](#executing-the-simulation)
+    - [Subscribing to an event](#subscribing-to-an-event)
+    - [Gathering informations about specific groups of molecules](#gathering-informations-about-specific-groups-of-molecules)
+    - [Resetting the energy of one or more molecules](#resetting-the-energy-of-one-or-more-molecules)
+    - [And now, some grpahics](#and-now-some-grpahics)
+
 # What is NOCS
 
+NOCS is a C++ 2D event-based engine for simulating molecules composed of hard spheres of arbitrary mass and dimension.
+
+It's meant to be used for simulating statistical mechanics scenarios in the fastest and most precise way possible, by computing analytically every collision between molecules and by integrating the motion of the molecules only when strictly necessary.
+
 ## The elements of NOCS
+
+## The features of NOCS
+
+## Works about NOCS
 
 # Compiling the project
 
@@ -53,7 +85,7 @@ After you have written your code in `src/main.cpp`, you can execute the compilat
    Also you can of course set the build type with `-DCMAKE_BUILD_TYPE` and either work with `Debug` or `Release`.
 4. Execute the compilation with the `make` command.
 
-# Getting started with nocs
+# Getting started with NOCS
 
 ## Basic commands
 
