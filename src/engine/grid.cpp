@@ -104,6 +104,10 @@ void grid :: update(molecule & molecule, const vec :: fold & fold)
       if(y == this->_fineness - 1) teleport = vec :: up;
       break;
     }
+    case vec :: direct:
+    case vec :: horizontal:
+    case vec :: vertical:
+    break;
   }
 
   molecule.teleport(teleport);

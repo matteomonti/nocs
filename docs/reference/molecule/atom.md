@@ -9,6 +9,7 @@ Class `atom` is the base component for class `molecule` and represents a single 
 #### Constructor
 
  * `atom(const vec & position, const double & radius, const double & mass)`
+    
     builds an atom of given mass and radius at the given position.
 
 #### Getters

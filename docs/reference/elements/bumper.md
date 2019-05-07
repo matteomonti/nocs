@@ -9,14 +9,17 @@ Class `bumper` is an object-oriented representation of a spherical immovable obs
 #### Constructors
 
   * `bumper()`
+
     builds an uninitialized bumper.
 
   * `bumper(const vec & position, const double & radius)`
+
     builds a bumper with the given values.
 
 #### Public members
 
   * `grid :: mark`
+
     position of the molecule inside the engine grid.
 
 #### Getters

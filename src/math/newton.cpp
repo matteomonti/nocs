@@ -5,7 +5,7 @@ namespace newton
   double quadratic(const double & a, const double & b, const double & c, double x)
   {
     if(b * b - 4. * a * c < epsilon)
-      return NaN;
+      return NAN;
 
     for(unsigned int i = 0; i < rounds; i++)
     {
@@ -19,4 +19,4 @@ namespace newton
 
     return x;
   }
-};
+}

@@ -10,6 +10,7 @@ class molecule;
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include <algorithm> // allow min in MSVC
 
 // Includes
 
@@ -96,7 +97,7 @@ public:
 	const double & time() const;
 	const int32_t & version() const;
 
-	const double energy() const;
+	double energy() const;
 
 	// Methods
 

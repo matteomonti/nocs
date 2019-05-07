@@ -3,299 +3,99 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <math.h>
-#include <random>
-#include <vector>
-#include <algorithm>
-
 
 #include "engine/engine.hpp"
 #include "graphics/window.h"
 #include "tqdm/tqdm.h"
 
-// Parametri:
-
-// OCCHIO CHE QUA ORA LA "TEMPERATURA DEI BUMPERS" È PRATICAMENTE LA COSTANTE DI ELASTICITà PER URTO MOLECOLA-BUMPER. (1 è ELASTICO, MENO DI 1 INELASTICO, PIù DI 1 SUPERELASTICO).
-// PER USARE QUESTA COSA TENERE RANDOM_BUMPERS SU FALSE ED IMPOSTARE MULTIPLICATIVE_BUMPERS A TRUE.
-
-const bool LOAD_FROM_FILE = true;
-const bool RANDOM_BUMPERS = false; // ci sono bumpers con distribuzione randomica delle energie generate alle varie diverse collisioni?
-const bool MULTIPLICATIVE_BUMPERS = false;
-
-const bool WALLS = true; // Ci sono o no le pareti di bumpers calde e fredde?
-const bool MAXWELL = false; // distribuiamo secondo maxwelliana le temperature dei bumpers?
-const double ALPHA = 1.0; // il parametro beta della funzione gamma della maxwelliana viene ricavato dal fatto che la media è E(X) = alpha/beta
-
-const unsigned int N_BUMPERS = 100; // Più bumpers significa parete più fina e "liscia", visto che sono comunque sfere
-const double COLD_TEMPERATURE = 0.5;
-const double HOT_TEMPERATURE = 2.0;
-
-const unsigned int N_LIGHT_MOLECULES = 1;
-const unsigned int N_TRACED_LIGHT_MOLECULES = 1;
-const double LIGHT_MOLECULE_RADIUS = 0.04;
-const double LIGHT_MOLECULE_SPACING = 0.0005;
-const double LIGHT_MOLECULE_MASS = 1.0;
-const double LIGHT_MOLECULE_STARTING_ENERGY = 0.05;
-
-const unsigned int N_HEAVY_MOLECULES = 1;
-const unsigned int N_TRACED_HEAVY_MOLECULES = 1;
-const double HEAVY_MOLECULE_RADIUS = 0.006;
-const double HEAVY_MOLECULE_SPACING = 0.0005;
-const double HEAVY_MOLECULE_MASS = 100.0;
-const double HEAVY_MOLECULE_STARTING_ENERGY = 0.05;
-
-const double TIME_TRACING_SKIP = 0.001; // visto che le molecole partono tutte pigiate come acciughe... magari val la pena di saltare il tracciamento degli eventi pigiati "al tempo 0"? Non lo so... val la pena di testare.
-
-const double SIMULATION_TIME = 1000.0; // Tempo di arrivo finale della simulazione
-const unsigned int N_SAMPLES = 10000; // Quanti samples intermedi far fare alla simulazione? (questi verranno distribuiti uniformemente lungo l'esecuzione)
-
 int main()
 {
-    // RANDOM ENGINE SETUP
-    std::default_random_engine re;
-    // PSEUDORANDOM SEED (credo si faccia così?)
-    re.seed(42);
+  enum tags {fatty, ninja};
 
-    // Input setup
-    std :: ifstream in_light;
-    std :: ifstream in_heavy;
-    double temp_x, temp_y;
-    if (LOAD_FROM_FILE)
+  graphics::window my_window; // Just a window
+
+  engine my_engine(6); // 6x6 zones
+
+  for(double x = 0.1; x <= 0.9; x += 0.1)
+    for(double y = 0.1; y <= 0.4; y += 0.1)
     {
-        in_light = std :: ifstream("light_input.txt");
-        in_heavy = std :: ifstream("heavy_input.txt");
+      molecule my_molecule
+      (
+        { // Array of atoms
+          {{0., 0.}, 1., 0.005}, // Position (arbitrary reference system), mass, radius
+          {{0., 0.02}, 10., 0.015}
+        },
+        {x, y}, // Position of center of mass
+        {0, 0}, // Velocity of center of mass
+        0., // Initial orientation (in radians)
+        M_PI / 4. // Angular velocity (in radians / time unit)
+      );
+
+      size_t my_molecule_id = my_engine.add(my_molecule); // Now the molecule is in your engine, ready to work
+      my_engine.tag(my_molecule_id, fatty); // Adds tag fatty to the first molecule. Note that you can add tags only after inserting them in the engine.
     }
 
-    // Output setup
-    std :: ofstream out_all ("output_all.txt");
-    std :: ofstream out_traced ("output_traced.txt");
+  double swap = 1.;
 
-    window my_window; // Per la grafica...
-    engine my_engine(10); // Regolare in base a dimensioni scelte
-
-    // Raggio dei bumpers?
-    double bumper_radius = 1. / (N_BUMPERS * 2);
-
-    // Costruzione delle pareti
-    if (WALLS)
+  for(double x = 0.1; x <= 0.9; x += 0.1)
+    for(double y = 0.6; y <= 0.9; y += 0.1)
     {
-        // Se si usa maxwelliana servono
-        const double BETA_COLD = ALPHA / COLD_TEMPERATURE;
-        const double BETA_HOT = ALPHA / HOT_TEMPERATURE;
-        std::gamma_distribution<double> gamma_cold(ALPHA, BETA_COLD);
-        std::gamma_distribution<double> gamma_hot(ALPHA, BETA_HOT);
+      molecule my_other_molecule // Same thing as before
+      (
+        {
+          {{0., 0.}, 0.01, 0.02}
+        },
+        {x, y},
+        {3. * swap, 3. * swap},
+        0.,
+        0.
+      );
 
-        if (RANDOM_BUMPERS == false)
-            for (int x = 0; x < N_BUMPERS; ++x)
-            {
-                bumper cold_bumper(
-                    {bumper_radius, x * bumper_radius * 2},       // coordinate
-                    bumper_radius,                                // raggio
-                    (MAXWELL ? gamma_cold(re) : COLD_TEMPERATURE),// temperatura fredda
-                    MULTIPLICATIVE_BUMPERS
-                );
-                bumper hot_bumper(
-                    {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
-                    bumper_radius,                                // raggio
-                    (MAXWELL ? gamma_hot(re) : HOT_TEMPERATURE),  // temperatura calda
-                    MULTIPLICATIVE_BUMPERS
-                );
-                my_engine.add(cold_bumper);
-                my_engine.add(hot_bumper);
-            }
-        else
-            for (int x = 0; x < N_BUMPERS; ++x)
-            {
-                bumper cold_bumper(
-                    {bumper_radius, x * bumper_radius * 2},       // coordinate
-                    bumper_radius,                                // raggio
-                    COLD_TEMPERATURE, // temperatura fredda
-                    true,
-                    & re
-                );
-                bumper hot_bumper(
-                    {1.0 - bumper_radius, x * bumper_radius * 2}, // coordinate
-                    bumper_radius,                                // raggio
-                    HOT_TEMPERATURE,   // temperatura calda
-                    true,
-                    & re
-                );
-                my_engine.add(cold_bumper);
-                my_engine.add(hot_bumper);
-            }
+      swap *= -1; // This serves the purpose to have a null total momentum
+
+      size_t my_other_molecule_id = my_engine.add(my_other_molecule); // Same for the other
+      my_engine.tag(my_other_molecule_id, ninja); // Same thing for the other molecule
     }
 
-    // Creazione dei tag
-    enum tags {light, heavy, traced};
-    // Vector per gli ID tracciati
-    std :: vector <size_t> ids;
-    
-    double lower_bound = 0;
-    double upper_bound = M_PI * 2;
-    std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
-    
-    // Aggiunta delle molecole leggere
+  bumper my_bumper({0.5, 0.5}, 0.03);
+  my_engine.add(my_bumper);
 
-    double starting_velocity = pow(LIGHT_MOLECULE_STARTING_ENERGY / (0.5 * LIGHT_MOLECULE_MASS), 0.5);
+  my_engine.elasticity(fatty, fatty, 0.8);
 
-    unsigned int inserted = 0;
-    if (N_LIGHT_MOLECULES)
-        for (double y = LIGHT_MOLECULE_RADIUS; y < 1.0 - LIGHT_MOLECULE_RADIUS; y += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
-        {
-            for (double x = 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (LIGHT_MOLECULE_RADIUS + bumper_radius); x += 2 * LIGHT_MOLECULE_RADIUS + LIGHT_MOLECULE_SPACING)
-            {
-                double angle = unif(re);
-                double v_x = starting_velocity * cos(angle);
-                double v_y = starting_velocity * sin(angle);
-                if (LOAD_FROM_FILE)
-                    in_light >> temp_x >> temp_y >> v_x >> v_y;
-                molecule my_molecule(
-                    {{{0., 0.}, LIGHT_MOLECULE_MASS, LIGHT_MOLECULE_RADIUS}},
-                    {(LOAD_FROM_FILE ? temp_x : x), (LOAD_FROM_FILE ? temp_y : y)},
-                    {v_x, v_y},
-                    0.,
-                    0.);
-                size_t my_id = my_engine.add(my_molecule);
-                my_engine.tag(my_id, light);
-                if (inserted < N_TRACED_LIGHT_MOLECULES)
-                {
-                    my_engine.tag(my_id, traced);
-                    ids.push_back(my_id);
-                }
-                inserted++;
-                if (inserted >= N_LIGHT_MOLECULES)
-                    break;
-            }
-            if (inserted >= N_LIGHT_MOLECULES)
-                break;
-        }
+  my_window.draw(my_engine); // Draw the content of the engine on the window
+  my_window.wait_click(); // Guess what
 
-    // Aggiunta delle molecole pesanti (occhio che non si intersechino!)
+  my_engine.on <events :: molecule> (fatty, ninja, [&](const report <events :: molecule> my_report)
+  {
+    std :: cout << "There has been a collision between " << my_report.alpha.id() << " and " << my_report.beta.id() << std :: endl;
+    std :: cout << "Delta energy for alpha: " << my_report.alpha.energy.delta() << std :: endl;
+  });
 
-    starting_velocity = pow(HEAVY_MOLECULE_STARTING_ENERGY / (0.5 * HEAVY_MOLECULE_MASS), 0.5);
+  for(double time = 0.;; time += 0.01)
+  {
+    my_engine.run(time); // Run UNTIL time
 
-    inserted = 0;
-    if (N_HEAVY_MOLECULES)
-        for (double y = 1.0 - HEAVY_MOLECULE_RADIUS; y > HEAVY_MOLECULE_RADIUS; y -= 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
-        {
-            for (double x = 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x < 1.0 - 2 * (HEAVY_MOLECULE_RADIUS + bumper_radius); x += 2 * HEAVY_MOLECULE_RADIUS + HEAVY_MOLECULE_SPACING)
-            {
-                double angle = unif(re);
-                double v_x = starting_velocity * cos(angle);
-                double v_y = starting_velocity * sin(angle);
-                if (LOAD_FROM_FILE)
-                    in_heavy >> temp_x >> temp_y >> v_x >> v_y;
-                molecule my_molecule(
-                    {{{0., 0.}, HEAVY_MOLECULE_MASS, HEAVY_MOLECULE_RADIUS}},
-                    {(LOAD_FROM_FILE ? temp_x : x), (LOAD_FROM_FILE ? temp_y : y)},
-                    {v_x, v_y},
-                    0.,
-                    0.);
-                size_t my_id = my_engine.add(my_molecule);
-                my_engine.tag(my_id, light);
-                if (inserted < N_TRACED_HEAVY_MOLECULES)
-                {
-                    my_engine.tag(my_id, traced);
-                    ids.push_back(my_id);
-                }
-                inserted++;
-                if (inserted >= N_HEAVY_MOLECULES)
-                    break;
-            }
-            if (inserted >= N_HEAVY_MOLECULES)
-                break;
-        }
+    double fatty_total_energy = 0.;
 
-    // Sottoscrizione agli eventi delle molecole sotto tracciamento
-
-    my_engine.on <events :: molecule>
-    (
-        traced,
-        [&](const report <events :: molecule> my_report)
-        {   
-            if(my_report.time() >= TIME_TRACING_SKIP)
-            {
-                if (std :: find(ids.begin(), ids.end(), my_report.alpha.id()) != ids.end())
-                    out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
-                               << std ::fixed << my_report.alpha.id() << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.alpha.mass() << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.alpha.energy.after() << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.alpha.position().x << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.alpha.position().y << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.alpha.velocity.after().x << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.alpha.velocity.after().y << std::endl;
-                else
-                    out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
-                               << std ::fixed << my_report.beta.id() << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.beta.mass() << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.beta.energy.after() << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.beta.position().x << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.beta.position().y << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.beta.velocity.after().x << "\t"
-                               << std ::fixed << std::setprecision(8) << my_report.beta.velocity.after().y << std::endl;
-            } 
-        }
-    );
-
-    my_engine.on <events :: bumper>
-    (
-        traced,
-        [&](const report <events :: bumper> my_report)
-        {
-            if(my_report.time() >= TIME_TRACING_SKIP)
-            {
-                out_traced << std ::fixed << std ::setprecision(8) << my_report.time() << "\t"
-                           << std ::fixed << my_report.id() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.mass() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.energy.after() << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.position().x << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.position().y << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.velocity.after().x << "\t"
-                           << std ::fixed << std::setprecision(8) << my_report.velocity.after().y << std::endl;
-            }
-        }
-    );
-
-    // Resto delle cose brutte
-
-    my_window.draw(my_engine); // Draw the content of the engine on the window
-    my_window.flush();         // You need this to render on screen, draw is not sufficient
-    my_window.wait_click();    // Guess what
-#ifdef __graphics__
-    std :: cout << "Simulation Start!!!" << std :: endl;
-#endif
-
-    double time_interval = SIMULATION_TIME / N_SAMPLES;
-    
-    // ORA TQDM È ANCHE IN C++!!!
-    tqdm bar;
-    // Il mio terminale windows non supporta molti caratteri ed è brutto a vedersi...
-    bar.set_theme_basic();
-    // Se non vuoi i colori attiva questa riga...
-    //bar.disable_colors();
-    
-    for(unsigned int i = 0; i <= N_SAMPLES; ++i)
+    my_engine.each <molecule> (fatty, [&](const molecule & current_molecule) // Dear engine, for each molecule with tag fatty, please execute this lambda that accepts a const reference
+                                                                             // to the current molecule and captures fatty_total_energy. Each time it is called the lambda adds to
+                                                                             // fatty_total_energy the energy of the current molecule. Also known as: sum the energies of all the fatty molecules.
     {
-        bar.progress(i, N_SAMPLES);
-        my_engine.run(i * time_interval); // Run UNTIL time
-        
-        // Report di ogni molecola sul file di testo...
-        my_engine.each<molecule>([&](const molecule &current_molecule) {
-            out_all << std ::fixed << std ::setprecision(2) << i * time_interval << "\t"
-                << current_molecule.mass() << "\t"
-                << std ::fixed << std ::setprecision(8) << current_molecule.energy() << "\t"
-                << std ::fixed << std ::setprecision(8) << current_molecule.position().x << "\t"
-                << std ::fixed << std ::setprecision(8) << current_molecule.position().y << std::endl;
-        });
+      fatty_total_energy += current_molecule.energy();
+    });
 
-        // Graphics
-        my_window.clear();   // Remove what was drawn before
-        my_window.draw(my_engine);
-        my_window.flush();
-    #ifdef __graphics__
-        usleep(10.e4);
-    #endif
-    }
+    double ninja_total_energy = 0.;
+
+    my_engine.each <molecule> (ninja, [&](const molecule & current_molecule)
+    {
+      ninja_total_energy += current_molecule.energy();
+    });
+    std :: cout << std :: setw(10) << fatty_total_energy << std :: setw(10) << ninja_total_energy << std :: endl;
+
+    my_engine.reset.energy.tag(ninja, 1.);
+
+    my_window.draw(my_engine);
+  }
 }
 
 #endif

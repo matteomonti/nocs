@@ -19,6 +19,6 @@ namespace events
     double dt = time - molecule.time();
     return molecule.position() + vec(fold) + molecule.velocity() * dt + molecule[index].position() % (molecule.orientation() + molecule.angular_velocity() * dt);
   }
-};
+}
 
 #endif

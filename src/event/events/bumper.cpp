@@ -19,7 +19,7 @@ namespace events
     double time = molecule.time();
 
     bool close;
-    double beg;
+    double beg = 0.;
     double end;
 
     double a = ~v;
@@ -110,7 +110,7 @@ namespace events
 
   bool bumper :: current()
   {
-    return this->_molecule.version == this->_molecule.molecule->version();
+    return static_cast<int32_t>(this->_molecule.version) == this->_molecule.molecule->version();
   }
 
   bool bumper :: resolve()
@@ -204,11 +204,11 @@ namespace events
     double binmin = gss :: min(distsquared, beg, end);
 
     if(distsquared(binmin) > 0)
-      return NaN;
+      return NAN;
 
     double binmax = gss :: max(distsquared, beg, binmin);
     double zero = secant :: compute(distsquared, binmax, binmin);
 
-    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NaN;
+    return (distsquared(zero + time_epsilon) < distsquared(zero)) ? zero : NAN;
   }
-};
+}

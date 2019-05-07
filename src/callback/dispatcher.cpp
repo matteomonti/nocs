@@ -19,7 +19,7 @@ size_t dispatcher :: add(callback <events :: molecule> * event, const uint8_t & 
   size_t id = autoincrement++;
 
   this->_molecule.types.add(id, stag);
-  this->_molecule.stag.handles.add(id, {event, tag});
+  this->_molecule.stag.handles.add(id, std :: tuple <callback <events :: molecule> *, uint8_t> (event, tag));
   this->_molecule.stag.map[tag].add(event);
 
   return id;
@@ -30,7 +30,7 @@ size_t dispatcher :: add(callback <events :: molecule> * event, const uint8_t & 
   size_t id = autoincrement++;
 
   this->_molecule.types.add(id, dtag);
-  this->_molecule.dtag.handles.add(id, {event, alpha, beta});
+  this->_molecule.dtag.handles.add(id, std :: tuple <callback <events :: molecule> *, uint8_t, uint8_t> (event, alpha, beta));
   this->_molecule.dtag.map[alpha][beta].add(event);
 
   if(alpha != beta)
@@ -54,7 +54,7 @@ size_t dispatcher :: add(callback <events :: bumper> * event, const uint8_t & ta
     size_t id = autoincrement++;
 
     this->_bumper.types.add(id, stag);
-    this->_bumper.stag.handles.add(id, {event, tag});
+    this->_bumper.stag.handles.add(id, std :: tuple <callback <events :: bumper> *, uint8_t> (event, tag));
     this->_bumper.stag.map[tag].add(event);
 
     return id;
