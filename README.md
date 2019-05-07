@@ -13,7 +13,41 @@
 ## (Not Only Colliding Spheres)
 
 Exact 2D gas dynamics framework.
-For documentation, visit [here](https://github.com/matteomonti/nocs/blob/master/docs/README.md).
+
+# Compiling the project
+
+## Dependencies
+
+In order to properly compile the project, it's necessary to have `cmake` and a compiler that supports adequately the C++14 standard.
+
+If you wish to have also the graphical support within your simulation executable, you will need a valid implementation of `freeglut3` and a proper `OpenGL` development environment. On Linux it's sufficient to execute the command:
+
+```bash
+sudo apt install freeglut3-dev
+```
+
+## Compiling commands
+
+### Compile everything from source
+
+After you have written your code in `src/main.cpp`, you can execute the compilation and obtain the executable. To do so, follow these steps:
+
+1. Create a `bin` folder;
+2. Open a terminal in the `bin` folder;
+3. Execute the following command if you wish to NOT have graphical support (i.e. every graphical method will not be included in the compilation):
+
+   ```bash
+   cmake ..
+   ```
+
+   If instead you wish to have graphical support:
+
+   ```bash
+   cmake .. -DGRAPHICS=on
+   ```
+
+   Also you can of course set the build type with `-DCMAKE_BUILD_TYPE` and either work with `Debug` or `Release`.
+4. Execute the compilation with the `make` command.
 
 # Getting started with nocs
 
@@ -26,7 +60,7 @@ For documentation, visit [here](https://github.com/matteomonti/nocs/blob/master/
 #include "engine/engine.hpp"  /* This library contains the main core of the
                                  simulation and all the components necessary */
 
-#include "graphics/window.h"  /* This library contains the tools for creating
+#include "graphics/lockpick.h"  /* This library contains the tools for creating
                                  graphical representations of the simulation
                                  and it's therefore optional for the actual
                                  execution of a simulation */
