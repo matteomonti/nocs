@@ -21,17 +21,23 @@ std :: cout << gss :: min(function, -1, 2) << std :: endl; // Prints 0
 #### Static members
 
  * `static constexpr double epsilon`
+    
     machine epsilon considered for the computation
 
  * `static constexpr unsigned int rounds`
+    
     maximum number of iterations before forced timeout
 
 #### Static methods
 
  * `static double min(const lambda & function, double lower_bound, double upper_bound)`
+    
     given a valid function, returns the minimum of function in the range [lower_bound, upper_bound].
-    **REMARK: this only works if the minimium is unique inside the given range**
+    
+    **REMARK: this only works if the minimum is unique inside the given range**
 
  * `static double max(const lambda & function, double lower_bound, double upper_bound)`
+    
     given a valid function, returns the maximum of function in the range [lower_bound, upper_bound].
+    
     **REMARK: this only works if the maximum is unique inside the given range**

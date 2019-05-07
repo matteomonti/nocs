@@ -10,9 +10,11 @@ This `callback` is completely specialized for `events :: molecule` and can be bu
 #### Constructor
 
   * `callback(const lambda & function)`
+
     builds the callback with the given function.
 
 #### Methods
 
   * `void trigger(const events :: molecule & event)`
+
     given an event of the correct kind, sets off the lambda function by giving it as argument a `report` about the given event. 

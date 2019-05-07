@@ -2,7 +2,7 @@
 
 ## Basic Instructions and General usage
 
-For general informations about NOCS, please check the [README](./README.md).
+For general information about NOCS, please check the [README](./README.md).
 
 ## Example files Index
 

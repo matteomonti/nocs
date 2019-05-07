@@ -6,10 +6,11 @@
 #include <thread>
 
 #include "engine/engine.hpp"
-#include "graphics/lockpick.h"
+#include "graphics/window.h"
 
 int main()
 {
+  std :: cout << "At least it starts?" << std :: endl; 
   enum tags {fatty, ninja};
 
   graphics::window my_window; // Just a window

@@ -14,6 +14,10 @@
 
 Exact 2D gas dynamics framework.
 
+# What is NOCS
+
+## The elements of NOCS
+
 # Compiling the project
 
 ## Dependencies
@@ -60,7 +64,7 @@ After you have written your code in `src/main.cpp`, you can execute the compilat
 #include "engine/engine.hpp"  /* This library contains the main core of the
                                  simulation and all the components necessary */
 
-#include "graphics/lockpick.h"  /* This library contains the tools for creating
+#include "graphics/window.h"  /* This library contains the tools for creating
                                  graphical representations of the simulation
                                  and it's therefore optional for the actual
                                  execution of a simulation */
@@ -87,6 +91,10 @@ Since it would be not ideal to compute the possible collision between two molecu
 Therefore, if you have elements that are at least smaller than a circle of diameter 0.1, you can set a proper grid that will speed up the computational time. (in this case the fineness limit of the grid is `1 / (0.1 * 2) = 5`)
 
 ### Building your first molecules and giving them a nice tag
+
+In order to keep the syntax of the code as light as possible, we take advantage on implicit constructors for the various variables required by the main constructor methods.
+
+The following code shows as an example some of the things you can do and comments every passage.
 
 ```cpp
 {% raw %}
@@ -368,35 +376,36 @@ int main()
   my_engine.add(a_random_bumper);
 
   window my_window;
-  // Initialize a window with standard parameters (which is highly suggested)
+  // Initialize a window with standard parameters (which is highly recomended)
 
   my_window.wait_click();
   // Blocks the execution until a mouse click is detected inside the window
 
-  my_window.wait_enter();
-  // Blocks the execution until an enter click
-  // is detected with the cursor inside the window
-
   my_window.draw(my_engine);
   // I want you window to draw all the elements inside engine
 
-  my_window.flush();
-  // And now render what I have just said
-
   my_window.wait_click();
-
-  my_window.clear();
-  // And now clean everything! (you may want to use a wait_click() or a usleep()
-  // in order to actually see something)
 
   my_window.draw(my_engine, heavy);
-  // Now I want you window to draw all the elements inside engine with tag heavy
+  // Now I want you window to draw instead
+  // all the elements inside engine with tag heavy
 
   my_window.draw(* a_random_molecule); // Draw that molecule!
+
+  my_window.wait_click();
+
   my_window.draw(* a_random_bumper); // Draw that bumper!
 
-  my_window.flush(); // Now render everything!
   my_window.wait_click();
+
+  // Now if we start the simulation...
+  for(double time = 0.; ; time += 0.01)
+  {
+    my_engine.run(time); // Run engine UNTIL time...
+    my_window.draw(my_engine); // ..and then draw the engine
+    if (fmod(time, 1.0) == 0)
+      my_window.wait_click(); // If we want to pause after some steps
+  }
 }
 
 {% endraw %}

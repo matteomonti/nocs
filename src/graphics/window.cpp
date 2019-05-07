@@ -1,4 +1,4 @@
-#include "lockpick.h"
+#include "window.h"
 
 bool __enter__ = false;
 bool __click__ = false;

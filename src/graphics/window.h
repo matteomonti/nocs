@@ -1,5 +1,5 @@
-#ifndef __lockpick__
-#define __lockpick__
+#ifndef __window__
+#define __window__
 
 // Libraries
 

@@ -21,13 +21,17 @@ std :: cout << secant :: compute(function, -0, 5) << std :: endl; // Prints 2
 #### Static members
 
  * `static constexpr double epsilon`
+    
     machine epsilon considered for the computation
 
  * `static constexpr unsigned int rounds`
+    
     maximum number of iterations before forced timeout
 
 #### Static methods
 
  * `static double compute(const lambda & function, double lower_bound, double upper_bound)`
+    
     using secant method, returns the zero of function inside the range [lower_bound, upper_bound].
+    
     **REMARK: works only if in the given range the zero is unique and the function is monotonic**
